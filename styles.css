@@ -4,8 +4,9 @@
   --fg: #f2f2ee;
   --fg-dim: #8a8a85;
   --fg-faint: #4a4a47;
-  --accent: #c9a961;
-  --accent-soft: rgba(201, 169, 97, 0.12);
+  --accent: #e11d36;
+  --accent-soft: rgba(225, 29, 54, 0.14);
+  --accent-glow: rgba(225, 29, 54, 0.55);
   --electric: #7dd3fc;
   --border: rgba(255, 255, 255, 0.06);
   --border-strong: rgba(255, 255, 255, 0.12);
@@ -30,22 +31,90 @@ body {
   position: relative;
 }
 
+/* When JS-driven cursor is active, hide native cursor (progressive enhancement) */
+@media (hover: hover) and (pointer: fine) {
+  body.cursor-active,
+  body.cursor-active a,
+  body.cursor-active button { cursor: none; }
+}
+
 a { color: inherit; text-decoration: none; }
 
-/* ============ Cursor glow (page-wide) ============ */
+/* ============ Cursor effects ============ */
 .cursor-glow {
   position: fixed;
   pointer-events: none;
-  width: 600px;
-  height: 600px;
+  width: 640px;
+  height: 640px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(201, 169, 97, 0.10) 0%, rgba(201, 169, 97, 0.04) 30%, transparent 60%);
+  background: radial-gradient(circle, rgba(225, 29, 54, 0.12) 0%, rgba(225, 29, 54, 0.05) 28%, transparent 60%);
   transform: translate(-50%, -50%);
   left: var(--mx, 50%);
   top: var(--my, 50%);
   z-index: 0;
   transition: opacity 0.4s ease;
-  filter: blur(20px);
+  filter: blur(22px);
+}
+
+/* Mid-size lerped ring — sits between glow and precise dot */
+.cursor-ring {
+  position: fixed;
+  pointer-events: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  transform: translate(-50%, -50%);
+  left: var(--rx, 50%);
+  top: var(--ry, 50%);
+  z-index: 9998;
+  mix-blend-mode: difference;
+  transition: width 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+              height 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+              border-color 0.28s ease,
+              opacity 0.3s ease,
+              background 0.28s ease;
+  will-change: transform, width, height;
+}
+
+/* Hover state — bigger ring, faint fill */
+.cursor-ring.is-hover {
+  width: 72px;
+  height: 72px;
+  border-color: rgba(255, 255, 255, 1);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Click state — collapse */
+.cursor-ring.is-down {
+  width: 24px;
+  height: 24px;
+}
+
+/* Tiny precise dot at exact cursor position */
+.cursor-dot {
+  position: fixed;
+  pointer-events: none;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow), 0 0 24px var(--accent-glow);
+  transform: translate(-50%, -50%);
+  left: var(--dx, 50%);
+  top: var(--dy, 50%);
+  z-index: 9999;
+  transition: opacity 0.3s ease, transform 0.15s ease;
+  will-change: transform;
+}
+
+.cursor-dot.is-hover {
+  transform: translate(-50%, -50%) scale(0);
+}
+
+/* Hide native cursor effects on touch / no-hover devices */
+@media (hover: none), (pointer: coarse) {
+  .cursor-glow, .cursor-ring, .cursor-dot { display: none; }
 }
 
 /* ============ Background grid ============ */
@@ -132,80 +201,6 @@ main, .site-header, .site-footer { position: relative; z-index: 1; }
 
 .site-nav a:hover::after { width: 100%; }
 
-/* ============ Hero ============ */
-.hero {
-  max-width: var(--max-w);
-  margin: 0 auto;
-  padding: 7rem 2rem 5rem;
-  text-align: center;
-}
-
-.eyebrow {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.18em;
-  color: var(--fg-faint);
-  margin-bottom: 2rem;
-}
-
-.hero h1 {
-  font-size: clamp(2.4rem, 6.5vw, 5.5rem);
-  font-weight: 600;
-  line-height: 1.05;
-  letter-spacing: -0.035em;
-  margin-bottom: 2rem;
-  background: linear-gradient(180deg, #ffffff 0%, #b8b8b0 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.hero h1 em {
-  font-style: italic;
-  font-weight: 400;
-  background: linear-gradient(180deg, var(--accent) 0%, #8a7340 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.lede {
-  font-size: clamp(1rem, 1.6vw, 1.2rem);
-  color: var(--fg-dim);
-  max-width: 620px;
-  margin: 0 auto 3rem;
-  line-height: 1.55;
-}
-
-.hero-meta {
-  display: inline-flex;
-  align-items: center;
-  gap: 1rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem;
-  letter-spacing: 0.06em;
-  color: var(--fg-dim);
-  text-transform: uppercase;
-}
-
-.hero-meta .dot {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #4ade80;
-  margin-right: 0.5rem;
-  box-shadow: 0 0 10px #4ade80;
-  animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.45; }
-}
-
-.meta-sep { color: var(--fg-faint); }
-
 /* ============ Section heads ============ */
 .section-head {
   max-width: var(--max-w);
@@ -238,7 +233,7 @@ main, .site-header, .site-footer { position: relative; z-index: 1; }
 
 /* ============ Portfolio cards ============ */
 .portfolio {
-  padding: 4rem 0 6rem;
+  padding: 6rem 0 6rem;
 }
 
 .cards {
@@ -276,7 +271,7 @@ main, .site-header, .site-footer { position: relative; z-index: 1; }
   border-radius: var(--radius);
   background: radial-gradient(
     400px circle at var(--card-mx, 50%) var(--card-my, 50%),
-    rgba(201, 169, 97, 0.18),
+    rgba(225, 29, 54, 0.20),
     transparent 50%
   );
   opacity: 0;
@@ -296,7 +291,7 @@ main, .site-header, .site-footer { position: relative; z-index: 1; }
   padding: 1px;
   background: radial-gradient(
     300px circle at var(--card-mx, 50%) var(--card-my, 50%),
-    rgba(201, 169, 97, 0.6),
+    rgba(225, 29, 54, 0.65),
     transparent 50%
   );
   -webkit-mask:
