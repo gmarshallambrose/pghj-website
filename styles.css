@@ -153,6 +153,15 @@ body.is-scrolled .site-header {
   pointer-events: none;
 }
 
+/* Mobile (no scroll rail) — header stays visible so nav is always reachable */
+@media (max-width: 760px) {
+  body.is-scrolled .site-header {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
 /* Top spacer so content doesn't sit under the fixed header at rest */
 main { padding-top: 4rem; }
 
