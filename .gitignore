@@ -1,0 +1,25 @@
+# Secrets — never commit
+.env
+.env.*
+*.token
+*.pem
+*.key
+secrets/
+.secrets
+
+# macOS
+.DS_Store
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+npm-debug.log*
+
+# Dependencies (if we ever add a build step)
+node_modules/
+dist/
+build/
