@@ -336,6 +336,8 @@ body.is-scrolled .scroll-rail {
 .watermark--az {
   width: 88px;
   height: 88px;
+  /* Calibrated filter chain that converts the PNG's black lines to copper (#c08552) */
+  filter: brightness(0) saturate(100%) invert(57%) sepia(44%) saturate(700%) hue-rotate(348deg) brightness(91%) contrast(85%);
 }
 
 .watermark--jesus {
