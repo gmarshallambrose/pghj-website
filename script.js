@@ -52,6 +52,26 @@
   });
 })();
 
+// =====================================================
+// Scroll-reactive: feed scroll position to CSS via --scroll-y
+// =====================================================
+(() => {
+  const root = document.documentElement;
+  let raf = null;
+
+  const update = () => {
+    raf = null;
+    root.style.setProperty('--scroll-y', window.scrollY);
+  };
+
+  const onScroll = () => {
+    if (raf === null) raf = requestAnimationFrame(update);
+  };
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  update();
+})();
+
 // Footer year
 (() => {
   const yearEl = document.getElementById('year');
