@@ -332,6 +332,56 @@ main, .site-header, .site-footer { position: relative; z-index: 1; }
   transform: translateY(2px);
 }
 
+/* Register the angle property so it animates smoothly (otherwise it jumps) */
+@property --beam-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* Comet beam that travels around the card border on hover */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1.5px;
+  border-radius: var(--radius);
+  background: conic-gradient(
+    from var(--beam-angle),
+    rgba(255, 255, 255, 1)    0deg,
+    rgba(255, 220, 220, 0.95) 4deg,
+    rgba(225, 29, 54, 1)      8deg,
+    rgba(225, 29, 54, 0.7)    25deg,
+    rgba(225, 29, 54, 0.35)   60deg,
+    rgba(225, 29, 54, 0.1)    100deg,
+    transparent               140deg,
+    transparent               360deg
+  );
+  /* Mask everything except the 1.5px ring */
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.card:hover::before {
+  opacity: 1;
+  animation: card-beam 5s linear infinite;
+}
+
+@keyframes card-beam {
+  to { --beam-angle: 360deg; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card:hover::before { animation: none; }
+}
+
 .card-glow {
   position: absolute;
   inset: 0;
