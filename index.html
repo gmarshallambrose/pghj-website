@@ -3,13 +3,135 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="PG Happy Jack Holdings — a portfolio of companies in firearms, real estate, robotics, and beyond." />
   <title>PG Happy Jack Holdings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div class="cursor-glow" aria-hidden="true"></div>
+  <div class="grid-bg" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-mark">PGHJ</span>
+      <span class="brand-divider"></span>
+      <span class="brand-name">PG Happy Jack Holdings</span>
+    </div>
+    <nav class="site-nav">
+      <a href="#portfolio">Portfolio</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
   <main>
-    <h1>PG Happy Jack Holdings</h1>
-    <p class="tagline">Placeholder — site under construction.</p>
+    <section class="hero">
+      <p class="eyebrow">EST. — A PRIVATE HOLDING COMPANY</p>
+      <h1>Building <em>quiet</em> companies<br/>in <em>loud</em> industries.</h1>
+      <p class="lede">A concentrated portfolio of operating businesses across firearms manufacturing, real estate, robotics, and emerging technology.</p>
+      <div class="hero-meta">
+        <span><span class="dot"></span> Active Portfolio</span>
+        <span class="meta-sep">/</span>
+        <span>Operator-Led</span>
+        <span class="meta-sep">/</span>
+        <span>Long Horizon</span>
+      </div>
+    </section>
+
+    <section id="portfolio" class="portfolio">
+      <div class="section-head">
+        <span class="section-num">01</span>
+        <h2>Portfolio</h2>
+        <p class="section-sub">Companies we own, operate, or hold meaningful stakes in.</p>
+      </div>
+
+      <div class="cards" id="cards">
+        <!-- Placeholder cards. Swap data-* and content as logos/info come in. -->
+        <article class="card" data-sector="Firearms">
+          <div class="card-glow" aria-hidden="true"></div>
+          <div class="card-inner">
+            <div class="card-logo" data-placeholder="LOGO">
+              <!-- Replace with: <img src="assets/logos/company1.svg" alt="Company name" /> -->
+            </div>
+            <div class="card-body">
+              <p class="card-sector">Firearms / Manufacturing</p>
+              <h3 class="card-name">Company One</h3>
+              <p class="card-tidbit">Short, sharp description of what this company does. One or two lines of tidbit copy goes here.</p>
+            </div>
+            <div class="card-foot">
+              <span class="card-status">Operating</span>
+              <span class="card-arrow">→</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" data-sector="Real Estate">
+          <div class="card-glow" aria-hidden="true"></div>
+          <div class="card-inner">
+            <div class="card-logo" data-placeholder="LOGO"></div>
+            <div class="card-body">
+              <p class="card-sector">Real Estate</p>
+              <h3 class="card-name">Company Two</h3>
+              <p class="card-tidbit">Short, sharp description of what this company does. One or two lines of tidbit copy goes here.</p>
+            </div>
+            <div class="card-foot">
+              <span class="card-status">Operating</span>
+              <span class="card-arrow">→</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" data-sector="Robotics">
+          <div class="card-glow" aria-hidden="true"></div>
+          <div class="card-inner">
+            <div class="card-logo" data-placeholder="LOGO"></div>
+            <div class="card-body">
+              <p class="card-sector">Robotics</p>
+              <h3 class="card-name">Company Three</h3>
+              <p class="card-tidbit">Short, sharp description of what this company does. One or two lines of tidbit copy goes here.</p>
+            </div>
+            <div class="card-foot">
+              <span class="card-status">Stealth</span>
+              <span class="card-arrow">→</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" data-sector="Technology">
+          <div class="card-glow" aria-hidden="true"></div>
+          <div class="card-inner">
+            <div class="card-logo" data-placeholder="LOGO"></div>
+            <div class="card-body">
+              <p class="card-sector">Technology</p>
+              <h3 class="card-name">Company Four</h3>
+              <p class="card-tidbit">Short, sharp description of what this company does. One or two lines of tidbit copy goes here.</p>
+            </div>
+            <div class="card-foot">
+              <span class="card-status">Stake</span>
+              <span class="card-arrow">→</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" class="contact">
+      <div class="section-head">
+        <span class="section-num">02</span>
+        <h2>Contact</h2>
+      </div>
+      <p class="contact-line">For partnership, acquisition, or general inquiries —</p>
+      <a class="contact-email" href="mailto:george@pghappyjackholdings.com">george@pghappyjackholdings.com</a>
+    </section>
   </main>
+
+  <footer class="site-footer">
+    <span>© <span id="year"></span> PG Happy Jack Holdings, LLC</span>
+    <span class="foot-meta">All rights reserved.</span>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
