@@ -118,19 +118,6 @@ a { color: inherit; text-decoration: none; }
   pointer-events: none;
 }
 
-/* ============ Background grid ============ */
-.grid-bg {
-  position: fixed;
-  inset: 0;
-  background-image:
-    linear-gradient(to right, rgba(255,255,255,0.025) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255,255,255,0.025) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
-  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
-  pointer-events: none;
-  z-index: 0;
-}
 
 main, .site-header, .site-footer { position: relative; z-index: 1; }
 
@@ -310,13 +297,15 @@ main, .site-header, .site-footer { position: relative; z-index: 1; }
 }
 
 .card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(0, 0, 0, 0.7);
+  transform: translateY(2px) scale(0.997);
+  border-color: rgba(0, 0, 0, 0.8);
+  /* Deeper recess: stronger top inner shadow, faint side insets,
+     no outer drop shadow — the card sinks further into the page */
   box-shadow:
-    inset 0 1px 0 rgba(0, 0, 0, 0.55),
-    inset 0 8px 16px rgba(0, 0, 0, 0.45),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.06),
-    0 14px 30px rgba(0, 0, 0, 0.45);
+    inset 0 2px 0 rgba(0, 0, 0, 0.7),
+    inset 0 16px 28px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.35),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .card-glow {
