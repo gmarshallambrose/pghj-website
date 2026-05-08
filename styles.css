@@ -332,34 +332,36 @@ body.is-scrolled .scroll-rail {
 
 /* Mask technique: PNG/SVG acts as the stencil, copper fills only the figure */
 .watermark {
-  background: var(--copper);
+  background-color: var(--copper);
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-position: center;
   -webkit-mask-size: contain;
+  -webkit-mask-mode: alpha;
           mask-repeat: no-repeat;
           mask-position: center;
           mask-size: contain;
+          mask-mode: alpha;
 }
 
 .watermark--az {
-  width: 60px;
-  height: 60px;
+  width: 88px;
+  height: 88px;
   -webkit-mask-image: url('assets/AZoutline.png');
           mask-image: url('assets/AZoutline.png');
 }
 
 .watermark--jesus {
   /* SVG viewBox is roughly 460×1024 — figure is taller than wide */
-  width: 30px;
-  height: 64px;
+  width: 44px;
+  height: 92px;
   -webkit-mask-image: url('assets/jesus-christ.svg');
           mask-image: url('assets/jesus-christ.svg');
 }
 
 @media (max-width: 760px) {
   .watermarks { bottom: 1rem; right: 1rem; gap: 0.6rem; }
-  .watermark--az { width: 44px; height: 44px; }
-  .watermark--jesus { width: 22px; height: 48px; }
+  .watermark--az { width: 60px; height: 60px; }
+  .watermark--jesus { width: 30px; height: 64px; }
 }
 
 /* ============ Section heads ============ */
