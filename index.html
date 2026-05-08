@@ -15,6 +15,35 @@
   <div class="cursor-dot" aria-hidden="true"></div>
   <div class="photo-bg" aria-hidden="true"></div>
 
+  <!-- Scroll rail: appears as you scroll, replaces top nav -->
+  <aside class="scroll-rail" aria-label="Section navigation">
+    <a href="#top" class="rail-brand" aria-label="Top">PGHJ</a>
+    <a href="#portfolio" class="rail-item" data-section="portfolio">
+      <span class="rail-marker"></span>
+      <span class="rail-num">01</span>
+      <span class="rail-label">Portfolio</span>
+    </a>
+    <a href="#about" class="rail-item" data-section="about">
+      <span class="rail-marker"></span>
+      <span class="rail-num">02</span>
+      <span class="rail-label">About</span>
+    </a>
+    <a href="#contact" class="rail-item" data-section="contact">
+      <span class="rail-marker"></span>
+      <span class="rail-num">03</span>
+      <span class="rail-label">Contact</span>
+    </a>
+  </aside>
+
+  <!-- Arizona outline watermark (bottom-right) -->
+  <div class="az-watermark" aria-hidden="true">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 0 1 L 96 0 L 96 76 L 92 81 L 92 90 L 53 90 L 36 100 L 27 100 L 22 95 L 6 95 L 0 89 Z"
+            stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" />
+    </svg>
+    <span class="az-label">ARIZONA</span>
+  </div>
+
   <header class="site-header">
     <div class="brand">
       <span class="brand-mark">PGHJ</span>
@@ -185,7 +214,19 @@
   </main>
 
   <footer class="site-footer">
-    <span>© <span id="year"></span> PG Happy Jack Holdings, LLC</span>
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span class="marquee-content">
+          <span>DITAT DEUS</span><span class="copper-dot"></span><span>ESTABLISHED IN ARIZONA</span><span class="copper-dot"></span><span>DITAT DEUS</span><span class="copper-dot"></span><span>ESTABLISHED IN ARIZONA</span><span class="copper-dot"></span>
+        </span>
+        <span class="marquee-content" aria-hidden="true">
+          <span>DITAT DEUS</span><span class="copper-dot"></span><span>ESTABLISHED IN ARIZONA</span><span class="copper-dot"></span><span>DITAT DEUS</span><span class="copper-dot"></span><span>ESTABLISHED IN ARIZONA</span><span class="copper-dot"></span>
+        </span>
+      </div>
+    </div>
+    <div class="footer-meta">
+      <span>© <span id="year"></span> PG Happy Jack Holdings, LLC</span>
+    </div>
   </footer>
 
   <script src="script.js"></script>

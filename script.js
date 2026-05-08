@@ -53,15 +53,20 @@
 })();
 
 // =====================================================
-// Scroll-reactive: feed scroll position to CSS via --scroll-y
+// Scroll: feed --scroll-y to CSS + toggle is-scrolled class on body
+// (drives photo parallax, header hide, and rail reveal)
 // =====================================================
 (() => {
   const root = document.documentElement;
+  const body = document.body;
+  const SCROLL_THRESHOLD = 100;
   let raf = null;
 
   const update = () => {
     raf = null;
-    root.style.setProperty('--scroll-y', window.scrollY);
+    const y = window.scrollY;
+    root.style.setProperty('--scroll-y', y);
+    body.classList.toggle('is-scrolled', y > SCROLL_THRESHOLD);
   };
 
   const onScroll = () => {
@@ -70,6 +75,58 @@
 
   window.addEventListener('scroll', onScroll, { passive: true });
   update();
+})();
+
+// =====================================================
+// Active section in scroll rail (IntersectionObserver)
+// =====================================================
+(() => {
+  const railItems = document.querySelectorAll('.rail-item');
+  if (!railItems.length) return;
+
+  const sections = document.querySelectorAll('main section[id]');
+  if (!sections.length) return;
+
+  const setActive = (id) => {
+    railItems.forEach((item) => {
+      item.classList.toggle('is-active', item.dataset.section === id);
+    });
+  };
+
+  // Track each section's intersection ratio; the one most "in view" wins
+  const ratios = new Map();
+
+  const obs = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => ratios.set(e.target.id, e.intersectionRatio));
+      let topId = null;
+      let topRatio = 0;
+      ratios.forEach((r, id) => {
+        if (r > topRatio) { topRatio = r; topId = id; }
+      });
+      if (topId && topRatio > 0) setActive(topId);
+    },
+    {
+      threshold: [0, 0.15, 0.3, 0.5, 0.75, 1],
+      rootMargin: '-15% 0px -45% 0px',
+    }
+  );
+
+  sections.forEach((s) => obs.observe(s));
+})();
+
+// Smooth-scroll for in-page anchor links
+(() => {
+  document.querySelectorAll('a[href^="#"]').forEach((a) => {
+    a.addEventListener('click', (e) => {
+      const href = a.getAttribute('href');
+      if (!href || href === '#') return;
+      const target = href === '#top' ? document.body : document.querySelector(href);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
 })();
 
 // Footer year
