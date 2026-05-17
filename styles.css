@@ -600,6 +600,25 @@ body.is-scrolled .scroll-rail {
   border-color: rgba(255, 255, 255, 0.08);
 }
 
+/* Stealth card — animated reticle/scope graphic */
+.stealth-graphic {
+  width: 78%;
+  height: 78%;
+  color: var(--highlight);
+  filter: drop-shadow(0 0 10px rgba(240, 230, 210, 0.18));
+}
+
+/* Subtle differentiation for the stealth card — extra cool tone, no pointer */
+.card--stealth { cursor: default; }
+.card--stealth .card-sector { color: var(--highlight); letter-spacing: 0.12em; }
+.card--stealth .card-arrow { color: var(--fg-faint); }
+.card--stealth:hover .card-arrow { transform: none; color: var(--fg-faint); }
+
+@media (prefers-reduced-motion: reduce) {
+  .stealth-graphic animate,
+  .stealth-graphic animateTransform { display: none; }
+}
+
 /* Logo panel dims slightly when card is recessed — less light reaches it */
 .card:hover .card-logo {
   filter: brightness(0.88) contrast(0.97);
