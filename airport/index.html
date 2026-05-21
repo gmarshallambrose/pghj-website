@@ -385,6 +385,30 @@
   }
   .method-card p { margin-bottom: 0.5rem; }
   .method-card p:last-child { margin-bottom: 0; }
+
+  /* Reference panels (PDFs at bottom of page) */
+  .references {
+    grid-column: 1 / -1;
+    margin-top: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .pdf-embed {
+    width: 100%;
+    height: 760px;
+    border: none;
+    display: block;
+    background: var(--cream);
+  }
+  @media (max-width: 800px) {
+    .pdf-embed { height: 520px; }
+  }
+  /* Anchor styling needed so .btn class works on <a> tags */
+  a.btn {
+    display: inline-block;
+    text-decoration: none;
+  }
 </style>
 </head>
 <body>
@@ -628,6 +652,26 @@
       </div>
     </div>
   </details>
+
+  <section class="references">
+    <div class="panel">
+      <div class="panel-header">Site Plan</div>
+      <iframe src="site-plan.pdf#view=FitH" class="pdf-embed" title="Site Plan" loading="lazy"></iframe>
+      <div class="actions">
+        <a href="site-plan.pdf" target="_blank" rel="noopener" class="btn primary">Open in new tab</a>
+        <a href="site-plan.pdf" download class="btn">Download</a>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">Concept Studies</div>
+      <iframe src="concept-studies.pdf#view=FitH" class="pdf-embed" title="Concept Studies" loading="lazy"></iframe>
+      <div class="actions">
+        <a href="concept-studies.pdf" target="_blank" rel="noopener" class="btn primary">Open in new tab</a>
+        <a href="concept-studies.pdf" download class="btn">Download</a>
+      </div>
+    </div>
+  </section>
 
 </div>
 
