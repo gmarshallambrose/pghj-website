@@ -1053,6 +1053,13 @@ function copyToClipboard() {
     recalc();
   } else {
     applyPreset('balanced');
+    // Default: Subdivided Lot Sales slider pre-loaded with 20 lots (6.0 ac × 0.3 ac/lot)
+    const subSlider = document.getElementById('sld_subdivide');
+    if (subSlider) {
+      subSlider.value = 6.0;
+      recalc();
+      saveState();
+    }
   }
 })();
 </script>
