@@ -38,6 +38,10 @@
     text-align: center;
     border-bottom: 1px solid var(--gold);
     font-style: italic;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   }
   .disclaimer-banner strong {
     font-style: normal;
@@ -394,15 +398,11 @@
     flex-direction: column;
     gap: 1.5rem;
   }
-  .pdf-embed {
-    width: 100%;
-    height: 760px;
-    border: none;
+  .pdf-preview {
     display: block;
+    width: 100%;
+    height: auto;
     background: var(--cream);
-  }
-  @media (max-width: 800px) {
-    .pdf-embed { height: 520px; }
   }
   /* Anchor styling needed so .btn class works on <a> tags */
   a.btn {
@@ -656,18 +656,18 @@
   <section class="references">
     <div class="panel">
       <div class="panel-header">Site Plan</div>
-      <iframe src="site-plan.pdf#view=FitH" class="pdf-embed" title="Site Plan" loading="lazy"></iframe>
+      <img src="site-plan-page1.jpg" alt="Site Plan — page 1" class="pdf-preview" loading="lazy" />
       <div class="actions">
-        <a href="site-plan.pdf" target="_blank" rel="noopener" class="btn primary">Open in new tab</a>
+        <a href="site-plan.pdf" target="_blank" rel="noopener" class="btn primary">Open full PDF</a>
         <a href="site-plan.pdf" download class="btn">Download</a>
       </div>
     </div>
 
     <div class="panel">
       <div class="panel-header">Concept Studies</div>
-      <iframe src="concept-studies.pdf#view=FitH" class="pdf-embed" title="Concept Studies" loading="lazy"></iframe>
+      <img src="concept-studies-page1.png" alt="Concept Studies — page 1" class="pdf-preview" loading="lazy" />
       <div class="actions">
-        <a href="concept-studies.pdf" target="_blank" rel="noopener" class="btn primary">Open in new tab</a>
+        <a href="concept-studies.pdf" target="_blank" rel="noopener" class="btn primary">Open full PDF</a>
         <a href="concept-studies.pdf" download class="btn">Download</a>
       </div>
     </div>
@@ -952,9 +952,11 @@ function updateSubdivideScenarios(acres, taxImmediate, taxBuiltOut, landValue, b
       <span></span>
       <span style="font-weight: 700; color: var(--navy);">$${(landValue/1e6).toFixed(2)}M</span>
 
-      <span style="color: var(--ink); font-weight: 700; border-top: 1px solid var(--line); padding-top: 0.25rem;">= Total assessed market value:</span>
-      <span style="border-top: 1px solid var(--line);"></span>
-      <span style="font-weight: 700; color: var(--forest); border-top: 1px solid var(--line); padding-top: 0.25rem;">$${(subdivBuiltMV/1e6).toFixed(2)}M</span>
+      <div style="grid-column: 1 / -1; border-top: 1px solid var(--line); margin-top: 0.15rem;"></div>
+
+      <span style="color: var(--ink); font-weight: 700; padding-top: 0.3rem;">= Total assessed market value:</span>
+      <span></span>
+      <span style="font-weight: 700; color: var(--forest); padding-top: 0.3rem;">$${(subdivBuiltMV/1e6).toFixed(2)}M</span>
 
       <span style="color: var(--muted);">× Class 1 ratio (commercial):</span>
       <span></span>
@@ -964,9 +966,11 @@ function updateSubdivideScenarios(acres, taxImmediate, taxBuiltOut, landValue, b
       <span></span>
       <span style="color: var(--muted);">× 4.5325%</span>
 
-      <span style="color: var(--ink); font-weight: 700; border-top: 1px solid var(--line); padding-top: 0.25rem;">= Annual property tax:</span>
-      <span style="border-top: 1px solid var(--line);"></span>
-      <span style="font-weight: 700; color: var(--forest); border-top: 1px solid var(--line); padding-top: 0.25rem;">${fmt(subdivBuiltTax)}/yr</span>
+      <div style="grid-column: 1 / -1; border-top: 1px solid var(--line); margin-top: 0.15rem;"></div>
+
+      <span style="color: var(--ink); font-weight: 700; padding-top: 0.3rem;">= Annual property tax:</span>
+      <span></span>
+      <span style="font-weight: 700; color: var(--forest); padding-top: 0.3rem;">${fmt(subdivBuiltTax)}/yr</span>
     </div>
   `;
 
