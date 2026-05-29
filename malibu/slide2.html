@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Town Impact — Plain Slide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    /* deck theme: ppt/theme/theme1.xml */
+    --ink:#2C3932;        /* dk2 — charcoal green */
+    --purple:#7030A0;     /* hlink accent */
+    --teal:#107573;       /* folHlink accent */
+    --lavender:#BABAD6;   /* accent4 */
+    --cream:#FDF6EA;      /* lt2 */
+    --muted:#8A938C;
+    --line:#E7E2D6;
+  }
+  html, body { width:1280px; height:720px; overflow:hidden; }
+  body {
+    font-family:'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background:#FFFFFF;
+    color:var(--ink);
+    position:relative;
+  }
+  .slide { width:1280px; height:720px; padding:74px 110px 64px; position:relative; display:flex; flex-direction:column; }
+
+  /* header — centered, like deck ctrTitle */
+  .header { text-align:center; }
+  .kicker { color:var(--teal); font-size:14.5px; letter-spacing:3px; text-transform:uppercase; font-weight:600; }
+  .title { font-family:'Lora', Georgia, serif; font-size:62px; font-weight:600; color:var(--ink); line-height:1.04; margin-top:8px; }
+  .rule { width:74px; height:4px; background:var(--purple); border-radius:2px; margin:20px auto 0; }
+
+  /* number lines — deck "Target Numbers" style, value emphasized */
+  .list { margin-top:46px; max-width:900px; margin-left:auto; margin-right:auto; width:100%;
+          display:flex; flex-direction:column; gap:21px; }
+  .row { display:grid; grid-template-columns:228px 1fr; gap:30px; align-items:baseline; }
+  .val { font-family:'Lora', Georgia, serif; font-size:39px; font-weight:700; color:var(--purple);
+         text-align:right; line-height:1; white-space:nowrap; }
+  .val .per { font-family:'Poppins', sans-serif; font-size:17px; font-weight:500; color:var(--muted); margin-left:3px; }
+  .desc { font-size:19px; font-weight:400; color:var(--ink); line-height:1.36; padding-top:4px; }
+  .desc b { font-weight:600; }
+
+  /* footer — like deck footer placeholder */
+  .foot { position:absolute; left:110px; right:110px; bottom:30px;
+          display:flex; justify-content:space-between; align-items:center;
+          font-size:11.5px; color:var(--muted); border-top:1px solid var(--line); padding-top:12px; }
+  .foot .right { color:var(--teal); letter-spacing:1px; font-weight:600; white-space:nowrap; }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="header">
+    <div class="kicker">Wildhorse Luxury RV &amp; Cabin Resort · Payson, Arizona</div>
+    <div class="title">Town Impact</div>
+    <div class="rule"></div>
+  </div>
+
+  <div class="list">
+    <div class="row">
+      <div class="val">$381K<span class="per">/yr</span></div>
+      <div class="desc"><b>Recurring Town tax revenue</b> — 8.88% lodging tax plus 3.88% sales tax on off-site spending.</div>
+    </div>
+    <div class="row">
+      <div class="val">$282K</div>
+      <div class="desc"><b>One-time construction sales tax</b> to the Town on the build.</div>
+    </div>
+    <div class="row">
+      <div class="val">$4.1M</div>
+      <div class="desc"><b>Projected 10-year cumulative</b> to the Town general fund.</div>
+    </div>
+    <div class="row">
+      <div class="val">$231K<span class="per">/yr</span></div>
+      <div class="desc"><b>Community property tax</b> — Payson schools, Gila County &amp; the fire district.</div>
+    </div>
+    <div class="row">
+      <div class="val">$28.6M</div>
+      <div class="desc"><b>Private investment</b> — 270 deeded RV sites, cabins &amp; storage units sold.</div>
+    </div>
+    <div class="row">
+      <div class="val">25&ndash;40</div>
+      <div class="desc"><b>New permanent local jobs</b>, plus construction jobs during the build.</div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="left">Illustrative model for discussion; figures pending final pricing, occupancy &amp; contractor bids. Rates: Town of Payson Ord. 964, Arizona Dept. of Revenue.</div>
+    <div class="right">21 ACRES · 270 UNITS</div>
+  </div>
+</div>
+</body>
+</html>

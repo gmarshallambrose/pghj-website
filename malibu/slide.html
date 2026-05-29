@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Town Impact Slide</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy:#241038; --navy-dark:#150A22; --forest:#5A2580;
+    --gold:#B98CDD; --gold-bright:#D7B3F0; --cream:#F5F1E8;
+    --muted:#A99CC0; --line:rgba(176,127,214,0.30);
+  }
+  html, body { width:1280px; height:720px; overflow:hidden; }
+  body {
+    font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background:var(--navy-dark);
+    color:var(--cream);
+    position:relative;
+  }
+  .slide { width:1280px; height:720px; padding:52px 64px 0; position:relative; display:flex; flex-direction:column; }
+
+  /* top accent */
+  .slide::before { content:''; position:absolute; top:0; left:0; right:0; height:8px;
+    background:linear-gradient(to right, var(--gold), var(--gold-bright), var(--forest)); }
+  /* faint background motif */
+  .bgglow { position:absolute; right:-160px; top:-120px; width:560px; height:560px;
+    background:radial-gradient(circle, rgba(176,127,214,0.13), transparent 70%); pointer-events:none; }
+
+  .head { display:flex; justify-content:space-between; align-items:flex-start; }
+  .kicker { color:var(--gold); font-size:14px; letter-spacing:3.5px; text-transform:uppercase; font-weight:700; }
+  .title { font-family:Georgia, serif; font-size:42px; font-weight:700; color:#fff; line-height:1.08; margin-top:10px; max-width:880px; }
+  .title .accent { color:var(--gold-bright); }
+  .logo-chip { background:#fff; border-radius:8px; padding:10px 16px; box-shadow:0 6px 24px rgba(0,0,0,0.35); }
+  .logo-chip img { height:62px; display:block; }
+
+  /* stat tiles */
+  .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:30px; }
+  .tile { background:rgba(255,255,255,0.045); border:1px solid var(--line); border-radius:12px; padding:20px 22px; position:relative; }
+  .tile.lead { background:linear-gradient(160deg, rgba(112,48,160,0.32), rgba(176,127,214,0.06)); border-color:rgba(176,127,214,0.55); }
+  .tile-label { font-size:12.5px; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold); font-weight:700; min-height:30px; }
+  .tile.plain .tile-label { color:var(--muted); }
+  .tile-value { font-family:Georgia, serif; font-size:44px; font-weight:700; color:#fff; line-height:1; margin-top:10px; }
+  .tile.lead .tile-value { color:var(--gold-bright); font-size:50px; }
+  .tile-sub { font-size:13px; color:var(--muted); margin-top:9px; line-height:1.35; }
+
+  /* lower band */
+  .lower { display:grid; grid-template-columns:1.15fr 1fr; gap:34px; margin-top:30px; }
+  .points { display:flex; flex-direction:column; gap:14px; }
+  .point { display:flex; gap:13px; align-items:flex-start; font-size:16px; line-height:1.4; color:#E8E2D2; }
+  .point .dot { flex:0 0 auto; width:11px; height:11px; border-radius:50%; background:var(--gold); margin-top:6px; }
+  .point b { color:#fff; }
+
+  .callout { background:var(--navy); border:1px solid var(--line); border-radius:12px; padding:22px 24px; align-self:start; }
+  .callout-label { font-size:12px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); font-weight:700; }
+  .callout-eq { font-family:Georgia, serif; font-size:19px; color:#fff; margin-top:12px; line-height:1.5; }
+  .callout-eq .hl { color:var(--gold-bright); font-weight:700; }
+  .range { margin-top:16px; padding-top:14px; border-top:1px dashed var(--line); font-size:13.5px; color:var(--muted); line-height:1.45; }
+  .range b { color:#fff; }
+
+  /* footer */
+  .foot { position:absolute; left:64px; right:64px; bottom:22px; display:flex; justify-content:space-between; align-items:center;
+    font-size:11.5px; color:var(--muted); border-top:1px solid rgba(255,255,255,0.08); padding-top:11px; }
+  .foot .left { font-style:italic; max-width:760px; }
+  .foot .right { color:var(--gold); letter-spacing:1px; font-weight:600; white-space:nowrap; }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="bgglow"></div>
+
+  <div class="head">
+    <div>
+      <div class="kicker">Wildhorse Luxury RV &amp; Cabin Resort · Payson, Arizona</div>
+      <div class="title">Fiscal Impact to the <span class="accent">Town of Payson</span></div>
+    </div>
+    <div class="logo-chip"><img src="payson-logo.webp" alt="Town of Payson"></div>
+  </div>
+
+  <div class="stats">
+    <div class="tile lead">
+      <div class="tile-label">Annual Town Revenue</div>
+      <div class="tile-value">$381K</div>
+      <div class="tile-sub">Recurring, every year — lodging + retail sales tax</div>
+    </div>
+    <div class="tile plain">
+      <div class="tile-label">Construction Tax</div>
+      <div class="tile-value">$282K</div>
+      <div class="tile-sub">One-time, on the build</div>
+    </div>
+    <div class="tile plain">
+      <div class="tile-label">10-Year Cumulative</div>
+      <div class="tile-value">$4.1M</div>
+      <div class="tile-sub">To Town general fund</div>
+    </div>
+    <div class="tile plain">
+      <div class="tile-label">Permanent Jobs</div>
+      <div class="tile-value">25–40</div>
+      <div class="tile-sub">Plus construction jobs</div>
+    </div>
+  </div>
+
+  <div class="lower">
+    <div class="points">
+      <div class="point"><span class="dot"></span><div><b>$231K / year in community property tax</b> to Payson schools, Gila County, and the fire district.</div></div>
+      <div class="point"><span class="dot"></span><div><b>$28M+ in private investment</b> — 270 deeded RV sites, cabins &amp; storage units sold.</div></div>
+      <div class="point"><span class="dot"></span><div><b>Grows Payson's lodging-tax base</b>, which already returns roughly $7M/year town-wide.</div></div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-label">What drives Town revenue</div>
+      <div class="callout-eq">An <span class="hl">8.88%</span> lodging tax on every paid night, plus a <span class="hl">3.88%</span> sales tax on off-site spending by guests, new owners &amp; staff.</div>
+      <div class="range"><b>Range: $216K–$719K / year</b> to the Town depending on occupancy &amp; how many units enter the nightly-rental program. Comp-based base case ($381K) shown.</div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="left">Illustrative model for discussion; figures pending final pricing, occupancy &amp; contractor bids. Rates: Town of Payson (Ord. 964), Arizona Dept. of Revenue, Arizona Tax Research Association. Market: AirDNA / AirROI Payson, LandSearch.</div>
+    <div class="right">21 ACRES · 270 UNITS · HWY 260 &amp; 87</div>
+  </div>
+</div>
+</body>
+</html>

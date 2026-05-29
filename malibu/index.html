@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wildhorse Resort — Town Revenue Model</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:      #1E2761;
+    --navy-dark: #0F1626;
+    --forest:    #2C5F2D;
+    --gold:      #D4A574;
+    --gold-dark: #A87C4F;
+    --cream:     #F5F1E8;
+    --white:     #FFFFFF;
+    --ink:       #1A2E1B;
+    --muted:     #5A6B7C;
+    --accent:    #F4B942;
+    --red:       #8B3A3A;
+    --line:      #E0DBC7;
+    --teal:      #1F6F6B;
+    --purple:      #7030A0;
+    --purple-deep: #5A2580;
+    --purple-soft: #BABAD6;
+    --purple-tint: #F1ECF6;
+  }
+
+  html, body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  .disclaimer-banner {
+    background: linear-gradient(to right, #FFF4D4, #FFE9A8);
+    color: #6B4910;
+    font-size: 0.8rem;
+    padding: 0.5rem 2rem;
+    text-align: center;
+    border-bottom: 1px solid var(--gold);
+    font-style: italic;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .disclaimer-banner strong {
+    font-style: normal;
+    color: #4A3208;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    margin-right: 0.4rem;
+  }
+
+  .header {
+    background: var(--navy-dark);
+    color: white;
+    padding: 1.4rem 2rem 1.1rem;
+    border-bottom: 4px solid var(--purple);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  .header-text { flex: 1; min-width: 0; }
+  .header h1 {
+    font-family: Georgia, serif;
+    font-size: 1.65rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  .header .sub {
+    font-size: 0.78rem;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+  }
+  .header .tagline {
+    font-size: 0.9rem;
+    color: rgba(245, 241, 232, 0.7);
+    margin-top: 0.25rem;
+    font-style: italic;
+  }
+  .header-logo {
+    height: 78px;
+    width: auto;
+    background: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+    flex-shrink: 0;
+  }
+  @media (max-width: 800px) {
+    .header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .header-logo { height: 60px; align-self: flex-start; }
+  }
+
+  /* Project facts strip */
+  .facts {
+    background: var(--white);
+    color: var(--ink);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .fact {
+    flex: 1 1 0;
+    min-width: 150px;
+    padding: 0.85rem 1.2rem;
+    border-right: 1px solid var(--line);
+  }
+  .fact:last-child { border-right: none; }
+  .fact-label {
+    font-size: 0.64rem;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    font-weight: 700;
+  }
+  .fact-value {
+    font-family: Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-top: 0.15rem;
+  }
+  .fact-value small { font-size: 0.72rem; color: var(--muted); font-family: -apple-system, sans-serif; font-weight: 400; }
+
+  .container {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 1.4rem 2rem 3rem;
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 1.5rem;
+  }
+  @media (max-width: 1100px) {
+    .container { grid-template-columns: 1fr; }
+  }
+
+  .panel {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    overflow: hidden;
+  }
+  .panel + .panel { margin-top: 1.2rem; }
+
+  .panel-header {
+    background: var(--purple-tint);
+    color: var(--purple);
+    padding: 0.8rem 1.2rem;
+    font-size: 0.7rem;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    font-weight: 700;
+    border-bottom: 1px solid var(--line);
+  }
+  .panel-body { padding: 1.2rem; }
+
+  .section-sub {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    color: var(--purple);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin: 1.1rem 0 0.3rem;
+    padding-top: 0.7rem;
+    border-top: 1px dashed var(--line);
+  }
+  .section-sub:first-child { border-top: none; padding-top: 0; margin-top: 0; }
+
+  /* Concept / slider row */
+  .concept {
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .concept:last-child { border-bottom: none; }
+  .concept-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.5rem;
+    gap: 0.5rem;
+  }
+  .concept-name {
+    font-weight: 700;
+    color: var(--navy);
+    font-size: 0.92rem;
+  }
+  .concept-meta {
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-style: italic;
+    margin-left: 0.4rem;
+  }
+  .concept-output {
+    color: var(--purple);
+    font-weight: 700;
+    font-size: 0.9rem;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .concept-output .sub { color: var(--muted); font-size: 0.72rem; font-weight: 500; font-style: italic; }
+
+  .slider-container { position: relative; padding: 0 0.2rem; }
+  input[type=range] {
+    width: 100%;
+    accent-color: var(--purple);
+    height: 6px;
+  }
+  .slider-ticks {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.2rem;
+    font-size: 0.66rem;
+    color: var(--muted);
+    padding: 0 0.2rem;
+  }
+
+  /* Presets */
+  .presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+  .chip {
+    padding: 0.3rem 0.7rem;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 0.76rem;
+    color: var(--navy);
+    font-weight: 600;
+    transition: all 0.15s;
+  }
+  .chip:hover { background: var(--purple-tint); color: var(--purple); border-color: var(--purple); }
+  .chip.active { background: var(--purple); color: white; border-color: var(--purple); }
+
+  /* Output */
+  .big-stat {
+    padding: 1.05rem 1.4rem 0.95rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .big-stat-label {
+    font-size: 0.68rem;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+  .big-stat-value {
+    font-family: Georgia, serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--navy);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+  }
+  .big-stat-value.forest { color: var(--purple); }
+  .big-stat-value.muted  { color: var(--muted); }
+  .big-stat-detail {
+    font-size: 0.76rem;
+    color: var(--muted);
+    margin-top: 0.3rem;
+    font-style: italic;
+  }
+
+  .tpt-highlight {
+    background: var(--purple);
+    color: white;
+    padding: 1.3rem 1.4rem;
+  }
+  .tpt-highlight .big-stat-label { color: var(--purple-soft); }
+  .tpt-highlight .big-stat-value { color: white; font-size: 2.5rem; }
+  .tpt-highlight .big-stat-detail { color: rgba(255,255,255,0.82); }
+
+  .breakdown { padding: 1rem 1.4rem 1.1rem; }
+  .breakdown h3 {
+    font-size: 0.68rem;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 0.7rem;
+  }
+  .bar-row {
+    display: grid;
+    grid-template-columns: 130px 1fr 92px;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: 0.45rem;
+    font-size: 0.82rem;
+  }
+  .bar-row-label { color: var(--ink); font-weight: 600; }
+  .bar-track {
+    height: 16px;
+    background: #ECE6F2;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .bar-fill { height: 100%; border-radius: 8px; transition: width 0.3s; }
+  .bar-value {
+    text-align: right;
+    font-weight: 700;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .actions {
+    display: flex;
+    gap: 0.6rem;
+    padding: 0.9rem 1.4rem;
+    background: #FAF7EE;
+    border-top: 1px solid var(--line);
+    flex-wrap: wrap;
+  }
+  .btn {
+    padding: 0.45rem 0.9rem;
+    border-radius: 5px;
+    border: 1px solid var(--line);
+    background: white;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--navy);
+    transition: all 0.15s;
+  }
+  .btn:hover { background: var(--purple-tint); border-color: var(--purple); }
+  .btn.primary { background: var(--purple); color: white; border-color: var(--purple); }
+  .btn.primary:hover { background: var(--purple-deep); }
+  a.btn { display: inline-block; text-decoration: none; }
+
+  /* Comparison table: deck preliminary vs this model */
+  .compare {
+    grid-column: 1 / -1;
+    margin-top: 1.4rem;
+  }
+  .compare table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+  .compare th, .compare td {
+    padding: 0.7rem 1.2rem;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+    font-variant-numeric: tabular-nums;
+  }
+  .compare thead th {
+    background: var(--cream);
+    font-size: 0.7rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .compare td.metric { font-weight: 600; color: var(--ink); }
+  .compare td.deck { color: var(--muted); }
+  .compare td.model { color: var(--purple); font-weight: 700; }
+  .compare tr.headline td.model { color: var(--purple-deep); font-size: 1rem; }
+  .compare td.note { font-size: 0.74rem; color: var(--muted); font-style: italic; }
+
+  /* Prepared for band */
+  .prepared-for {
+    grid-column: 1 / -1;
+    margin-top: 1.4rem;
+    padding: 1.5rem 1rem;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.85rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .prepared-for-label {
+    font-size: 0.7rem;
+    letter-spacing: 2.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .prepared-for-logo { height: 96px; width: auto; max-width: 100%; }
+  .prepared-for-sub {
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-style: italic;
+    text-align: center;
+    margin-top: 0.2rem;
+  }
+
+  .method {
+    margin-top: 1.4rem;
+    grid-column: 1 / -1;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .method summary {
+    padding: 0.85rem 1.3rem;
+    cursor: pointer;
+    background: var(--cream);
+    font-size: 0.83rem;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    list-style: none;
+  }
+  .method summary::-webkit-details-marker { display: none; }
+  .method summary:hover { background: #ECE5D0; }
+  .method summary::after {
+    content: '+';
+    float: right;
+    color: var(--muted);
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+  .method[open] summary::after { content: '\2212'; }
+  .method-body {
+    padding: 1.2rem 1.4rem;
+    font-size: 0.88rem;
+    color: var(--ink);
+    line-height: 1.7;
+  }
+  .method-body strong { color: var(--navy); }
+  .method-body code {
+    background: var(--cream);
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    font-size: 0.85em;
+    color: var(--purple);
+    font-weight: 700;
+  }
+  .method-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    margin-top: 0.8rem;
+  }
+  @media (max-width: 800px) { .method-grid { grid-template-columns: 1fr; } }
+  .method-card {
+    background: var(--cream);
+    border-radius: 6px;
+    padding: 1rem 1.1rem;
+  }
+  .method-card h4 {
+    font-family: Georgia, serif;
+    color: var(--navy);
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .method-card p { margin-bottom: 0.5rem; }
+  .method-card p:last-child { margin-bottom: 0; }
+  .method-body a { color: var(--purple); }
+
+  .references {
+    grid-column: 1 / -1;
+    margin-top: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .pdf-preview { display: block; width: 100%; height: auto; background: var(--cream); }
+</style>
+</head>
+<body>
+
+<div class="disclaimer-banner">
+  <strong>Disclaimer:</strong> Illustrative model for discussion only. Figures depend on final unit pricing, occupancy, and contractor bids; tax rates current as of 2026 and subject to change. Not a tax opinion — confirm with Arizona Department of Revenue and Town of Payson Finance.
+</div>
+
+<div class="header">
+  <div class="header-text">
+    <div class="sub">Wildhorse Hospitality, LLC · Payson, AZ · 21 Acres · Hwy 260 &amp; 87</div>
+    <h1>Luxury RV &amp; Cabin Resort — Town Revenue Model</h1>
+    <div class="tagline">Adjust the assumptions — Town of Payson tax revenue updates live</div>
+  </div>
+  <img src="payson-logo.webp" alt="Town of Payson — Arizona's Cool Mountain Town" class="header-logo" />
+</div>
+
+<div class="facts">
+  <div class="fact"><div class="fact-label">Site</div><div class="fact-value">21 acres</div></div>
+  <div class="fact"><div class="fact-label">RV Sites</div><div class="fact-value">146 <small>3 tiers</small></div></div>
+  <div class="fact"><div class="fact-label">Cabins</div><div class="fact-value">64 <small>2 levels</small></div></div>
+  <div class="fact"><div class="fact-label">Storage</div><div class="fact-value">60 <small>RV / boat</small></div></div>
+  <div class="fact"><div class="fact-label">Total Units</div><div class="fact-value">270</div></div>
+  <div class="fact"><div class="fact-label">Amenities</div><div class="fact-value" style="font-size:0.92rem;">Pool · Pickleball · Restaurant · Clubhouse · Dog Park</div></div>
+</div>
+
+<div class="container">
+
+  <!-- LEFT: assumptions -->
+  <div>
+    <div class="panel">
+      <div class="panel-header">Assumptions · Drag to model the operation</div>
+      <div class="panel-body">
+
+        <div class="presets" id="presets">
+          <span class="chip" data-preset="base">Comp Base Case</span>
+          <span class="chip" data-preset="deck">Deck Preliminary</span>
+          <span class="chip" data-preset="conservative">Conservative</span>
+          <span class="chip" data-preset="optimistic">Optimistic / Peak</span>
+        </div>
+
+        <div class="section-sub">Unit mix &amp; sale pricing <span style="font-weight:400;font-style:italic;text-transform:none;letter-spacing:0;color:var(--muted);">— deeded sale prices (comps below)</span></div>
+        <div id="priceRows"></div>
+
+        <div class="section-sub">Nightly rental rates</div>
+        <div id="nightRows"></div>
+
+        <div class="section-sub">Rental operation</div>
+        <div id="opRows"></div>
+
+        <div class="section-sub">Development &amp; property</div>
+        <div id="devRows"></div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: results -->
+  <div>
+    <div class="panel">
+      <div class="panel-header">Town of Payson — Tax Revenue</div>
+
+      <div class="tpt-highlight">
+        <div class="big-stat-label">Annual Recurring Town Revenue</div>
+        <div class="big-stat-value" id="annualTown">$0</div>
+        <div class="big-stat-detail">Lodging tax (8.88%) on nightly rentals + 3.88% sales tax on ancillary &amp; off-site retail spend — every year</div>
+      </div>
+
+      <div class="big-stat">
+        <div class="big-stat-label">One-Time Construction Tax to Town</div>
+        <div class="big-stat-value forest" id="constructionTpt">$0</div>
+        <div class="big-stat-detail">3.88% × 65% of taxable construction (prime contracting, A.R.S. § 42-5075)</div>
+      </div>
+
+      <div class="big-stat">
+        <div class="big-stat-label">Est. Off-Site Retail Sales Tax / yr <span style="color:var(--muted);font-weight:600;text-transform:none;letter-spacing:0.5px;">— broader-impact estimate</span></div>
+        <div class="big-stat-value" id="retailTax" style="color:var(--purple);">$0</div>
+        <div class="big-stat-detail">Town's 3.88% on ~<span id="newLocalSpend">$0</span>/yr of new in-town spending by guests, relocating owners &amp; employees (off-property). Estimate — included in the recurring total above.</div>
+      </div>
+
+      <div class="big-stat">
+        <div class="big-stat-label">10-Year Cumulative to Town</div>
+        <div class="big-stat-value" id="tenYear">$0</div>
+        <div class="big-stat-detail">Construction (one-time) + 10 yrs recurring, flat (no growth assumed)</div>
+      </div>
+
+      <div class="big-stat">
+        <div class="big-stat-label">Total Unit-Sales Value <span style="color:var(--red);">— not Town-taxable</span></div>
+        <div class="big-stat-value muted" id="unitSales">$0</div>
+        <div class="big-stat-detail">Deeded RV-lot &amp; cabin sales are real-property transfers (no sales tax). Shown as economic activity.</div>
+      </div>
+
+      <div class="breakdown">
+        <h3>Annual Town Revenue by Source</h3>
+        <div class="bar-row">
+          <div class="bar-row-label">Cabin lodging</div>
+          <div class="bar-track"><div class="bar-fill" id="barCabin" style="background:var(--purple)"></div></div>
+          <div class="bar-value" id="valCabin">$0</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-row-label">RV-site lodging</div>
+          <div class="bar-track"><div class="bar-fill" id="barRv" style="background:#9F73C9"></div></div>
+          <div class="bar-value" id="valRv">$0</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-row-label">Ancillary / retail</div>
+          <div class="bar-track"><div class="bar-fill" id="barAnc" style="background:#C9B3E0"></div></div>
+          <div class="bar-value" id="valAnc">$0</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-row-label">Off-site retail <span style="color:var(--muted);font-style:italic;font-weight:500;">(est.)</span></div>
+          <div class="bar-track"><div class="bar-fill" id="barRetail" style="background:#7E4FA8"></div></div>
+          <div class="bar-value" id="valRetail">$0</div>
+        </div>
+        <div class="bar-row" style="grid-template-columns:1fr auto; margin-top:0.4rem; padding-top:0.4rem; border-top:1px dashed var(--line);">
+          <div class="bar-row-label">Total recurring / yr</div>
+          <div class="bar-value" id="valTownTotal">$0</div>
+        </div>
+      </div>
+
+      <div class="breakdown" style="border-top:1px solid var(--line); background:var(--purple-tint);">
+        <h3 style="color:var(--muted);">Community Property Tax <span style="font-weight:500;text-transform:none;letter-spacing:0;font-style:italic;">— schools, county, fire (not Town general fund)</span></h3>
+        <div class="bar-row">
+          <div class="bar-row-label">Payson Unified Schools</div>
+          <div class="bar-track"><div class="bar-fill" id="barPusd" style="background:var(--purple-soft)"></div></div>
+          <div class="bar-value" id="valPusd">$0</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-row-label">Gila County</div>
+          <div class="bar-track"><div class="bar-fill" id="barGila" style="background:var(--purple-soft)"></div></div>
+          <div class="bar-value" id="valGila">$0</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-row-label">Fire District</div>
+          <div class="bar-track"><div class="bar-fill" id="barFire" style="background:var(--purple-soft)"></div></div>
+          <div class="bar-value" id="valFire">$0</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-row-label">Library / Other</div>
+          <div class="bar-track"><div class="bar-fill" id="barOther" style="background:var(--purple-soft)"></div></div>
+          <div class="bar-value" id="valOther">$0</div>
+        </div>
+        <div class="bar-row" style="grid-template-columns:1fr auto; margin-top:0.4rem; padding-top:0.4rem; border-top:1px dashed var(--line);">
+          <div class="bar-row-label">Total annual property tax</div>
+          <div class="bar-value" id="propertyTax">$0</div>
+        </div>
+      </div>
+
+      <div class="breakdown" style="border-top:1px solid var(--line);">
+        <h3>Other Impacts</h3>
+        <div class="bar-row" style="grid-template-columns:1fr auto;">
+          <div class="bar-row-label">Gross nightly-rental revenue / yr</div>
+          <div class="bar-value" id="lodgingRev">$0</div>
+        </div>
+        <div class="bar-row" style="grid-template-columns:1fr auto;">
+          <div class="bar-row-label">Paid room-nights / yr</div>
+          <div class="bar-value" id="roomNights">0</div>
+        </div>
+        <div class="bar-row" style="grid-template-columns:1fr auto;">
+          <div class="bar-row-label">Permanent jobs (range)</div>
+          <div class="bar-value" id="jobsRange">0 – 0</div>
+        </div>
+        <div class="bar-row" style="grid-template-columns:1fr auto;">
+          <div class="bar-row-label">Total assessed value built</div>
+          <div class="bar-value" id="builtValue">$0</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" onclick="copyToClipboard()">Copy summary</button>
+        <button class="btn" onclick="window.print()">Print</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparison: deck preliminary vs this model -->
+  <div class="panel compare">
+    <div class="panel-header">Preliminary Deck vs. This Model</div>
+    <table>
+      <thead>
+        <tr><th>Metric</th><th>Deck (initial)</th><th>This model (current sliders)</th><th>Basis</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="metric">Unit-sales value</td>
+          <td class="deck">$21.0M</td>
+          <td class="model" id="cmpSales">$0</td>
+          <td class="note">270 units × comp sale prices × % sold</td>
+        </tr>
+        <tr>
+          <td class="metric">Annual nightly-rental revenue</td>
+          <td class="deck">$2.5M</td>
+          <td class="model" id="cmpLodging">$0</td>
+          <td class="note">units × participation × rate × occupancy × 365</td>
+        </tr>
+        <tr>
+          <td class="metric">Annual ancillary revenue</td>
+          <td class="deck">$1.0M</td>
+          <td class="model" id="cmpAnc">$0</td>
+          <td class="note">restaurant, RV wash, propane, store, UTV/bike rental</td>
+        </tr>
+        <tr class="headline">
+          <td class="metric">Annual Town tax revenue</td>
+          <td class="deck">— (blank in deck)</td>
+          <td class="model" id="cmpTown">$0</td>
+          <td class="note">8.88% lodging + 3.88% ancillary &amp; off-site retail — the "Town Impact" number</td>
+        </tr>
+        <tr>
+          <td class="metric">Permanent jobs</td>
+          <td class="deck">20 – 30</td>
+          <td class="model" id="cmpJobs">0 – 0</td>
+          <td class="note">~1 job per $120K operating revenue</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="prepared-for">
+    <div class="prepared-for-label">Prepared for review by</div>
+    <img src="payson-logo.webp" alt="Town of Payson" class="prepared-for-logo" />
+    <div class="prepared-for-sub">Town of Payson — Mayor &amp; Council · Wildhorse Hospitality, LLC · Hwy 260 &amp; 87</div>
+  </div>
+
+  <details class="method">
+    <summary>Methodology · Tax Rates · Market Comps · Sources</summary>
+    <div class="method-body">
+      <p style="margin-bottom:0.6rem;">
+        This model separates <strong>Town of Payson general-fund revenue</strong> (sales / lodging tax) from broader community revenue (property tax to schools, county, and fire). The key insight: a resort's Town revenue is driven by the <strong>nightly-rental operation</strong>, not by unit sales — deeded RV lots and cabins are real-property transfers and carry no sales tax.
+      </p>
+      <div class="method-grid">
+
+        <div class="method-card">
+          <h4>Lodging Tax (the engine)</h4>
+          <p>
+            Stays under 30 days are <strong>transient lodging</strong>. The Town of Payson keeps <code>8.88%</code> = 3.88% Transaction Privilege Tax + 5.00% bed tax. (The full rate a guest pays is ~15.48%, but state 5.5% and county ~1.10% are not Town revenue.)
+          </p>
+          <p>
+            <strong>Formula:</strong> <code>units × % in rental program × nightly rate × occupancy × 365 × 8.88%</code>.
+          </p>
+          <p>
+            For scale: the Payson Roundup reported vacation rentals already generate roughly <strong>$7M/yr in local taxes</strong> town-wide. This project adds to that base.
+          </p>
+        </div>
+
+        <div class="method-card">
+          <h4>Construction Tax (one-time)</h4>
+          <p>
+            New construction is taxed under the <strong>prime-contracting</strong> classification. Per A.R.S. § 42-5075 the base is <code>65%</code> of the contract (35% deemed-materials deduction).
+          </p>
+          <p>
+            <strong>Town rate 3.88%</strong> (Ordinance 964, effective May 2024 — raised from 2.88%). Only the hard-construction share of total development cost is taxable; land and soft costs are excluded (adjustable slider, default 70%).
+          </p>
+          <p>
+            <em>Example: $16M × 70% × 65% × 3.88% = <code>$282K</code> one-time to Town.</em>
+          </p>
+        </div>
+
+        <div class="method-card">
+          <h4>Sale &amp; Rental Comps (defaults)</h4>
+          <p>
+            <strong>RV lots:</strong> Rim Country deeded lots $50K–$63K; Arizona average ~$148K. Modeled in 3 tiers ($60K / $80K / $110K).
+          </p>
+          <p>
+            <strong>Cabins:</strong> Payson resort cabins / park-models ~$200K–$350K; modeled $250K (C) / $325K (A).
+          </p>
+          <p>
+            <strong>Nightly rates:</strong> Payson cabins average $372/night (luxury $300+, median $199); RV sites ~$55–$95. <strong>Occupancy:</strong> market average 43–51% (~186 booked nights).
+          </p>
+          <p>
+            <strong>Storage:</strong> enclosed RV/boat units ~$40K–$80K to buy.
+          </p>
+        </div>
+
+        <div class="method-card">
+          <h4>Property Tax (community)</h4>
+          <p>
+            <strong>Formula:</strong> <code>assessed value × ratio × combined rate</code>. Modeled at Gila County combined rate <code>4.5325%</code>, default assessment ratio 16% (Class 1 commercial; second-home / rental classes vary 10–16% — adjustable).
+          </p>
+          <p>
+            Distributed roughly Payson Unified Schools ~50% / Gila County ~30% / Fire ~12% / Library &amp; other ~8%. Payson levies little to no town primary property tax, so this is <strong>community</strong> benefit, not Town general fund.
+          </p>
+          <p>
+            <strong>Not captured:</strong> Town impact &amp; permit fees and state shared-revenue (population-based distributions of state TPT and income tax) — both additive, not modeled here.
+          </p>
+        </div>
+
+        <div class="method-card">
+          <h4>Off-Site Retail Multiplier (estimate)</h4>
+          <p>
+            Beyond on-property spend, guests, relocating owners, and employees spend money <strong>in town</strong> — restaurants, fuel, groceries, shops — taxed at the Town's retail rate <code>3.88%</code>.
+          </p>
+          <p>
+            <strong>Formula:</strong> <code>(room-nights &times; visitor spend) + (resident households &times; spend) + (jobs &times; spend)</code>, all &times; 3.88%.
+          </p>
+          <p>
+            The softest layer — it depends on how much spending stays local vs. leaks to Mesa / Phoenix. Fixed comp-based assumptions (not adjustable): <code>$100</code> off-property per occupied night, <code>60</code> relocating-owner households &times; <code>$15K</code>/yr, and jobs &times; <code>$12K</code>/yr. Deliberately conservative; shown separately from the hard lodging figure.
+          </p>
+        </div>
+
+      </div>
+      <p style="margin-top:1rem; font-size:0.8rem; color:var(--muted);">
+        Rate sources: Arizona Department of Revenue (Model City Tax Code — Payson; prime contracting), Arizona Tax Research Association (lodging rate table), Town of Payson Ordinance 964. Market data: AirDNA / AirROI Payson short-term-rental reports, LandSearch / Land.com RV-lot listings, Payson Roundup. Verify all figures before reliance.
+      </p>
+    </div>
+  </details>
+
+  <section class="references">
+    <div class="panel">
+      <div class="panel-header">Site Plan · Revised 5-29</div>
+      <img src="site-plan-1.jpg" alt="Wildhorse Resort revised site plan" class="pdf-preview" loading="lazy" />
+      <div class="actions">
+        <a href="REVISED LAYOUT 5-29.pdf" target="_blank" rel="noopener" class="btn primary">Open full PDF</a>
+        <a href="REVISED LAYOUT 5-29.pdf" download class="btn">Download</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* ---------- Tax rates (Town of Payson, 2026) ---------- */
+const TOWN_TPT      = 0.0388;   // Town sales tax (Ord. 964, 2024)
+const BED_TAX       = 0.0500;   // Town transient lodging additional
+const LODGING_TOWN  = TOWN_TPT + BED_TAX; // 8.88% Town share of lodging
+const PRIME_BASE    = 0.65;     // prime contracting taxable base (A.R.S. 42-5075)
+const COMBINED_PROP = 0.045325; // Gila County combined property tax rate
+const PROP_DIST     = { pusd:0.50, gila:0.30, fire:0.12, other:0.08 };
+
+/* Off-site retail multiplier — fixed, conservative comp-based assumptions (no sliders) */
+const RETAIL = { visitorNight:100, residentHH:60, residentSpend:15000, employeeSpend:12000 };
+
+/* ---------- Product lines (revised 5-29 layout) ---------- */
+const PRODUCTS = [
+  { id:'rvTop',   group:'RV',     name:'RV — Top tier (R1–R24)',   count:24, sale:110000, sMin:60000,  sMax:200000, sStep:5000, night:90,  nMin:40,  nMax:170, nStep:5 },
+  { id:'rvMid',   group:'RV',     name:'RV — Mid tier (R25–R54)',  count:30, sale:80000,  sMin:40000,  sMax:160000, sStep:5000, night:70,  nMin:35,  nMax:140, nStep:5 },
+  { id:'rvEntry', group:'RV',     name:'RV — Entry (R55–R146)',    count:92, sale:60000,  sMin:35000,  sMax:120000, sStep:2500, night:55,  nMin:30,  nMax:110, nStep:5 },
+  { id:'cabinA',  group:'Cabin',  name:'Cabin — A level (26)',     count:26, sale:325000, sMin:180000, sMax:500000, sStep:5000, night:375, nMin:180, nMax:600, nStep:5 },
+  { id:'cabinC',  group:'Cabin',  name:'Cabin — C level (38)',     count:38, sale:250000, sMin:150000, sMax:420000, sStep:5000, night:295, nMin:150, nMax:480, nStep:5 },
+  { id:'storage', group:'Storage',name:'Storage (S1–S60)',         count:60, sale:55000,  sMin:25000,  sMax:95000,  sStep:2500, night:0 },
+];
+
+/* ---------- Global operating assumptions ---------- */
+const GLOBALS = [
+  { id:'pctSold',    section:'op',  label:'Inventory sold (vs. company-held)',  min:50,  max:100, step:5, value:90,  fmt:'pct' },
+  { id:'cabinPart',  section:'op',  label:'Cabins in nightly-rental program',   min:0,   max:100, step:5, value:60,  fmt:'pct' },
+  { id:'cabinOcc',   section:'op',  label:'Cabin occupancy',                    min:15,  max:80,  step:1, value:48,  fmt:'pct' },
+  { id:'rvPart',     section:'op',  label:'RV sites in nightly-rental program', min:0,   max:100, step:5, value:35,  fmt:'pct' },
+  { id:'rvOcc',      section:'op',  label:'RV-site occupancy',                  min:10,  max:75,  step:1, value:40,  fmt:'pct' },
+  { id:'ancillary',  section:'op',  label:'Ancillary revenue / yr',             min:0,   max:3000000, step:50000, value:1000000, fmt:'usd' },
+  { id:'devCost',    section:'dev', label:'Total development cost',             min:8000000, max:32000000, step:250000, value:16000000, fmt:'usd' },
+  { id:'hardPct',    section:'dev', label:'Taxable hard-construction share',    min:40,  max:95,  step:1, value:70,  fmt:'pct' },
+  { id:'assessRatio',section:'dev', label:'Property assessment ratio',          min:10,  max:18,  step:0.5, value:16, fmt:'pct' },
+];
+
+/* ---------- Defaults + presets ---------- */
+const DEFAULTS = {};
+PRODUCTS.forEach(p => { DEFAULTS[p.id+'_sale'] = p.sale; if (p.night) DEFAULTS[p.id+'_night'] = p.night; });
+GLOBALS.forEach(g => { DEFAULTS[g.id] = g.value; });
+
+const PRESETS = {
+  base: {},
+  deck: { // lower sale prices to reproduce the deck's ~$21M
+    rvTop_sale:65000, rvMid_sale:50000, rvEntry_sale:42000,
+    cabinA_sale:235000, cabinC_sale:195000, storage_sale:38000
+  },
+  conservative: {
+    cabinA_night:300, cabinC_night:250, rvTop_night:75, rvMid_night:60, rvEntry_night:48,
+    cabinPart:45, cabinOcc:38, rvPart:25, rvOcc:30, ancillary:700000
+  },
+  optimistic: {
+    cabinA_night:450, cabinC_night:360, rvTop_night:120, rvMid_night:95, rvEntry_night:68,
+    cabinPart:80, cabinOcc:58, rvPart:55, rvOcc:52, ancillary:1600000
+  },
+};
+
+/* ---------- Helpers ---------- */
+function val(id){ const el = document.getElementById(id); return el ? parseFloat(el.value) : 0; }
+function fmt(n){
+  if (!n) return '$0';
+  if (n >= 1e6) return '$' + (n/1e6).toFixed(2) + 'M';
+  if (n >= 10000) return '$' + Math.round(n/1000) + 'K';
+  return '$' + Math.round(n).toLocaleString();
+}
+function fmtUsd(n){
+  if (n >= 1e6) return '$' + (n/1e6).toFixed(n % 1e6 === 0 ? 0 : 2) + 'M';
+  if (n >= 1000) return '$' + Math.round(n/1000) + 'K';
+  return '$' + Math.round(n).toLocaleString();
+}
+
+function rowHTML(id, label, meta, min, max, step, value, outId){
+  return `
+    <div class="concept">
+      <div class="concept-top">
+        <div><span class="concept-name">${label}</span>${meta ? `<span class="concept-meta">${meta}</span>` : ''}</div>
+        <div class="concept-output" id="${outId}">—</div>
+      </div>
+      <div class="slider-container">
+        <input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${value}">
+      </div>
+    </div>`;
+}
+
+function buildUI(){
+  // Sale-price rows
+  document.getElementById('priceRows').innerHTML = PRODUCTS.map(p =>
+    rowHTML(p.id+'_sale', p.name, `${p.count} units`, p.sMin, p.sMax, p.sStep, p.sale, p.id+'_saleOut')
+  ).join('');
+
+  // Nightly-rate rows (rentable only)
+  document.getElementById('nightRows').innerHTML = PRODUCTS.filter(p => p.night).map(p =>
+    rowHTML(p.id+'_night', p.name.replace(/\s*\(.*\)/,''), 'per night', p.nMin, p.nMax, p.nStep, p.night, p.id+'_nightOut')
+  ).join('');
+
+  // Operation rows
+  document.getElementById('opRows').innerHTML = GLOBALS.filter(g => g.section==='op').map(g =>
+    rowHTML(g.id, g.label, '', g.min, g.max, g.step, g.value, g.id+'_out')
+  ).join('');
+
+  // Development rows
+  document.getElementById('devRows').innerHTML = GLOBALS.filter(g => g.section==='dev').map(g =>
+    rowHTML(g.id, g.label, '', g.min, g.max, g.step, g.value, g.id+'_out')
+  ).join('');
+
+  // Wire up
+  document.querySelectorAll('input[type=range]').forEach(s => {
+    s.addEventListener('input', () => { recalc(); saveState(); });
+  });
+}
+
+function recalc(){
+  const pctSold   = val('pctSold')/100;
+  const cabinPart = val('cabinPart')/100;
+  const cabinOcc  = val('cabinOcc')/100;
+  const rvPart    = val('rvPart')/100;
+  const rvOcc     = val('rvOcc')/100;
+  const ancillary = val('ancillary');
+  const devCost   = val('devCost');
+  const hardPct   = val('hardPct')/100;
+  const assess    = val('assessRatio')/100;
+
+  let unitSales = 0, builtValue = 0;
+  let cabinLodging = 0, rvLodging = 0;
+  let cabinNights = 0, rvNights = 0;
+
+  PRODUCTS.forEach(p => {
+    const sale = val(p.id+'_sale');
+    builtValue += p.count * sale;
+    unitSales  += p.count * pctSold * sale;
+    // per-line readout
+    const out = document.getElementById(p.id+'_saleOut');
+    if (out) out.innerHTML = fmtUsd(sale) + ` <span class="sub">→ ${fmt(p.count*pctSold*sale)} sold</span>`;
+
+    if (p.night) {
+      const night = val(p.id+'_night');
+      const nOut = document.getElementById(p.id+'_nightOut');
+      if (p.group === 'Cabin') {
+        const nights = p.count * cabinPart * cabinOcc * 365;
+        const rev = nights * night;
+        cabinLodging += rev; cabinNights += nights;
+        if (nOut) nOut.innerHTML = fmtUsd(night) + ` <span class="sub">→ ${fmt(rev)}/yr</span>`;
+      } else if (p.group === 'RV') {
+        const nights = p.count * rvPart * rvOcc * 365;
+        const rev = nights * night;
+        rvLodging += rev; rvNights += nights;
+        if (nOut) nOut.innerHTML = fmtUsd(night) + ` <span class="sub">→ ${fmt(rev)}/yr</span>`;
+      }
+    }
+  });
+
+  const lodgingRev   = cabinLodging + rvLodging;
+  const cabinTax     = cabinLodging * LODGING_TOWN;
+  const rvTax        = rvLodging * LODGING_TOWN;
+  const ancTax       = ancillary * TOWN_TPT;
+  const constrTpt    = devCost * hardPct * PRIME_BASE * TOWN_TPT;
+  const propertyTax  = builtValue * assess * COMBINED_PROP;
+  const roomNights   = cabinNights + rvNights;
+  const jobsMid      = Math.round((lodgingRev + ancillary) / 120000);
+
+  // Retail / economic multiplier — off-property spending in town (fixed comp-based assumptions, no sliders)
+  const visitorSpendTotal  = roomNights * RETAIL.visitorNight;
+  const residentSpendTotal = RETAIL.residentHH * RETAIL.residentSpend;
+  const employeeSpendTotal = jobsMid * RETAIL.employeeSpend;
+  const newLocalSpend      = visitorSpendTotal + residentSpendTotal + employeeSpendTotal;
+  const retailTax          = newLocalSpend * TOWN_TPT;
+
+  // Annual recurring Town revenue INCLUDES off-site retail sales tax; 10-yr follows
+  const annualTown   = cabinTax + rvTax + ancTax + retailTax;
+  const tenYear      = annualTown * 10 + constrTpt;
+
+  document.getElementById('retailTax').textContent      = fmt(retailTax);
+  document.getElementById('newLocalSpend').textContent  = fmt(newLocalSpend);
+
+  // Global readouts
+  GLOBALS.forEach(g => {
+    const out = document.getElementById(g.id+'_out');
+    if (!out) return;
+    const v = val(g.id);
+    out.textContent = g.fmt === 'pct' ? v + '%' : fmtUsd(v);
+  });
+
+  // Headline outputs
+  document.getElementById('annualTown').textContent    = fmt(annualTown);
+  document.getElementById('constructionTpt').textContent = fmt(constrTpt);
+  document.getElementById('tenYear').textContent       = fmt(tenYear);
+  document.getElementById('unitSales').textContent     = fmt(unitSales);
+
+  // Source bars (scaled to max source) — includes off-site retail
+  const maxSrc = Math.max(cabinTax, rvTax, ancTax, retailTax, 1);
+  document.getElementById('valCabin').textContent     = fmt(cabinTax);
+  document.getElementById('valRv').textContent        = fmt(rvTax);
+  document.getElementById('valAnc').textContent       = fmt(ancTax);
+  document.getElementById('valRetail').textContent    = fmt(retailTax);
+  document.getElementById('valTownTotal').textContent = fmt(annualTown);
+  document.getElementById('barCabin').style.width  = (cabinTax/maxSrc*100) + '%';
+  document.getElementById('barRv').style.width     = (rvTax/maxSrc*100) + '%';
+  document.getElementById('barAnc').style.width    = (ancTax/maxSrc*100) + '%';
+  document.getElementById('barRetail').style.width = (retailTax/maxSrc*100) + '%';
+
+  // Property tax distribution
+  ['pusd','gila','fire','other'].forEach(k => {
+    const cap = k.charAt(0).toUpperCase() + k.slice(1);
+    document.getElementById('val'+cap).textContent = fmt(propertyTax * PROP_DIST[k]);
+    document.getElementById('bar'+cap).style.width = (PROP_DIST[k]*100) + '%';
+  });
+  document.getElementById('propertyTax').textContent = fmt(propertyTax);
+
+  // Other impacts
+  document.getElementById('lodgingRev').textContent = fmt(lodgingRev);
+  document.getElementById('roomNights').textContent = Math.round(roomNights).toLocaleString();
+  document.getElementById('jobsRange').textContent  = `${Math.round(jobsMid*0.8)} – ${Math.round(jobsMid*1.15)}`;
+  document.getElementById('builtValue').textContent = fmt(builtValue);
+
+  // Comparison table
+  document.getElementById('cmpSales').textContent   = fmt(unitSales);
+  document.getElementById('cmpLodging').textContent = fmt(lodgingRev);
+  document.getElementById('cmpAnc').textContent     = fmt(ancillary);
+  document.getElementById('cmpTown').textContent    = fmt(annualTown) + ' / yr';
+  document.getElementById('cmpJobs').textContent    = `${Math.round(jobsMid*0.8)} – ${Math.round(jobsMid*1.15)}`;
+}
+
+function applyPreset(name){
+  const merged = Object.assign({}, DEFAULTS, PRESETS[name] || {});
+  Object.keys(merged).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = merged[id];
+  });
+  document.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c.dataset.preset === name));
+  recalc();
+  saveState();
+}
+
+/* ---------- Persistence ---------- */
+const STORE_KEY = 'malibu_state_v1';
+async function loadState(){
+  try {
+    if (window.storage && window.storage.get){ const r = await window.storage.get(STORE_KEY); if (r && r.value) return JSON.parse(r.value); }
+    else if (window.localStorage){ const v = window.localStorage.getItem(STORE_KEY); if (v) return JSON.parse(v); }
+  } catch(e){}
+  return null;
+}
+async function saveState(){
+  const state = {};
+  document.querySelectorAll('input[type=range]').forEach(s => state[s.id] = s.value);
+  try {
+    if (window.storage && window.storage.set) await window.storage.set(STORE_KEY, JSON.stringify(state));
+    else if (window.localStorage) window.localStorage.setItem(STORE_KEY, JSON.stringify(state));
+  } catch(e){}
+}
+
+function copyToClipboard(){
+  const L = ['WILDHORSE RESORT — TOWN OF PAYSON REVENUE MODEL', '='.repeat(50)];
+  L.push('21 acres · 146 RV sites · 64 cabins · 60 storage');
+  L.push('');
+  L.push('TOWN OF PAYSON REVENUE');
+  L.push(`  Annual recurring (lodging + ancillary + retail): ${document.getElementById('annualTown').textContent}`);
+  L.push(`  One-time construction tax:              ${document.getElementById('constructionTpt').textContent}`);
+  L.push(`  10-year cumulative:                     ${document.getElementById('tenYear').textContent}`);
+  L.push('');
+  L.push('  By source:');
+  L.push(`    Cabin lodging:   ${document.getElementById('valCabin').textContent}/yr`);
+  L.push(`    RV-site lodging: ${document.getElementById('valRv').textContent}/yr`);
+  L.push(`    Ancillary:       ${document.getElementById('valAnc').textContent}/yr`);
+  L.push(`    Off-site retail: ${document.getElementById('valRetail').textContent}/yr (est.)`);
+  L.push('');
+  L.push('COMMUNITY PROPERTY TAX (schools/county/fire)');
+  L.push(`  Total per year: ${document.getElementById('propertyTax').textContent}`);
+  L.push('');
+  L.push('OFF-SITE RETAIL SALES TAX (estimate, included in recurring above)');
+  L.push(`  New in-town spending/yr: ${document.getElementById('newLocalSpend').textContent}`);
+  L.push(`  Town retail tax/yr:      ${document.getElementById('retailTax').textContent}`);
+  L.push('');
+  L.push('ACTIVITY');
+  L.push(`  Unit-sales value (not Town-taxable): ${document.getElementById('unitSales').textContent}`);
+  L.push(`  Gross nightly-rental revenue/yr:     ${document.getElementById('lodgingRev').textContent}`);
+  L.push(`  Paid room-nights/yr:                 ${document.getElementById('roomNights').textContent}`);
+  L.push(`  Permanent jobs:                      ${document.getElementById('jobsRange').textContent}`);
+  navigator.clipboard.writeText(L.join('\n')).then(() => alert('Summary copied to clipboard'));
+}
+
+/* ---------- Init ---------- */
+(async function init(){
+  buildUI();
+  document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => applyPreset(c.dataset.preset)));
+  const saved = await loadState();
+  if (saved){
+    Object.keys(saved).forEach(id => { const el = document.getElementById(id); if (el) el.value = saved[id]; });
+    recalc();
+  } else {
+    applyPreset('base');
+  }
+})();
+</script>
+
+</body>
+</html>

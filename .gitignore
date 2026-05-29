@@ -23,3 +23,10 @@ npm-debug.log*
 node_modules/
 dist/
 build/
+
+# Local tooling
+.claude/
+
+# Internal source decks — not for public web hosting
+*.pptm
+*.pptx
