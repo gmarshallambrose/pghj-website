@@ -87,18 +87,29 @@
     margin-top: 0.25rem;
     font-style: italic;
   }
-  .header-logo {
-    height: 78px;
-    width: auto;
-    background: white;
-    padding: 8px 14px;
-    border-radius: 6px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+  .payson-ref {
     flex-shrink: 0;
+    text-align: right;
+    max-width: 230px;
+  }
+  .payson-ref-name {
+    font-family: Georgia, serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--purple-soft);
+    letter-spacing: 0.3px;
+  }
+  .payson-ref-note {
+    font-size: 0.62rem;
+    color: rgba(245, 241, 232, 0.55);
+    text-transform: uppercase;
+    letter-spacing: 1.3px;
+    margin-top: 0.3rem;
+    line-height: 1.4;
   }
   @media (max-width: 800px) {
     .header { flex-direction: column; align-items: flex-start; gap: 1rem; }
-    .header-logo { height: 60px; align-self: flex-start; }
+    .payson-ref { text-align: left; align-self: flex-start; }
   }
 
   /* Project facts strip */
@@ -393,7 +404,22 @@
     text-transform: uppercase;
     font-weight: 700;
   }
-  .prepared-for-logo { height: 96px; width: auto; max-width: 100%; }
+  .prepared-for-name {
+    font-family: Georgia, serif;
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: 0.3px;
+  }
+  .prepared-for-disclaimer {
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-align: center;
+    max-width: 560px;
+    line-height: 1.5;
+    margin-top: 0.15rem;
+  }
+  .prepared-for-disclaimer strong { color: var(--ink); font-style: normal; }
   .prepared-for-sub {
     font-size: 0.82rem;
     color: var(--muted);
@@ -481,7 +507,7 @@
 <body>
 
 <div class="disclaimer-banner">
-  <strong>Disclaimer:</strong> Illustrative model for discussion only. Figures depend on final unit pricing, occupancy, and contractor bids; tax rates current as of 2026 and subject to change. Not a tax opinion — confirm with Arizona Department of Revenue and Town of Payson Finance.
+  <strong>Disclaimer:</strong> Illustrative model for discussion only. Figures depend on final unit pricing, occupancy, and contractor bids; tax rates current as of 2026 and subject to change. Not a tax opinion — confirm with Arizona Department of Revenue and Town of Payson Finance. This is an independent analysis and is not affiliated with, endorsed by, or produced by the Town of Payson.
 </div>
 
 <div class="header">
@@ -490,7 +516,10 @@
     <h1>Luxury RV &amp; Cabin Resort — Town Revenue Model</h1>
     <div class="tagline">Adjust the assumptions — Town of Payson tax revenue updates live</div>
   </div>
-  <img src="payson-logo.webp" alt="Town of Payson — Arizona's Cool Mountain Town" class="header-logo" />
+  <div class="payson-ref">
+    <div class="payson-ref-name">Town of Payson</div>
+    <div class="payson-ref-note">Independent analysis — not an official Town document</div>
+  </div>
 </div>
 
 <div class="facts">
@@ -695,8 +724,9 @@
 
   <div class="prepared-for">
     <div class="prepared-for-label">Prepared for review by</div>
-    <img src="payson-logo.webp" alt="Town of Payson" class="prepared-for-logo" />
+    <div class="prepared-for-name">Town of Payson</div>
     <div class="prepared-for-sub">Town of Payson — Mayor &amp; Council · Wildhorse Hospitality, LLC · Hwy 260 &amp; 87</div>
+    <div class="prepared-for-disclaimer">Independently prepared by PG Happy Jack Holdings, LLC. <strong>Not affiliated with, endorsed by, sponsored by, or produced by the Town of Payson.</strong></div>
   </div>
 
   <details class="method">
