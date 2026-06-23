@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>R1 Ranch — A Sanctuary on the Rim</title>
+<meta name="description" content="A confidential concept for 4000 E Granite Dells Rd, Payson, Arizona — presented to the Edson family.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:        #17130E;
+    --ink-2:      #211B14;
+    --ink-soft:   #2C2419;
+    --cream:      #F6F0E4;
+    --cream-2:    #EDE4D3;
+    --paper:      #FBF7EF;
+    --sand:       #B97A4B;
+    --sand-deep:  #9A5F36;
+    --juniper:    #5B6B57;
+    --juniper-dk: #3F4B3C;
+    --gold:       #C7A35B;
+    --gold-soft:  #E0C68B;
+    --rim:        #7C94A6;
+    --muted:      #8B8273;
+    --muted-dk:   #6B6354;
+    --line:       rgba(120,105,80,0.22);
+    --line-dk:    rgba(255,247,235,0.14);
+  }
+
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.6;
+    font-weight: 400;
+    overflow-x: clip;
+  }
+  ::selection { background: var(--gold); color: var(--ink); }
+
+  h1,h2,h3,h4 { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; line-height: 1.08; }
+  .serif { font-family: 'Cormorant Garamond', Georgia, serif; }
+  .num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+
+  .eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.32em; text-transform: uppercase;
+    color: var(--sand);
+  }
+  .eyebrow.light { color: var(--gold-soft); }
+
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 2rem; }
+  .narrow { max-width: 820px; }
+
+  section { position: relative; }
+
+  /* ---------- NAV ---------- */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.1rem 2rem;
+    transition: background 0.4s ease, padding 0.4s ease, box-shadow 0.4s ease;
+  }
+  .nav.scrolled {
+    background: rgba(23,19,14,0.92);
+    backdrop-filter: blur(10px);
+    padding: 0.7rem 2rem;
+    box-shadow: 0 1px 0 var(--line-dk);
+  }
+  .nav .brand {
+    font-family: 'Cormorant Garamond', serif; font-size: 1.45rem; font-weight: 600;
+    color: var(--cream); letter-spacing: 0.04em; display: flex; align-items: baseline; gap: 0.5rem;
+  }
+  .nav .brand b { color: var(--gold); font-weight: 600; }
+  .nav .brand span { font-family:'Inter'; font-size: 0.58rem; letter-spacing: 0.28em; color: var(--rim); text-transform: uppercase; transform: translateY(-2px); }
+  .nav-links { display: flex; gap: 1.9rem; align-items: center; }
+  .nav-links a {
+    color: var(--cream); text-decoration: none; font-size: 0.78rem;
+    letter-spacing: 0.04em; opacity: 0.78; transition: opacity 0.2s, color 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; color: var(--gold-soft); }
+  .nav-tag {
+    font-size: 0.6rem; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--ink); background: var(--gold); padding: 0.3rem 0.6rem; border-radius: 2px; font-weight: 600;
+  }
+  .scroll-progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--gold); z-index: 250; width: 0; }
+  @media (max-width: 860px){ .nav-links { display: none; } }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+    background: var(--ink); color: var(--cream); position: relative; overflow: hidden;
+    padding: 7rem 0 4rem;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: url('assets/maps/r1-ranch-satellite.png') center 30% / cover no-repeat;
+    opacity: 0.22; filter: saturate(0.7) contrast(1.05);
+    transform: scale(1.08);
+  }
+  .hero::after {
+    content:''; position:absolute; inset:0;
+    background: radial-gradient(ellipse at 50% 40%, rgba(23,19,14,0.45), rgba(23,19,14,0.92) 78%),
+                linear-gradient(180deg, rgba(23,19,14,0.7), rgba(23,19,14,0.3) 40%, var(--ink));
+  }
+  .hero .wrap { position: relative; z-index: 2; }
+  .hero .eyebrow { margin-bottom: 1.6rem; }
+  .hero h1 {
+    font-size: clamp(3.4rem, 9vw, 7.5rem); letter-spacing: 0.01em; color: var(--cream);
+    margin-bottom: 0.4rem; line-height: 0.95;
+  }
+  .hero h1 em { font-style: italic; color: var(--gold-soft); }
+  .hero .sub {
+    font-size: clamp(1.05rem, 2.2vw, 1.5rem); font-family:'Cormorant Garamond',serif;
+    font-style: italic; color: var(--cream-2); max-width: 640px; margin-bottom: 2.6rem;
+  }
+  .hero-meta {
+    display: flex; flex-wrap: wrap; gap: 2.4rem; padding-top: 2rem;
+    border-top: 1px solid var(--line-dk); max-width: 760px;
+  }
+  .hero-meta .m { }
+  .hero-meta .m .k { font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--rim); margin-bottom: 0.35rem; }
+  .hero-meta .m .v { font-size: 0.95rem; color: var(--cream); }
+  .hero-meta .m .v b { color: var(--gold); font-weight: 600; }
+  .scroll-cue {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 3;
+    color: var(--rim); font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase;
+    display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+  }
+  .scroll-cue .line { width: 1px; height: 38px; background: linear-gradient(var(--gold), transparent); animation: pulse 2.2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:0.3; transform: scaleY(0.6);} 50%{opacity:1; transform: scaleY(1);} }
+
+  /* ---------- GENERIC SECTION ---------- */
+  .pad { padding: 7rem 0; }
+  .pad-sm { padding: 5rem 0; }
+  .dark { background: var(--ink); color: var(--cream); }
+  .dark .eyebrow { color: var(--gold-soft); }
+  .dark h2, .dark h3 { color: var(--cream); }
+  .ink2 { background: var(--ink-2); color: var(--cream); }
+  .sand-bg { background: linear-gradient(160deg, #F0E7D6, #E7DAC2); }
+
+  .sec-head { margin-bottom: 3rem; }
+  .sec-head h2 { font-size: clamp(2.4rem, 5vw, 3.8rem); margin: 0.7rem 0 0; }
+  .sec-head h2 em { font-style: italic; color: var(--sand); }
+  .dark .sec-head h2 em { color: var(--gold-soft); }
+  .lead { font-size: 1.25rem; font-family:'Cormorant Garamond',serif; color: var(--muted-dk); max-width: 700px; line-height: 1.5; }
+  .dark .lead { color: var(--cream-2); }
+
+  /* reveal */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.9s cubic-bezier(.2,.7,.2,1), transform 0.9s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  .reveal.d1 { transition-delay: 0.08s; }
+  .reveal.d2 { transition-delay: 0.16s; }
+  .reveal.d3 { transition-delay: 0.24s; }
+  .reveal.d4 { transition-delay: 0.32s; }
+
+  /* ---------- LETTER ---------- */
+  .letter { font-family:'Cormorant Garamond',serif; }
+  .letter p { font-size: 1.5rem; line-height: 1.5; color: var(--ink-soft); margin-bottom: 1.4rem; }
+  .letter .dropcap::first-letter { font-size: 4.2rem; line-height: 0.7; float: left; padding: 0.35rem 0.7rem 0 0; color: var(--sand); font-weight: 600; }
+  .signoff { margin-top: 2.4rem; font-family:'Inter'; font-size: 0.95rem; color: var(--muted-dk); }
+  .signoff b { display:block; font-family:'Cormorant Garamond',serif; font-size: 1.4rem; color: var(--ink); font-weight: 600; margin-bottom: 0.2rem; }
+
+  /* ---------- LAND ---------- */
+  .land-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 3.5rem; align-items: center; }
+  .land-fig { position: relative; border-radius: 4px; overflow: hidden; box-shadow: 0 30px 70px rgba(23,19,14,0.5); }
+  .land-fig img { width: 100%; display: block; }
+  .land-fig .tag {
+    position: absolute; left: 1rem; bottom: 1rem; background: rgba(23,19,14,0.82); color: var(--cream);
+    font-size: 0.68rem; letter-spacing: 0.12em; padding: 0.45rem 0.8rem; border-radius: 2px; backdrop-filter: blur(4px);
+  }
+  .land-fig .tag b { color: var(--gold); }
+  .land-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.8rem 1.4rem; }
+  .stat .n { font-family:'Cormorant Garamond',serif; font-size: 2.9rem; line-height: 1; color: var(--gold); font-weight: 600; }
+  .stat .n small { font-size: 1.1rem; color: var(--cream-2); }
+  .stat .l { font-size: 0.75rem; color: var(--cream-2); margin-top: 0.4rem; line-height: 1.4; }
+  .land-note { grid-column: 1 / -1; font-size: 0.92rem; color: var(--cream-2); border-top: 1px solid var(--line-dk); padding-top: 1.4rem; margin-top: 0.4rem; }
+  @media (max-width: 860px){ .land-grid { grid-template-columns: 1fr; gap: 2.4rem; } }
+
+  /* ---------- TWO ICONS ---------- */
+  .icons { display: grid; grid-template-columns: 1fr 1fr; gap: 2.2rem; }
+  .icon-card {
+    background: var(--paper); border: 1px solid var(--line); border-radius: 4px; overflow: hidden;
+    display: flex; flex-direction: column; box-shadow: 0 10px 40px rgba(23,19,14,0.08);
+  }
+  .icon-card .ph { aspect-ratio: 16/10; overflow: hidden; background: var(--ink-2); }
+  .icon-card .ph img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0.96; }
+  .icon-card .body { padding: 1.8rem; }
+  .icon-card h3 { font-size: 1.9rem; }
+  .icon-card .where { font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sand); margin: 0.3rem 0 0.9rem; }
+  .icon-card p { font-size: 0.96rem; color: var(--muted-dk); }
+  .icon-card .pills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.1rem; }
+  .icon-card .pills span { font-size: 0.72rem; background: var(--cream-2); color: var(--ink-soft); padding: 0.3rem 0.7rem; border-radius: 20px; }
+  .blend {
+    margin-top: 2.4rem; text-align: center; padding: 2.6rem; background: var(--ink); color: var(--cream); border-radius: 4px;
+  }
+  .blend .eyebrow { color: var(--gold-soft); }
+  .blend h3 { font-size: clamp(1.8rem, 4vw, 2.8rem); margin-top: 0.6rem; }
+  .blend h3 em { font-style: italic; color: var(--gold-soft); }
+  @media (max-width: 760px){ .icons { grid-template-columns: 1fr; } }
+
+  /* ---------- COMP TABLE ---------- */
+  .comp { width: 100%; border-collapse: collapse; }
+  .comp th, .comp td { text-align: left; padding: 1.05rem 1.2rem; border-bottom: 1px solid var(--line-dk); }
+  .comp thead th { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--rim); font-weight: 600; }
+  .comp thead th.r1 { color: var(--gold); }
+  .comp tbody th { font-family:'Inter'; font-weight: 500; color: var(--cream-2); font-size: 0.9rem; }
+  .comp td { color: var(--cream); font-size: 0.96rem; }
+  .comp td.r1c { background: rgba(199,163,91,0.1); color: var(--gold-soft); font-weight: 600; }
+  .comp .colhead { font-family:'Cormorant Garamond',serif; font-size: 1.5rem; color: var(--cream); font-weight: 600; }
+  .comp .colhead.r1 { color: var(--gold); }
+  .comp .colhead small { display:block; font-family:'Inter'; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--rim); margin-top: 0.25rem; font-weight: 500; }
+  .comp-wrap { overflow-x: auto; }
+
+  /* ---------- PROGRAM CARDS ---------- */
+  .prog { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
+  .prog .p {
+    background: var(--paper); border: 1px solid var(--line); border-radius: 4px; padding: 1.8rem;
+    transition: transform 0.3s, box-shadow 0.3s; position: relative; overflow: hidden;
+  }
+  .prog .p:hover { transform: translateY(-4px); box-shadow: 0 18px 44px rgba(23,19,14,0.12); }
+  .prog .p .ic { font-size: 1.6rem; margin-bottom: 0.8rem; display:block; }
+  .prog .p h4 { font-size: 1.45rem; }
+  .prog .p p { font-size: 0.9rem; color: var(--muted-dk); margin-top: 0.45rem; }
+  .prog .p .meta { margin-top: 1rem; font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sand); font-weight: 600; }
+  @media (max-width: 860px){ .prog { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 540px){ .prog { grid-template-columns: 1fr; } }
+
+  /* ---------- SITE PLAN ---------- */
+  .plan-fig { position: relative; border-radius: 4px; overflow: hidden; box-shadow: 0 30px 70px rgba(23,19,14,0.45); }
+  .plan-fig img { width: 100%; display: block; filter: saturate(0.92) brightness(0.94); }
+  .pin {
+    position: absolute; transform: translate(-50%,-50%); z-index: 3;
+    display: flex; align-items: center; gap: 0.5rem; cursor: default;
+  }
+  .pin .dot {
+    width: 14px; height: 14px; border-radius: 50%; background: var(--gold);
+    border: 2px solid var(--ink); box-shadow: 0 0 0 4px rgba(199,163,91,0.3); flex: none;
+    animation: ping 2.6s ease-out infinite;
+  }
+  @keyframes ping { 0%{ box-shadow: 0 0 0 0 rgba(199,163,91,0.5);} 70%{ box-shadow: 0 0 0 10px rgba(199,163,91,0);} 100%{ box-shadow:0 0 0 0 rgba(199,163,91,0);} }
+  .pin .lbl {
+    background: rgba(23,19,14,0.85); color: var(--cream); font-size: 0.68rem; letter-spacing: 0.06em;
+    padding: 0.32rem 0.6rem; border-radius: 2px; white-space: nowrap; backdrop-filter: blur(4px);
+  }
+  .pin .lbl b { color: var(--gold-soft); }
+  .plan-legend { display: flex; flex-wrap: wrap; gap: 1.4rem; margin-top: 1.6rem; font-size: 0.82rem; color: var(--cream-2); }
+  .plan-legend span { display: flex; align-items: center; gap: 0.5rem; }
+  .plan-legend i { width: 10px; height: 10px; border-radius: 50%; background: var(--gold); display: inline-block; }
+  .illus-note { font-size: 0.76rem; color: var(--muted); font-style: italic; margin-top: 1rem; }
+  @media (max-width: 700px){ .pin .lbl { display: none; } }
+
+  /* ---------- MODEL / CALCULATOR ---------- */
+  .model-grid { display: grid; grid-template-columns: 1fr 0.9fr; gap: 2.4rem; align-items: start; }
+  @media (max-width: 980px){ .model-grid { grid-template-columns: 1fr; } }
+
+  .phase-toggle { display: inline-flex; background: var(--ink-soft); border: 1px solid var(--line-dk); border-radius: 40px; padding: 4px; margin-bottom: 2rem; }
+  .phase-toggle button {
+    font-family:'Inter'; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.04em;
+    border: none; background: transparent; color: var(--cream-2); padding: 0.6rem 1.4rem; border-radius: 40px;
+    cursor: pointer; transition: all 0.25s;
+  }
+  .phase-toggle button.active { background: var(--gold); color: var(--ink); }
+
+  .controls { display: flex; flex-direction: column; gap: 1.9rem; }
+  .ctrl-group { border: 1px solid var(--line-dk); border-radius: 6px; padding: 1.5rem 1.6rem; background: rgba(255,247,235,0.02); }
+  .ctrl-group > h4 { font-family:'Inter'; font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 1.3rem; }
+  .ctrl { margin-bottom: 1.25rem; }
+  .ctrl:last-child { margin-bottom: 0; }
+  .ctrl .row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5rem; }
+  .ctrl label { font-size: 0.85rem; color: var(--cream-2); }
+  .ctrl .val { font-family:'Cormorant Garamond',serif; font-size: 1.35rem; color: var(--cream); font-weight: 600; }
+  .ctrl .val.num { letter-spacing: 0.01em; }
+  input[type=range] {
+    -webkit-appearance: none; appearance: none; width: 100%; height: 4px; border-radius: 4px;
+    background: linear-gradient(90deg, var(--gold) var(--fill,40%), rgba(255,247,235,0.15) var(--fill,40%));
+    outline: none; cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%;
+    background: var(--cream); border: 3px solid var(--gold); box-shadow: 0 2px 8px rgba(0,0,0,0.4); cursor: pointer;
+  }
+  input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--cream); border: 3px solid var(--gold); cursor: pointer; }
+
+  /* results */
+  .results { position: sticky; top: 90px; }
+  .result-card { background: var(--ink-2); border: 1px solid var(--gold); border-radius: 8px; padding: 2rem; box-shadow: 0 30px 80px rgba(0,0,0,0.5); }
+  .result-card .phase-label { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--rim); margin-bottom: 1.4rem; }
+  .result-card .phase-label b { color: var(--gold); }
+  .headline-num { margin-bottom: 1.6rem; }
+  .headline-num .k { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cream-2); }
+  .headline-num .v { font-family:'Cormorant Garamond',serif; font-size: 3.4rem; line-height: 1; color: var(--gold); font-weight: 600; }
+  .headline-num .v.big { font-size: 4rem; }
+  .res-row { display: flex; justify-content: space-between; padding: 0.85rem 0; border-bottom: 1px solid var(--line-dk); }
+  .res-row:last-of-type { border-bottom: none; }
+  .res-row .k { font-size: 0.86rem; color: var(--cream-2); }
+  .res-row .v { font-family:'Inter'; font-size: 1.05rem; font-weight: 600; color: var(--cream); }
+  .res-row .v.pos { color: var(--gold-soft); }
+
+  .kpi-strip { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--line-dk); border-radius: 6px; overflow: hidden; margin-bottom: 1.6rem; }
+  .kpi-strip .kpi { background: var(--ink-soft); padding: 1.1rem 0.8rem; text-align: center; }
+  .kpi-strip .kpi .v { font-family:'Cormorant Garamond',serif; font-size: 1.7rem; color: var(--cream); font-weight: 600; line-height: 1; }
+  .kpi-strip .kpi .k { font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--rim); margin-top: 0.4rem; }
+
+  /* capital stack bar */
+  .stack { margin: 1.4rem 0 0.4rem; }
+  .stack .bar { display: flex; height: 30px; border-radius: 4px; overflow: hidden; font-size: 0.62rem; }
+  .stack .bar div { display: flex; align-items: center; justify-content: center; color: var(--ink); font-weight: 700; letter-spacing: 0.05em; }
+  .stack .seg-land { background: var(--juniper); color: var(--cream); }
+  .stack .seg-equity { background: var(--gold); }
+  .stack .seg-debt { background: var(--sand); color: var(--cream); }
+  .stack .legend { display: flex; gap: 1.2rem; margin-top: 0.7rem; font-size: 0.72rem; color: var(--cream-2); }
+  .stack .legend span { display:flex; align-items:center; gap: 0.4rem; }
+  .stack .legend i { width: 10px; height: 10px; border-radius: 2px; }
+
+  .model-foot { font-size: 0.74rem; color: var(--muted); font-style: italic; margin-top: 1.5rem; line-height: 1.5; }
+
+  /* ---------- PATH / OBSTACLES ---------- */
+  .path { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.4rem; }
+  .path .step {
+    border: 1px solid var(--line); border-radius: 4px; padding: 1.7rem; background: var(--paper);
+    position: relative;
+  }
+  .path .step .no { font-family:'Cormorant Garamond',serif; font-size: 1.5rem; color: var(--gold); position: absolute; top: 1.2rem; right: 1.4rem; opacity: 0.5; }
+  .path .step h4 { font-size: 1.4rem; padding-right: 2rem; }
+  .path .step p { font-size: 0.9rem; color: var(--muted-dk); margin-top: 0.5rem; }
+  .path .step .who { margin-top: 0.9rem; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--juniper); font-weight: 600; }
+  @media (max-width: 760px){ .path { grid-template-columns: 1fr; } }
+
+  /* ---------- PARTNERSHIP ---------- */
+  .deal { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.4rem; margin-top: 2.4rem; }
+  .deal .d { border: 1px solid var(--line-dk); border-radius: 6px; padding: 1.8rem; background: rgba(255,247,235,0.02); }
+  .deal .d h4 { font-size: 1.5rem; color: var(--cream); }
+  .deal .d .tagline { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin: 0.4rem 0 1rem; }
+  .deal .d p { font-size: 0.9rem; color: var(--cream-2); }
+  @media (max-width: 760px){ .deal { grid-template-columns: 1fr; } }
+
+  /* ---------- TEAM / CLOSE ---------- */
+  .team { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.6rem; margin: 2.6rem 0; }
+  .team .person { text-align: center; padding: 1.8rem 1rem; border: 1px solid var(--line-dk); border-radius: 6px; }
+  .team .person .mono { width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 1rem; background: linear-gradient(135deg, var(--gold), var(--sand)); display:flex; align-items:center; justify-content:center; font-family:'Cormorant Garamond',serif; font-size: 1.5rem; color: var(--ink); font-weight: 600; }
+  .team .person h4 { font-size: 1.5rem; color: var(--cream); }
+  .team .person .role { font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--rim); margin-top: 0.3rem; }
+  @media (max-width: 700px){ .team { grid-template-columns: 1fr; } }
+
+  .cta-line { text-align: center; margin-top: 3rem; }
+  .cta-line .big { font-family:'Cormorant Garamond',serif; font-size: clamp(2rem,5vw,3.4rem); color: var(--cream); }
+  .cta-line .big em { font-style: italic; color: var(--gold-soft); }
+
+  footer { background: var(--ink); color: var(--muted); padding: 3rem 0; text-align: center; border-top: 1px solid var(--line-dk); }
+  footer .conf { font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
+  footer p { font-size: 0.8rem; max-width: 640px; margin: 0 auto; line-height: 1.6; }
+
+  .disclaimer { background: var(--ink-soft); color: var(--muted); font-size: 0.72rem; text-align: center; padding: 0.6rem 2rem; letter-spacing: 0.02em; }
+  .disclaimer b { color: var(--gold-soft); text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.66rem; }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="progress"></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="brand">R<b>1</b> Ranch <span>Payson · AZ</span></div>
+  <div class="nav-links">
+    <a href="#land">The Land</a>
+    <a href="#vision">Vision</a>
+    <a href="#concept">Concept</a>
+    <a href="#model">The Model</a>
+    <a href="#path">The Path</a>
+    <a href="#partnership">Partnership</a>
+  </div>
+  <div class="nav-tag">Confidential</div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-bg"></div>
+  <div class="wrap">
+    <div class="eyebrow reveal in">A Concept for 4000 E Granite Dells Road</div>
+    <h1 class="reveal in d1">R1 Ranch</h1>
+    <h1 class="serif reveal in d2" style="font-size:clamp(1.8rem,4.5vw,3.4rem); color:var(--gold-soft); font-style:italic; margin-bottom:1.8rem;">A Sanctuary on the Rim</h1>
+    <p class="sub reveal in d3">Eighty acres of high-country Arizona, framed by the Tonto National Forest and the Mogollon Rim — imagined as the Southwest's next great resort.</p>
+    <div class="hero-meta reveal in d4">
+      <div class="m"><div class="k">Presented by</div><div class="v">George <b>Heiler</b> · Tristan <b>Gaynor</b> · Isaiah <b>Sears</b></div></div>
+      <div class="m"><div class="k">Prepared for</div><div class="v">Bret <b>Edson</b> Sr. &amp; Bret <b>Edson</b> Jr.</div></div>
+      <div class="m"><div class="k">The Property</div><div class="v">±79.6 acres · Payson, <b>Gila County</b>, AZ</div></div>
+    </div>
+  </div>
+  <div class="scroll-cue"><span>Scroll</span><span class="line"></span></div>
+</header>
+
+<!-- LETTER -->
+<section class="pad" id="letter">
+  <div class="wrap narrow letter">
+    <div class="eyebrow reveal">An Invitation</div>
+    <div style="height:1.4rem"></div>
+    <p class="dropcap reveal">Bret — what you hold is rare. Not just acreage, but position: eighty contiguous acres on the Rim, wrapped on every side by national forest, minutes from two of Arizona's finest golf communities, and an easy drive from the entire Phoenix valley seeking elevation, pine air, and a place that feels like nowhere else in the state.</p>
+    <p class="reveal d1">This is our case that R1 Ranch can become the high country's answer to Scottsdale's <em>Sanctuary</em> and Tucson's <em>Ritz-Carlton at Dove Mountain</em> — a destination resort of casitas, villas, and residences, with a world-class spa, distinctive dining, and an outdoor playground most resorts can only photograph.</p>
+    <p class="reveal d2">We are not here to sell you on leaving. We are here to show you what your land could be — and to invite a conversation about building it together.</p>
+    <div class="signoff reveal d2">
+      <b>Heiler · Gaynor · Sears</b>
+      With respect, and considerable excitement.
+    </div>
+  </div>
+</section>
+
+<!-- THE LAND -->
+<section class="pad dark" id="land">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">The Property</div>
+      <h2>Eighty acres, <em>and not a neighbor in sight.</em></h2>
+    </div>
+    <div class="land-grid">
+      <div class="land-fig reveal">
+        <img src="assets/maps/r1-ranch-satellite.png" alt="Satellite view of R1 Ranch, Payson Arizona">
+        <div class="tag">R1 Ranch LLC · 4000 E Granite Dells Rd · <b>±79.65 ac</b></div>
+      </div>
+      <div class="land-stats reveal d1">
+        <div class="stat"><div class="n num">79.6<small> ac</small></div><div class="l">Contiguous deeded acres, a long east–west bench with established interior roads</div></div>
+        <div class="stat"><div class="n num">360°</div><div class="l">Bordered on every side by Tonto National Forest — privacy that cannot be replicated</div></div>
+        <div class="stat"><div class="n num">~5,000<small> ft</small></div><div class="l">Rim-country elevation: pine air, four mild seasons, 15°+ cooler than the valley</div></div>
+        <div class="stat"><div class="n num">2</div><div class="l">Arcis-owned golf clubs next door — Rim Club &amp; Chaparral Pines — a built-in luxury corridor</div></div>
+        <div class="land-note">In <b style="color:var(--gold)">Gila County</b> jurisdiction (not the Town of Payson), with Payson services and identity at the doorstep — a deliberate advantage we address in <a href="#path" style="color:var(--gold-soft)">The Path</a>.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TWO ICONS -->
+<section class="pad" id="vision">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">The Vision</div>
+      <h2>Two icons. <em>One idea.</em></h2>
+      <div class="lead" style="margin-top:1rem">Arizona already proved this market twice. R1 Ranch borrows the soul of one and the scale of the other.</div>
+    </div>
+    <div class="icons">
+      <div class="icon-card reveal">
+        <div class="ph"><img src="assets/maps/sanctuary-camelback-map.jpg" alt="Sanctuary Camelback site map"></div>
+        <div class="body">
+          <h3>Sanctuary</h3>
+          <div class="where">Camelback Mountain · Paradise Valley</div>
+          <p>A residential village of casitas and private villas woven into the hillside — intimate, design-forward, the antithesis of a convention hotel. The blueprint for <b>how R1 should feel.</b></p>
+          <div class="pills"><span>53 acres</span><span>118 keys</span><span>8 villas</span><span>~$577 ADR</span></div>
+        </div>
+      </div>
+      <div class="icon-card reveal d1">
+        <div class="ph"><img src="assets/maps/ritz-dove-mountain-map.png" alt="Ritz-Carlton Dove Mountain site map"></div>
+        <div class="body">
+          <h3>Ritz-Carlton, Dove Mountain</h3>
+          <div class="where">Tortolita Mountains · Marana</div>
+          <p>A grand desert resort: a 17,000 sq ft spa, five dining venues, resort pools, and 25 miles of canyon trail off the back door. Sited in <b>remote desert with no town to wander to</b> — guests simply don't leave. The blueprint for <b>how big R1 can be.</b></p>
+          <div class="pills"><span>~38 ac core</span><span>253 keys</span><span>17k sf spa</span><span>~$741 ADR</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="blend reveal d1">
+      <div class="eyebrow">R1 Ranch</div>
+      <h3>The intimacy of Sanctuary, at the scale of Dove Mountain — <em>on a setting neither can match.</em></h3>
+    </div>
+  </div>
+</section>
+
+<!-- COMP TABLE -->
+<section class="pad dark ink2" id="comps">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">By the Numbers</div>
+      <h2>How R1 <em>stacks up.</em></h2>
+    </div>
+    <div class="comp-wrap reveal d1">
+      <table class="comp">
+        <thead>
+          <tr>
+            <th></th>
+            <th><div class="colhead">Sanctuary<small>Paradise Valley</small></div></th>
+            <th><div class="colhead">Ritz Dove Mtn<small>Marana</small></div></th>
+            <th><div class="colhead r1">R1 Ranch<small>Proposed · Payson</small></div></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th>Setting</th><td>Hillside, suburban PV</td><td>850 ac in the desert</td><td class="r1c">80 ac, walled by forest</td></tr>
+          <tr><th>Developed core</th><td>53 acres</td><td>~38 acres</td><td class="r1c">~35 acres (60% open)</td></tr>
+          <tr><th>Keys</th><td>118</td><td>253</td><td class="r1c">90 → 200 (phased)</td></tr>
+          <tr><th>Private villas</th><td>8</td><td>26 casitas</td><td class="r1c">Casitas + villas + condos</td></tr>
+          <tr><th>Spa</th><td>Indoor / outdoor</td><td>17,000 sq ft</td><td class="r1c">Destination spa</td></tr>
+          <tr><th>Dining venues</th><td>2</td><td>5</td><td class="r1c">2 → 5 (phased)</td></tr>
+          <tr><th>Avg. daily rate</th><td>~$577</td><td>~$741</td><td class="r1c">$650 → $770 target</td></tr>
+          <tr><th>Signature draw</th><td>Design &amp; spa</td><td>Golf &amp; trails</td><td class="r1c">Forest, trails, side-by-sides, horses</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="blend reveal" style="margin-top:2.6rem; text-align:left;">
+      <div class="eyebrow">The Captive-Destination Thesis</div>
+      <h3 style="font-size:clamp(1.6rem,3.4vw,2.4rem); margin-top:0.6rem;">Dove Mountain sits in remote desert with nowhere to wander off to — so <em>guests spend the entire stay on property.</em></h3>
+      <p style="color:var(--cream-2); font-size:1rem; margin-top:1rem; max-width:760px;">That captures dining, spa, and experience revenue a city resort leaks to the surrounding town. <b style="color:var(--gold-soft)">Payson is the same setup</b> — the Rim is the draw, not the strip mall. R1 should be built to <b style="color:var(--gold-soft)">own the whole guest wallet</b>: every meal, treatment, ride, and celebration happens here. It also argues for dedicated <b style="color:var(--gold-soft)">event &amp; meeting space</b> — intimate weddings and corporate retreats that book the property and fill mid-week rooms.</p>
+    </div>
+    <p class="illus-note reveal" style="color:var(--rim); margin-top:1.6rem;">Comp figures sourced from operator and public listings, 2025–2026. R1 figures are the proposed concept modeled below.</p>
+  </div>
+</section>
+
+<!-- CONCEPT / PROGRAM -->
+<section class="pad" id="concept">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">The Concept</div>
+      <h2>A resort, a residence, <em>and a basecamp.</em></h2>
+      <div class="lead" style="margin-top:1rem">Multiple revenue engines under one brand — nightly rooms, owned residences, and the experiences only this terrain can offer.</div>
+    </div>
+    <div class="prog">
+      <div class="p reveal"><span class="ic">🛏️</span><h4>Lodge Rooms</h4><p>A boutique main lodge — the social heart, arrival, and traditional hotel keys with Rim views.</p><div class="meta">Recurring · Nightly</div></div>
+      <div class="p reveal d1"><span class="ic">🏡</span><h4>Casitas</h4><p>Clustered one- and two-bedroom casitas in the Sanctuary spirit — the signature R1 stay.</p><div class="meta">Recurring · Nightly</div></div>
+      <div class="p reveal d2"><span class="ic">🏛️</span><h4>Private Villas</h4><p>Full homes for buyouts, families, and events — the highest ADR tier on the property.</p><div class="meta">Recurring · Premium</div></div>
+      <div class="p reveal"><span class="ic">🔑</span><h4>Residences for Sale</h4><p>A limited release of for-sale condos &amp; villas — non-recurring capital that de-risks the build.</p><div class="meta">One-time · Sales</div></div>
+      <div class="p reveal d1"><span class="ic">💆</span><h4>Destination Spa</h4><p>A wellness anchor drawing day guests and members from Rim Club &amp; Chaparral Pines.</p><div class="meta">Recurring · Services</div></div>
+      <div class="p reveal d2"><span class="ic">🍷</span><h4>Dining</h4><p>From a signature restaurant to a trailside grill — phased from two venues to five.</p><div class="meta">Recurring · F&amp;B</div></div>
+      <div class="p reveal"><span class="ic">🚵</span><h4>Trail &amp; Bike</h4><p>Direct national-forest access — mountain biking and hiking straight off the property.</p><div class="meta">Recurring · Experiences</div></div>
+      <div class="p reveal d1"><span class="ic">🐎</span><h4>Horseback &amp; Side-by-Sides</h4><p>A working-ranch program: guided rides and UTV tours into the Tonto backcountry.</p><div class="meta">Recurring · Experiences</div></div>
+      <div class="p reveal d2"><span class="ic">🥂</span><h4>Event &amp; Meeting Center</h4><p>Purpose-built space for intimate luxury weddings, corporate retreats, and full-property buyouts — high-margin group business that fills mid-week rooms.</p><div class="meta">Recurring · Banquets</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SITE PLAN -->
+<section class="pad dark" id="siteplan">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">Illustrative Site Plan</div>
+      <h2>How the land <em>could lay out.</em></h2>
+      <div class="lead" style="margin-top:1rem">A first-pass concept across the central bench — keeping the perimeter wild and the forest edge intact.</div>
+    </div>
+    <div class="plan-fig reveal d1">
+      <img src="assets/maps/r1-ranch-satellite.png" alt="R1 Ranch concept site plan overlay">
+      <div class="pin" style="left:30%; top:38%"><span class="dot"></span><span class="lbl"><b>1</b> Arrival &amp; Lodge</span></div>
+      <div class="pin" style="left:46%; top:55%"><span class="dot"></span><span class="lbl"><b>2</b> Casita Village</span></div>
+      <div class="pin" style="left:62%; top:42%"><span class="dot"></span><span class="lbl"><b>3</b> Spa &amp; Pools</span></div>
+      <div class="pin" style="left:74%; top:60%"><span class="dot"></span><span class="lbl"><b>4</b> Villa Ridge</span></div>
+      <div class="pin" style="left:40%; top:72%"><span class="dot"></span><span class="lbl"><b>5</b> Dining &amp; Events</span></div>
+      <div class="pin" style="left:84%; top:30%"><span class="dot"></span><span class="lbl"><b>6</b> Trailhead &amp; Stables</span></div>
+    </div>
+    <div class="plan-legend reveal">
+      <span><i></i> 1 · Arrival &amp; Main Lodge</span>
+      <span><i></i> 2 · Casita Village</span>
+      <span><i></i> 3 · Destination Spa &amp; Pools</span>
+      <span><i></i> 4 · Villa Ridge (for-sale residences)</span>
+      <span><i></i> 5 · Dining &amp; Event Lawn</span>
+      <span><i></i> 6 · Trailhead, Stables &amp; UTV Staging</span>
+    </div>
+    <p class="illus-note">Illustrative concept only — not a survey, engineering drawing, or approved plan. Zone placement is schematic and will be refined with AI-assisted renderings and a formal site study.</p>
+  </div>
+</section>
+
+<!-- THE MODEL -->
+<section class="pad dark ink2" id="model">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">The Model</div>
+      <h2>Move the levers. <em>Watch the returns.</em></h2>
+      <div class="lead" style="margin-top:1rem">A live operating &amp; development model — not a static slide. Start with the boutique Phase 1, then toggle to full buildout.</div>
+    </div>
+
+    <div class="phase-toggle reveal" id="phaseToggle">
+      <button class="active" data-phase="1">Phase 1 · The Founding</button>
+      <button data-phase="2">Full Buildout</button>
+    </div>
+
+    <div class="model-grid">
+      <!-- CONTROLS -->
+      <div class="controls reveal d1">
+        <div class="ctrl-group">
+          <h4>Lodging Program</h4>
+          <div class="ctrl"><div class="row"><label>Lodge rooms</label><span class="val num" id="v_lodge">24</span></div><input type="range" id="lodge" min="0" max="150" step="2" value="24"></div>
+          <div class="ctrl"><div class="row"><label>Casitas</label><span class="val num" id="v_casita">40</span></div><input type="range" id="casita" min="0" max="160" step="2" value="40"></div>
+          <div class="ctrl"><div class="row"><label>Private villas (nightly)</label><span class="val num" id="v_villa">12</span></div><input type="range" id="villa" min="0" max="60" step="1" value="12"></div>
+          <div class="ctrl"><div class="row"><label>Blended occupancy</label><span class="val num" id="v_occ">58%</span></div><input type="range" id="occ" min="35" max="80" step="1" value="58"></div>
+        </div>
+
+        <div class="ctrl-group">
+          <h4>Rate (ADR) by Tier</h4>
+          <div class="ctrl"><div class="row"><label>Lodge ADR</label><span class="val num" id="v_adrL">$550</span></div><input type="range" id="adrL" min="300" max="900" step="10" value="550"></div>
+          <div class="ctrl"><div class="row"><label>Casita ADR</label><span class="val num" id="v_adrC">$700</span></div><input type="range" id="adrC" min="400" max="1200" step="10" value="700"></div>
+          <div class="ctrl"><div class="row"><label>Villa ADR</label><span class="val num" id="v_adrV">$1,100</span></div><input type="range" id="adrV" min="600" max="2500" step="25" value="1100"></div>
+          <div class="ctrl"><div class="row"><label>Resort fee / occupied night</label><span class="val num" id="v_fee">$65</span></div><input type="range" id="fee" min="0" max="150" step="5" value="65"></div>
+        </div>
+
+        <div class="ctrl-group">
+          <h4>Other Revenue Engines (annual)</h4>
+          <div class="ctrl"><div class="row"><label>Dining venues</label><span class="val num" id="v_rest">2</span></div><input type="range" id="rest" min="0" max="6" step="1" value="2"></div>
+          <div class="ctrl"><div class="row"><label>Revenue / venue</label><span class="val num" id="v_restRev">$3.2M</span></div><input type="range" id="restRev" min="1" max="7" step="0.1" value="3.2"></div>
+          <div class="ctrl"><div class="row"><label>Spa revenue</label><span class="val num" id="v_spa">$4.5M</span></div><input type="range" id="spa" min="0" max="15" step="0.25" value="4.5"></div>
+          <div class="ctrl"><div class="row"><label>Experiences (trail · horse · UTV)</label><span class="val num" id="v_exp">$2.5M</span></div><input type="range" id="exp" min="0" max="12" step="0.25" value="2.5"></div>
+          <div class="ctrl"><div class="row"><label>Banquets &amp; events (weddings · corporate)</label><span class="val num" id="v_events">$1.5M</span></div><input type="range" id="events" min="0" max="14" step="0.25" value="1.5"></div>
+        </div>
+
+        <div class="ctrl-group">
+          <h4>Residence Sales (one-time)</h4>
+          <div class="ctrl"><div class="row"><label>Units for sale</label><span class="val num" id="v_condoN">8</span></div><input type="range" id="condoN" min="0" max="80" step="1" value="8"></div>
+          <div class="ctrl"><div class="row"><label>Avg. sale price</label><span class="val num" id="v_condoP">$2.4M</span></div><input type="range" id="condoP" min="0.8" max="6" step="0.1" value="2.4"></div>
+          <div class="ctrl"><div class="row"><label>Developer margin on sales</label><span class="val num" id="v_condoM">22%</span></div><input type="range" id="condoM" min="10" max="40" step="1" value="22"></div>
+        </div>
+
+        <div class="ctrl-group">
+          <h4>Costs, Capital &amp; Exit</h4>
+          <div class="ctrl"><div class="row"><label>Vertical build cost / key</label><span class="val num" id="v_cpk">$450K</span></div><input type="range" id="cpk" min="250" max="900" step="10" value="450"></div>
+          <div class="ctrl"><div class="row"><label>Amenities (spa · dining · pools)</label><span class="val num" id="v_amen">$25M</span></div><input type="range" id="amen" min="5" max="120" step="1" value="25"></div>
+          <div class="ctrl"><div class="row"><label>Site, utilities &amp; access</label><span class="val num" id="v_infra">$20M</span></div><input type="range" id="infra" min="5" max="80" step="1" value="20"></div>
+          <div class="ctrl"><div class="row"><label>Soft costs (% of hard)</label><span class="val num" id="v_soft">20%</span></div><input type="range" id="soft" min="10" max="35" step="1" value="20"></div>
+          <div class="ctrl"><div class="row"><label>EBITDA margin</label><span class="val num" id="v_margin">30%</span></div><input type="range" id="margin" min="18" max="42" step="1" value="30"></div>
+          <div class="ctrl"><div class="row"><label>Exit multiple (× EBITDA)</label><span class="val num" id="v_mult">14×</span></div><input type="range" id="mult" min="8" max="20" step="0.5" value="14"></div>
+          <div class="ctrl"><div class="row"><label>Debt financing</label><span class="val num" id="v_debt">55%</span></div><input type="range" id="debt" min="0" max="75" step="5" value="55"></div>
+        </div>
+      </div>
+
+      <!-- RESULTS -->
+      <div class="results reveal d2">
+        <div class="result-card">
+          <div class="phase-label">Modeled scenario · <b id="phaseName">Phase 1 — The Founding</b></div>
+
+          <div class="kpi-strip">
+            <div class="kpi"><div class="v num" id="o_keys">76</div><div class="k">Total keys</div></div>
+            <div class="kpi"><div class="v num" id="o_adr">$716</div><div class="k">Blended ADR</div></div>
+            <div class="kpi"><div class="v num" id="o_revpar">$415</div><div class="k">RevPAR</div></div>
+          </div>
+
+          <div class="headline-num">
+            <div class="k">Stabilized operating revenue</div>
+            <div class="v num" id="o_rev">$26.0M</div>
+          </div>
+          <div class="headline-num">
+            <div class="k">Stabilized EBITDA</div>
+            <div class="v big num" id="o_ebitda">$7.8M</div>
+          </div>
+
+          <div class="res-row"><span class="k">Rooms &amp; resort fees</span><span class="v num" id="o_rooms">$12.6M</span></div>
+          <div class="res-row"><span class="k">Dining &amp; food / beverage</span><span class="v num" id="o_fb">$6.4M</span></div>
+          <div class="res-row"><span class="k">Spa, experiences &amp; events</span><span class="v num" id="o_other">$8.5M</span></div>
+
+          <div style="height:1.4rem"></div>
+
+          <div class="headline-num">
+            <div class="k">Project sale / stabilized value</div>
+            <div class="v num" id="o_value">$109M</div>
+          </div>
+
+          <div class="res-row"><span class="k">Total development cost</span><span class="v num" id="o_cost">$101M</span></div>
+          <div class="res-row"><span class="k">Residence sales (one-time)</span><span class="v num" id="o_condoRev">$19.2M</span></div>
+          <div class="res-row"><span class="k">Yield on cost</span><span class="v num pos" id="o_yield">7.7%</span></div>
+          <div class="res-row"><span class="k">Value created at exit</span><span class="v num pos" id="o_profit">+$12M</span></div>
+          <div class="res-row"><span class="k">Equity multiple (incl. sales)</span><span class="v num pos" id="o_em">1.6×</span></div>
+
+          <!-- capital stack -->
+          <div class="stack">
+            <div class="bar">
+              <div class="seg-land" id="seg_land" style="width:6%">Land</div>
+              <div class="seg-equity" id="seg_equity" style="width:42%">Equity</div>
+              <div class="seg-debt" id="seg_debt" style="width:52%">Debt</div>
+            </div>
+            <div class="legend">
+              <span><i style="background:var(--juniper)"></i> Land <b id="cap_land">$6.5M</b></span>
+              <span><i style="background:var(--gold)"></i> Equity <b id="cap_equity">$39M</b></span>
+              <span><i style="background:var(--sand)"></i> Debt <b id="cap_debt">$56M</b></span>
+            </div>
+          </div>
+
+          <p class="model-foot">Land held at <b style="color:var(--gold-soft)">$6.5M, paid in cash</b>, treated as contributed equity. Figures are illustrative for discussion — not a forecast, offering, or guarantee. Hospitality returns depend on execution, market, and financing.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE PATH -->
+<section class="pad" id="path">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">The Path</div>
+      <h2>The real work — <em>and how we get there.</em></h2>
+      <div class="lead" style="margin-top:1rem">We are not naïve about the obstacles. Each is a known, solvable step — and we've thought about who carries it.</div>
+    </div>
+    <div class="path">
+      <div class="step reveal"><span class="no num">01</span><h4>Zoning &amp; Entitlement</h4><p>Rezone / conditional-use through <b>Gila County</b> for resort-residential use. A planned-area-development approach lets us phase density and preserve the forest edge.</p><div class="who">Lead: Land-use counsel + County Planning</div></div>
+      <div class="step reveal d1"><span class="no num">02</span><h4>Utilities &amp; Water</h4><p>Securing water, wastewater, and power to a Rim-country parcel is the critical path. Options span Payson-area utility extension, on-site treatment, and water-rights diligence.</p><div class="who">Lead: Civil engineering + utility districts</div></div>
+      <div class="step reveal d2"><span class="no num">03</span><h4>Access &amp; Roads</h4><p>Upgrading Granite Dells Rd access and internal roads to resort standard, coordinated with the County and any Forest Service interface.</p><div class="who">Lead: Civil + County Public Works</div></div>
+      <div class="step reveal"><span class="no num">04</span><h4>Payson &amp; Community</h4><p>Though in the County, the project lives in Payson's economy. Early alignment with the Town on services, lodging tax, and jobs builds the political goodwill any resort needs.</p><div class="who">Lead: Founding partners + Town of Payson</div></div>
+      <div class="step reveal d1"><span class="no num">05</span><h4>The Arcis Corridor</h4><p>Rim Club &amp; Chaparral Pines (Arcis) are next door. A reciprocal golf / membership arrangement turns a neighbor into an amenity — and a marketing partner.</p><div class="who">Lead: Partnership development</div></div>
+      <div class="step reveal d2"><span class="no num">06</span><h4>Brand &amp; Operator</h4><p>A flag (or independent-luxury collection) and a proven operator de-risk financing and accelerate the ramp. The model above supports either path.</p><div class="who">Lead: Founding partners + capital</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERSHIP -->
+<section class="pad dark" id="partnership">
+  <div class="wrap narrow">
+    <div class="sec-head reveal">
+      <div class="eyebrow">The Partnership</div>
+      <h2>How we might <em>build it together.</em></h2>
+      <div class="lead" style="margin-top:1rem; color:var(--cream-2)">We've left this open by design. The land carries a current value of <b style="color:var(--gold)">~$6.5M</b>, paid in cash today — the question is simply how the Edson family wants to participate in what it becomes.</div>
+    </div>
+    <div class="deal">
+      <div class="d reveal"><h4>Land for Equity</h4><div class="tagline">Build together</div><p>The Edsons contribute the land as their stake in a joint venture; our team brings the development, the capital raise, and operations. Greatest upside, shared risk.</p></div>
+      <div class="d reveal d1"><h4>Ground Lease</h4><div class="tagline">Own &amp; collect</div><p>Retain ownership and lease to the venture for long-term, structured income — plus reversion of a built resort. Lower risk, steady return.</p></div>
+      <div class="d reveal d2"><h4>Sale or Option</h4><div class="tagline">Clean exit</div><p>A purchase or option at fair value if the family prefers certainty today over participation tomorrow. We're open to the right structure.</p></div>
+    </div>
+    <p class="illus-note reveal" style="margin-top:2rem">A capital plan — debt / equity split, raise size, and partner economics — accompanies whichever direction the conversation takes. The model above frames the order of magnitude.</p>
+  </div>
+</section>
+
+<!-- CLOSE / TEAM -->
+<section class="pad dark ink2" id="team">
+  <div class="wrap narrow">
+    <div class="sec-head reveal" style="text-align:center">
+      <div class="eyebrow" style="display:block">The Team</div>
+      <h2>Who's <em>asking.</em></h2>
+    </div>
+    <div class="team">
+      <div class="person reveal"><div class="mono">GH</div><h4>George Heiler</h4><div class="role">Founding Partner</div></div>
+      <div class="person reveal d1"><div class="mono">TG</div><h4>Tristan Gaynor</h4><div class="role">Founding Partner</div></div>
+      <div class="person reveal d2"><div class="mono">IS</div><h4>Isaiah Sears</h4><div class="role">Founding Partner</div></div>
+    </div>
+    <div class="cta-line reveal d1">
+      <div class="big">Let's walk the land — <em>and talk about what it could be.</em></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="conf">Confidential · Prepared for the Edson Family</div>
+    <p>R1 Ranch · 4000 E Granite Dells Rd, Payson, AZ 85541 · Gila County. This concept is illustrative and for discussion only; it is not an offer, solicitation, forecast, or guarantee of returns. All figures are estimates subject to diligence, entitlement, financing, and market conditions. Not affiliated with or endorsed by Sanctuary, The Ritz-Carlton, Arcis Golf, or the Town of Payson.</p>
+  </div>
+</footer>
+
+<script>
+  // nav + progress
+  const nav = document.getElementById('nav');
+  const prog = document.getElementById('progress');
+  function onScroll(){
+    const y = window.scrollY;
+    nav.classList.toggle('scrolled', y > 60);
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    prog.style.width = (h>0 ? (y/h)*100 : 0) + '%';
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // reveal on scroll
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  }, {threshold:0.12, rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el));
+
+  /* ===================== FINANCIAL MODEL ===================== */
+  const ids = ['lodge','casita','villa','occ','adrL','adrC','adrV','fee','rest','restRev','spa','exp','events','condoN','condoP','condoM','cpk','amen','infra','soft','margin','mult','debt'];
+  const el = {}; ids.forEach(i=> el[i]=document.getElementById(i));
+
+  const PRESETS = {
+    1: {lodge:24,casita:40,villa:12,occ:58,adrL:550,adrC:700,adrV:1100,fee:65,rest:2,restRev:3.2,spa:4.5,exp:2.5,events:1.5,condoN:8,condoP:2.4,condoM:22,cpk:450,amen:25,infra:20,soft:20,margin:30,mult:14,debt:55},
+    2: {lodge:80,casita:90,villa:30,occ:64,adrL:600,adrC:750,adrV:1300,fee:75,rest:5,restRev:4.0,spa:9,exp:6,events:5,condoN:30,condoP:2.8,condoM:25,cpk:475,amen:70,infra:45,soft:20,margin:33,mult:15,debt:60}
+  };
+  const PHASE_NAME = {1:'Phase 1 — The Founding', 2:'Full Buildout'};
+
+  const LAND = 6.5; // $M, cash
+
+  function fmtM(v){ // v in millions
+    if (Math.abs(v) >= 1000) return '$' + (v/1000).toFixed(2) + 'B';
+    if (Math.abs(v) >= 100)  return '$' + Math.round(v) + 'M';
+    if (Math.abs(v) >= 10)   return '$' + v.toFixed(1) + 'M';
+    return '$' + v.toFixed(1) + 'M';
+  }
+  function fmtMoneyK(v){ // v in millions -> show $K if small
+    if (v >= 1) return '$' + v.toFixed(1) + 'M';
+    return '$' + Math.round(v*1000) + 'K';
+  }
+  function dollars(n){ return '$' + Math.round(n).toLocaleString(); }
+
+  function setFill(input){
+    const min=+input.min, max=+input.max, v=+input.value;
+    input.style.setProperty('--fill', ((v-min)/(max-min)*100)+'%');
+  }
+
+  function recompute(){
+    const g = {}; ids.forEach(i=> g[i]=+el[i].value);
+
+    // labels
+    document.getElementById('v_lodge').textContent = g.lodge;
+    document.getElementById('v_casita').textContent = g.casita;
+    document.getElementById('v_villa').textContent = g.villa;
+    document.getElementById('v_occ').textContent = g.occ + '%';
+    document.getElementById('v_adrL').textContent = dollars(g.adrL);
+    document.getElementById('v_adrC').textContent = dollars(g.adrC);
+    document.getElementById('v_adrV').textContent = dollars(g.adrV);
+    document.getElementById('v_fee').textContent = dollars(g.fee);
+    document.getElementById('v_rest').textContent = g.rest;
+    document.getElementById('v_restRev').textContent = '$' + g.restRev.toFixed(1) + 'M';
+    document.getElementById('v_spa').textContent = '$' + g.spa.toFixed(2).replace(/\.?0+$/,'') + 'M';
+    document.getElementById('v_exp').textContent = '$' + g.exp.toFixed(2).replace(/\.?0+$/,'') + 'M';
+    document.getElementById('v_events').textContent = '$' + g.events.toFixed(2).replace(/\.?0+$/,'') + 'M';
+    document.getElementById('v_condoN').textContent = g.condoN;
+    document.getElementById('v_condoP').textContent = '$' + g.condoP.toFixed(1) + 'M';
+    document.getElementById('v_condoM').textContent = g.condoM + '%';
+    document.getElementById('v_cpk').textContent = '$' + g.cpk + 'K';
+    document.getElementById('v_amen').textContent = '$' + g.amen + 'M';
+    document.getElementById('v_infra').textContent = '$' + g.infra + 'M';
+    document.getElementById('v_soft').textContent = g.soft + '%';
+    document.getElementById('v_margin').textContent = g.margin + '%';
+    document.getElementById('v_mult').textContent = g.mult + '×';
+    document.getElementById('v_debt').textContent = g.debt + '%';
+    ids.forEach(i=> setFill(el[i]));
+
+    // ---- revenue ----
+    const keys = g.lodge + g.casita + g.villa;
+    const occ = g.occ/100;
+    const adrBlend = keys>0 ? (g.lodge*g.adrL + g.casita*g.adrC + g.villa*g.adrV)/keys : 0;
+    const revpar = adrBlend * occ;
+    const occNights = keys * 365 * occ;
+
+    const roomsRev = (g.lodge*g.adrL + g.casita*g.adrC + g.villa*g.adrV) * 365 * occ / 1e6; // $M
+    const feeRev = occNights * g.fee / 1e6;
+    const roomsTotal = roomsRev + feeRev;
+    const fbRev = g.rest * g.restRev;
+    const otherRev = g.spa + g.exp + g.events;
+    const opRev = roomsTotal + fbRev + otherRev;
+
+    const ebitda = opRev * (g.margin/100);
+    const value = ebitda * g.mult;
+
+    // ---- residence sales (one-time) ----
+    const condoRev = g.condoN * g.condoP;          // $M gross
+    const condoProfit = condoRev * (g.condoM/100); // $M
+
+    // ---- development cost ----
+    const keysHard = keys * g.cpk / 1000;          // $M
+    const hard = keysHard + g.amen + g.infra;      // $M
+    const soft = hard * (g.soft/100);
+    const devCost = hard + soft + LAND;            // $M
+
+    // ---- capital stack ----
+    const debt = (devCost - LAND) * (g.debt/100);  // debt on cost above land
+    const equity = devCost - LAND - debt;          // cash equity beyond land
+    const totalCap = LAND + equity + debt;
+
+    // ---- returns ----
+    const yieldOnCost = devCost>0 ? ebitda/devCost*100 : 0;
+    const valueCreated = value + condoProfit - devCost;
+    const equityIn = LAND + equity;
+    const equityOut = value - debt + condoProfit;  // rough exit to equity
+    const em = equityIn>0 ? equityOut/equityIn : 0;
+
+    // ---- write outputs ----
+    document.getElementById('o_keys').textContent = keys;
+    document.getElementById('o_adr').textContent = dollars(adrBlend);
+    document.getElementById('o_revpar').textContent = dollars(revpar);
+    document.getElementById('o_rev').textContent = fmtM(opRev);
+    document.getElementById('o_ebitda').textContent = fmtM(ebitda);
+    document.getElementById('o_rooms').textContent = fmtM(roomsTotal);
+    document.getElementById('o_fb').textContent = fmtM(fbRev);
+    document.getElementById('o_other').textContent = fmtM(otherRev);
+    document.getElementById('o_value').textContent = fmtM(value);
+    document.getElementById('o_cost').textContent = fmtM(devCost);
+    document.getElementById('o_condoRev').textContent = fmtM(condoRev);
+    document.getElementById('o_yield').textContent = yieldOnCost.toFixed(1) + '%';
+    document.getElementById('o_profit').textContent = (valueCreated>=0?'+':'−') + fmtM(Math.abs(valueCreated));
+    document.getElementById('o_em').textContent = em.toFixed(2) + '×';
+
+    // capital stack bar
+    const pl = totalCap>0 ? LAND/totalCap*100 : 0;
+    const pe = totalCap>0 ? equity/totalCap*100 : 0;
+    const pd = totalCap>0 ? debt/totalCap*100 : 0;
+    document.getElementById('seg_land').style.width = pl + '%';
+    document.getElementById('seg_equity').style.width = pe + '%';
+    document.getElementById('seg_debt').style.width = pd + '%';
+    document.getElementById('seg_land').textContent = pl>7?'Land':'';
+    document.getElementById('seg_equity').textContent = pe>10?'Equity':'';
+    document.getElementById('seg_debt').textContent = pd>10?'Debt':'';
+    document.getElementById('cap_land').textContent = fmtM(LAND);
+    document.getElementById('cap_equity').textContent = fmtM(equity);
+    document.getElementById('cap_debt').textContent = fmtM(debt);
+
+    // color profit
+    const profitEl = document.getElementById('o_profit');
+    profitEl.classList.toggle('pos', valueCreated>=0);
+    profitEl.style.color = valueCreated>=0 ? 'var(--gold-soft)' : 'var(--sand)';
+  }
+
+  ids.forEach(i=> el[i].addEventListener('input', recompute));
+
+  // phase toggle
+  document.querySelectorAll('#phaseToggle button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('#phaseToggle button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const p = btn.dataset.phase;
+      const preset = PRESETS[p];
+      ids.forEach(i=>{ el[i].value = preset[i]; });
+      document.getElementById('phaseName').textContent = PHASE_NAME[p];
+      recompute();
+    });
+  });
+
+  recompute();
+</script>
+</body>
+</html>
