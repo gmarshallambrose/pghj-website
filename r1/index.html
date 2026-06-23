@@ -90,6 +90,13 @@
   }
   .scroll-progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--gold); z-index: 250; width: 0; }
   @media (max-width: 860px){ .nav-links { display: none; } }
+  @media (max-width: 560px){
+    .nav { padding: 0.75rem 1.1rem; }
+    .nav.scrolled { padding: 0.6rem 1.1rem; }
+    .nav .brand { font-size: 1.25rem; min-width: 0; }
+    .nav .brand span { display: none; }
+    .nav-tag { font-size: 0.55rem; padding: 0.28rem 0.5rem; letter-spacing: 0.16em; white-space: nowrap; }
+  }
 
   /* ---------- HERO ---------- */
   .hero {
@@ -276,8 +283,9 @@
   @media (max-width: 700px){ .pin .lbl { display: none; } }
 
   /* ---------- MODEL / CALCULATOR ---------- */
-  .model-grid { display: grid; grid-template-columns: 1fr 0.9fr; gap: 2.4rem; align-items: start; }
-  @media (max-width: 980px){ .model-grid { grid-template-columns: 1fr; } }
+  .model-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,0.9fr); gap: 2.4rem; align-items: start; }
+  .controls, .results, .result-card { min-width: 0; }
+  @media (max-width: 980px){ .model-grid { grid-template-columns: minmax(0,1fr); } }
 
   .phase-toggle { display: inline-flex; background: var(--ink-soft); border: 1px solid var(--line-dk); border-radius: 40px; padding: 4px; margin-bottom: 2rem; }
   .phase-toggle button {
@@ -322,7 +330,7 @@
   .res-row .v { font-family:'Inter'; font-size: 1.05rem; font-weight: 600; color: var(--cream); }
   .res-row .v.pos { color: var(--gold-soft); }
 
-  .kpi-strip { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--line-dk); border-radius: 6px; overflow: hidden; margin-bottom: 1.6rem; }
+  .kpi-strip { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1px; background: var(--line-dk); border-radius: 6px; overflow: hidden; margin-bottom: 1.6rem; }
   .kpi-strip .kpi { background: var(--ink-soft); padding: 1.1rem 0.8rem; text-align: center; }
   .kpi-strip .kpi .v { font-family:'Cormorant Garamond',serif; font-size: 1.7rem; color: var(--cream); font-weight: 600; line-height: 1; }
   .kpi-strip .kpi .k { font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--rim); margin-top: 0.4rem; }
@@ -334,7 +342,7 @@
   .stack .seg-land { background: var(--juniper); color: var(--cream); }
   .stack .seg-equity { background: var(--gold); }
   .stack .seg-debt { background: var(--sand); color: var(--cream); }
-  .stack .legend { display: flex; gap: 1.2rem; margin-top: 0.7rem; font-size: 0.72rem; color: var(--cream-2); }
+  .stack .legend { display: flex; flex-wrap: wrap; gap: 0.5rem 1.2rem; margin-top: 0.7rem; font-size: 0.72rem; color: var(--cream-2); }
   .stack .legend span { display:flex; align-items:center; gap: 0.4rem; }
   .stack .legend i { width: 10px; height: 10px; border-radius: 2px; }
 
