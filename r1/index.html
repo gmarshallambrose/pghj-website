@@ -231,6 +231,26 @@
   @media (max-width: 860px){ .prog { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 540px){ .prog { grid-template-columns: 1fr; } }
 
+  /* ---------- EXPERIENCE COLLECTION ---------- */
+  .exp-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.4rem; }
+  .exp-card {
+    border: 1px solid var(--line-dk); border-radius: 6px; padding: 1.9rem; background: rgba(255,247,235,0.025);
+    position: relative; transition: transform 0.3s, border-color 0.3s;
+  }
+  .exp-card:hover { transform: translateY(-4px); border-color: var(--gold); }
+  .exp-card .badge {
+    position: absolute; top: 1.4rem; right: 1.4rem; font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase;
+    font-weight: 700; padding: 0.3rem 0.6rem; border-radius: 3px;
+  }
+  .exp-card .badge.owned { background: var(--gold); color: var(--ink); }
+  .exp-card .badge.partner { background: transparent; color: var(--gold-soft); border: 1px solid var(--gold-soft); }
+  .exp-card .ic { font-size: 1.8rem; display:block; margin-bottom: 0.8rem; }
+  .exp-card h3 { font-size: 1.8rem; color: var(--cream); padding-right: 5rem; }
+  .exp-card .dist { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--rim); margin: 0.4rem 0 0.9rem; }
+  .exp-card p { font-size: 0.95rem; color: var(--cream-2); }
+  .exp-card .url { display:inline-block; margin-top: 0.9rem; font-size: 0.82rem; color: var(--gold); letter-spacing: 0.04em; font-weight: 600; }
+  @media (max-width: 760px){ .exp-grid { grid-template-columns: 1fr; } .exp-card h3 { padding-right: 4.5rem; } }
+
   /* ---------- SITE PLAN ---------- */
   .plan-fig { position: relative; border-radius: 4px; overflow: hidden; box-shadow: 0 30px 70px rgba(23,19,14,0.45); }
   .plan-fig img { width: 100%; display: block; filter: saturate(0.92) brightness(0.94); }
@@ -521,10 +541,53 @@
       <div class="p reveal"><span class="ic">🔑</span><h4>Residences for Sale</h4><p>A limited release of for-sale condos &amp; villas — non-recurring capital that de-risks the build.</p><div class="meta">One-time · Sales</div></div>
       <div class="p reveal d1"><span class="ic">💆</span><h4>Destination Spa</h4><p>A wellness anchor drawing day guests and members from Rim Club &amp; Chaparral Pines.</p><div class="meta">Recurring · Services</div></div>
       <div class="p reveal d2"><span class="ic">🍷</span><h4>Dining</h4><p>From a signature restaurant to a trailside grill — phased from two venues to five.</p><div class="meta">Recurring · F&amp;B</div></div>
-      <div class="p reveal"><span class="ic">🚵</span><h4>Trail &amp; Bike</h4><p>Direct national-forest access — mountain biking and hiking straight off the property.</p><div class="meta">Recurring · Experiences</div></div>
-      <div class="p reveal d1"><span class="ic">🐎</span><h4>Horseback &amp; Side-by-Sides</h4><p>A working-ranch program: guided rides and UTV tours into the Tonto backcountry.</p><div class="meta">Recurring · Experiences</div></div>
+      <div class="p reveal"><span class="ic">🏜️</span><h4>RZR Off-Road</h4><p>Brand-new high-end Polaris RZRs, run through <b>ArizonaAdventures.com</b> — a guided off-road brand we already own, within a mile.</p><div class="meta">Recurring · Owned asset</div></div>
+      <div class="p reveal d1"><span class="ic">🐎</span><h4>Horseback &amp; Marksmanship</h4><p>Champion-horse trail rides and ex-special-forces-led shooting experiences — partners already in place within a mile.</p><div class="meta">Recurring · Partner-led</div></div>
       <div class="p reveal d2"><span class="ic">🥂</span><h4>Event &amp; Meeting Center</h4><p>Purpose-built space for intimate luxury weddings, corporate retreats, and full-property buyouts — high-margin group business that fills mid-week rooms.</p><div class="meta">Recurring · Banquets</div></div>
     </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE COLLECTION -->
+<section class="pad dark ink2" id="experiences">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">Experiences — Already In Hand</div>
+      <h2>The hardest part of a resort <em>is the part we already have.</em></h2>
+      <div class="lead" style="margin-top:1rem; color:var(--cream-2)">Most resorts spend years building an activity program from scratch. R1 starts with an owned off-road brand and marquee partners living within a mile of the gate — turnkey, authentic, and impossible to copy.</div>
+    </div>
+    <div class="exp-grid">
+      <div class="exp-card reveal">
+        <span class="badge owned">We own it</span>
+        <span class="ic">🏜️</span>
+        <h3>Arizona Adventures</h3>
+        <div class="dist">Within 1 mile · operating now</div>
+        <p>We already own <b style="color:var(--gold-soft)">ArizonaAdventures.com</b> and a fleet of brand-new, high-end Polaris RZRs available for rent within a mile of the property. A guided off-road experience that's revenue-positive from day one — no concept to prove, no startup risk.</p>
+        <span class="url">ArizonaAdventures.com</span>
+      </div>
+      <div class="exp-card reveal d1">
+        <span class="badge partner">Partner-led</span>
+        <span class="ic">🐎</span>
+        <h3>Champion Horseback</h3>
+        <div class="dist">Owners within 1 mile</div>
+        <p>Friends who own and ride <b style="color:var(--gold-soft)">world-champion horses</b> live within a mile and can lead guided rides into the Tonto National Forest. Authentic, elite horsemanship — the real thing, not a rental trail-string.</p>
+      </div>
+      <div class="exp-card reveal d2">
+        <span class="badge partner">Partner-led</span>
+        <span class="ic">🎯</span>
+        <h3>Tactical &amp; Marksmanship</h3>
+        <div class="dist">Ex-special-forces instructors</div>
+        <p>Friends who served in <b style="color:var(--gold-soft)">special forces</b> can lead private, professionally-run shooting and tactical-skills experiences — a premium, high-demand draw few luxury resorts can credibly offer.</p>
+      </div>
+      <div class="exp-card reveal d3">
+        <span class="badge partner">On property</span>
+        <span class="ic">🚵</span>
+        <h3>Forest Trail &amp; Bike</h3>
+        <div class="dist">Direct national-forest access</div>
+        <p>Hiking and mountain biking straight off the back of the property into surrounding Tonto National Forest — the same trail-adjacency that anchors Dove Mountain, here on every side.</p>
+      </div>
+    </div>
+    <p class="illus-note reveal" style="color:var(--rim); margin-top:1.6rem;">Partner-led experiences reflect relationships and intent; formal operating agreements would be finalized in development. Shooting experiences run under appropriate licensing and professional safety protocols.</p>
   </div>
 </section>
 
