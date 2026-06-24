@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PGHJ Logo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  :root{
+    --bg:#141418; --copper:#c08552; --cream:#f0e6d2; --fg:#f2f2ee;
+    --dim:#8a8a85; --crimson:#e11d36;
+  }
+  html,body{ width:1200px; height:400px; }
+  body{ background:#0c0c10; display:flex; align-items:center; justify-content:center;
+        font-family:'Bricolage Grotesque',-apple-system,system-ui,sans-serif; }
+  .plate{
+    width:1200px; height:400px; background:var(--bg);
+    border:1px solid rgba(192,133,82,0.22);
+    display:flex; align-items:center; gap:48px; padding:0 78px; position:relative; overflow:hidden;
+  }
+  /* faint copper glow, echoing the site */
+  .plate::after{ content:''; position:absolute; right:-120px; top:-140px; width:420px; height:420px;
+    background:radial-gradient(circle, rgba(192,133,82,0.10), transparent 70%); pointer-events:none; }
+
+  .badge{ flex:0 0 auto; width:132px; height:132px; display:block; }
+
+  .lockup{ display:flex; flex-direction:column; gap:14px; position:relative; }
+  .eyebrow{ font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:500;
+    letter-spacing:4.5px; text-transform:uppercase; color:var(--copper); display:flex; align-items:center; gap:11px; }
+  .eyebrow .dot{ width:6px; height:6px; background:var(--crimson); border-radius:50%; display:inline-block; }
+  .name{ font-size:54px; font-weight:600; color:var(--cream); line-height:0.98; letter-spacing:-0.5px; }
+  .tagline{ display:flex; align-items:center; gap:14px; margin-top:2px; }
+  .tagline .rule{ width:46px; height:2px; background:var(--copper); display:inline-block; }
+  .tagline .txt{ font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:400;
+    letter-spacing:2.5px; text-transform:uppercase; color:var(--dim); }
+</style>
+</head>
+<body>
+  <div class="plate">
+    <!-- Copper tag badge (evolved from favicon) holding the PGHJ monogram -->
+    <svg class="badge" viewBox="-2 -2 104 104" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <mask id="cut">
+          <rect x="-2" y="-2" width="104" height="104" fill="black"/>
+          <path d="M 1 1 L 99 1 L 99 88 L 35 88 L 22 99 L 6 99 L 1 92 Z" fill="white"/>
+          <text x="50" y="41" text-anchor="middle" fill="black"
+                font-family="Bricolage Grotesque, sans-serif" font-size="29" font-weight="700" letter-spacing="1">PG</text>
+          <text x="50" y="75" text-anchor="middle" fill="black"
+                font-family="Bricolage Grotesque, sans-serif" font-size="29" font-weight="700" letter-spacing="1">HJ</text>
+        </mask>
+      </defs>
+      <path d="M 1 1 L 99 1 L 99 88 L 35 88 L 22 99 L 6 99 L 1 92 Z"
+            fill="#c08552" stroke="#c08552" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"
+            mask="url(#cut)"/>
+    </svg>
+
+    <div class="lockup">
+      <div class="eyebrow">Private Holding Company<span class="dot"></span></div>
+      <div class="name">PG Happy Jack Holdings</div>
+      <div class="tagline"><span class="rule"></span><span class="txt">Ditat Deus · Established in Arizona</span></div>
+    </div>
+  </div>
+</body>
+</html>
