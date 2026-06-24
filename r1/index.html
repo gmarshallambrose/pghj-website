@@ -507,14 +507,14 @@
         <div class="body">
           <h3>Ritz-Carlton, Dove Mountain</h3>
           <div class="where">Tortolita Mountains · Marana</div>
-          <p>A grand desert resort: a 17,000 sq ft spa, five dining venues, resort pools, and 25 miles of canyon trail off the back door. Sited in <b>remote desert with no town to wander to</b> — guests simply don't leave. The blueprint for <b>how big R1 can be.</b></p>
+          <p>A grand desert resort: a 17,000 sq ft spa, five dining venues, resort pools, and 25 miles of canyon trail off the back door. Sited in <b>remote desert with no town to wander to</b> — guests simply don't leave. The blueprint for <b>how complete R1 can be.</b></p>
           <div class="pills"><span>~38 ac core</span><span>253 keys</span><span>17k sf spa</span><span>~$741 ADR</span></div>
         </div>
       </div>
     </div>
     <div class="blend reveal d1">
       <div class="eyebrow">R1 Ranch</div>
-      <h3>The intimacy of Sanctuary, at the scale of Dove Mountain — <em>on a setting neither can match.</em></h3>
+      <h3>The intimacy of Sanctuary, with the amenity of Dove Mountain — <em>on a setting neither can match.</em></h3>
     </div>
   </div>
 </section>
@@ -539,11 +539,11 @@
         <tbody>
           <tr><th>Setting</th><td>Hillside, suburban PV</td><td>850 ac in the desert</td><td class="r1c">80 ac, walled by forest</td></tr>
           <tr><th>Developed core</th><td>53 acres</td><td>~38 acres</td><td class="r1c">~35 acres (60% open)</td></tr>
-          <tr><th>Keys</th><td>118</td><td>253</td><td class="r1c">90 → 200 (phased)</td></tr>
+          <tr><th>Keys</th><td>118</td><td>253</td><td class="r1c">50 → 90 (phased)</td></tr>
           <tr><th>Private villas</th><td>8</td><td>26 casitas</td><td class="r1c">Casitas + villas + condos</td></tr>
           <tr><th>Spa</th><td>Indoor / outdoor</td><td>17,000 sq ft</td><td class="r1c">Destination spa</td></tr>
-          <tr><th>Dining venues</th><td>2</td><td>5</td><td class="r1c">2 → 5 (phased)</td></tr>
-          <tr><th>Avg. daily rate</th><td>~$577</td><td>~$741</td><td class="r1c">$650 → $770 target</td></tr>
+          <tr><th>Dining venues</th><td>2</td><td>5</td><td class="r1c">2 → 3 (phased)</td></tr>
+          <tr><th>Avg. daily rate</th><td>~$577</td><td>~$741</td><td class="r1c">$690 → $735 target</td></tr>
           <tr><th>Signature draw</th><td>Design &amp; spa</td><td>Golf &amp; trails</td><td class="r1c">Forest, trails, side-by-sides, horses</td></tr>
         </tbody>
       </table>
@@ -908,8 +908,8 @@
   const el = {}; ids.forEach(i=> el[i]=document.getElementById(i));
 
   const PRESETS = {
-    1: {lodge:24,casita:40,villa:12,occ:58,adrL:550,adrC:700,adrV:1100,fee:65,rest:2,restRev:3.2,spa:4.5,exp:2.5,events:1.5,condoN:8,condoP:2.4,condoM:22,cpk:600,amen:3,infra:3,soft:20,margin:30,mult:14,debt:55},
-    2: {lodge:80,casita:90,villa:30,occ:64,adrL:600,adrC:750,adrV:1300,fee:75,rest:5,restRev:4.0,spa:9,exp:6,events:5,condoN:30,condoP:2.8,condoM:25,cpk:750,amen:16,infra:12,soft:20,margin:33,mult:15,debt:60}
+    1: {lodge:16,casita:26,villa:8,occ:55,adrL:525,adrC:675,adrV:1050,fee:55,rest:2,restRev:2.2,spa:2.5,exp:2.0,events:1.5,condoN:6,condoP:2.2,condoM:22,cpk:420,amen:6,infra:5,soft:20,margin:30,mult:14,debt:55},
+    2: {lodge:30,casita:44,villa:16,occ:58,adrL:575,adrC:700,adrV:1150,fee:60,rest:3,restRev:2.4,spa:3.5,exp:2.0,events:2.0,condoN:16,condoP:2.6,condoM:24,cpk:470,amen:9,infra:7,soft:20,margin:32,mult:15,debt:60}
   };
   const PHASE_NAME = {1:'Phase 1 — The Founding', 2:'Full Buildout'};
 
@@ -1051,6 +1051,8 @@
     });
   });
 
+  // load with Phase 1 preset so on-screen defaults always match
+  ids.forEach(i=>{ el[i].value = PRESETS[1][i]; });
   recompute();
 </script>
 </body>
