@@ -360,6 +360,28 @@
   .path .step .who { margin-top: 0.9rem; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--juniper); font-weight: 600; }
   @media (max-width: 760px){ .path { grid-template-columns: 1fr; } }
 
+  /* ---------- NEXT STEPS ---------- */
+  .next-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1.4rem; }
+  .next-step {
+    display: flex; gap: 1.3rem; padding: 1.8rem; border: 1px solid var(--line); border-radius: 6px;
+    background: rgba(255,255,255,0.45); transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .next-step:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(23,19,14,0.1); }
+  .next-step.sensitive { border-color: var(--sand); background: rgba(185,122,75,0.08); }
+  .ns-num {
+    font-family:'Cormorant Garamond',serif; font-size: 2.6rem; line-height: 0.9; color: var(--gold-dark, var(--sand-deep));
+    font-weight: 600; flex: none; width: 2.6rem;
+  }
+  .next-step.sensitive .ns-num { color: var(--sand-deep); }
+  .ns-body h4 { font-size: 1.5rem; display:flex; align-items:center; gap: 0.6rem; flex-wrap: wrap; }
+  .ns-body p { font-size: 0.92rem; color: var(--muted-dk); margin-top: 0.5rem; }
+  .ns-tag { margin-top: 0.9rem; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--juniper); font-weight: 600; }
+  .care {
+    font-family:'Inter'; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700;
+    color: var(--white); background: var(--sand-deep); padding: 0.22rem 0.55rem; border-radius: 3px;
+  }
+  @media (max-width: 760px){ .next-grid { grid-template-columns: 1fr; } }
+
   /* ---------- PARTNERSHIP ---------- */
   .deal { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.4rem; margin-top: 2.4rem; }
   .deal .d { border: 1px solid var(--line-dk); border-radius: 6px; padding: 1.8rem; background: rgba(255,247,235,0.02); }
@@ -780,6 +802,52 @@
       <div class="d reveal d2"><h4>Sale or Option</h4><div class="tagline">Clean exit</div><p>A purchase or option at fair value if the family prefers certainty today over participation tomorrow. We're open to the right structure.</p></div>
     </div>
     <p class="illus-note reveal" style="margin-top:2rem">A capital plan — debt / equity split, raise size, and partner economics — accompanies whichever direction the conversation takes. The model above frames the order of magnitude.</p>
+  </div>
+</section>
+
+<!-- NEXT STEPS -->
+<section class="pad sand-bg" id="next">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">Next Steps</div>
+      <h2>From concept to <em>conversation.</em></h2>
+      <div class="lead" style="margin-top:1rem">No commitments today — a deliberate, sequenced path that tests the idea with the right people, in the right order.</div>
+    </div>
+    <div class="next-grid">
+      <div class="next-step reveal">
+        <div class="ns-num num">01</div>
+        <div class="ns-body">
+          <h4>Feasibility with the Edsons</h4>
+          <p>Sit down with Bret Sr. &amp; Jr. to pressure-test the concept, gauge appetite, and align on a structure that works for the family — before anything leaves the room.</p>
+          <div class="ns-tag">Together · first</div>
+        </div>
+      </div>
+      <div class="next-step reveal d1">
+        <div class="ns-num num">02</div>
+        <div class="ns-body">
+          <h4>Brand &amp; co-investment talks</h4>
+          <p>Open exploratory conversations with major flags. <b>Marriott</b> and peers actively <b>co-invest</b> in resort developments — the right brand partner brings key money, distribution, and financing credibility.</p>
+          <div class="ns-tag">De-risks the capital stack</div>
+        </div>
+      </div>
+      <div class="next-step reveal d2">
+        <div class="ns-num num">03</div>
+        <div class="ns-body">
+          <h4>Capital formation</h4>
+          <p>Brainstorm the stack — equity sources, debt, the $6.5M land contribution, raise size, investor appetite, and a realistic timeline from entitlement through opening day.</p>
+          <div class="ns-tag">Stack · timeline · appetite</div>
+        </div>
+      </div>
+      <div class="next-step reveal d3 sensitive">
+        <div class="ns-num num">04</div>
+        <div class="ns-body">
+          <h4>Gila County <span class="care">Handle with care</span></h4>
+          <p>Only high-level, discreet exploration — and only after internal alignment. Entitlement is won or lost on sequencing and relationships, so we'd bring in <b>dedicated land-use and entitlement experts</b> to lead this conversation before any formal step.</p>
+          <div class="ns-tag">Strategic · expert-led</div>
+        </div>
+      </div>
+    </div>
+    <p class="illus-note reveal" style="margin-top:1.8rem; color:var(--muted-dk);">Steps 1–3 can move in parallel and stay entirely within our control. Step 4 is deliberately gated behind them — we will not approach the County until the concept, partners, and capital posture are aligned.</p>
   </div>
 </section>
 
