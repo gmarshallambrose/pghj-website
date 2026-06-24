@@ -710,8 +710,8 @@
         <div class="ctrl-group">
           <h4>Costs, Capital &amp; Exit</h4>
           <div class="ctrl"><div class="row"><label>Vertical build cost / key</label><span class="val num" id="v_cpk">$450K</span></div><input type="range" id="cpk" min="250" max="900" step="10" value="450"></div>
-          <div class="ctrl"><div class="row"><label>Amenities (spa · dining · pools)</label><span class="val num" id="v_amen">$25M</span></div><input type="range" id="amen" min="5" max="120" step="1" value="25"></div>
-          <div class="ctrl"><div class="row"><label>Site, utilities &amp; access</label><span class="val num" id="v_infra">$20M</span></div><input type="range" id="infra" min="5" max="80" step="1" value="20"></div>
+          <div class="ctrl"><div class="row"><label>Amenities (spa · dining · pools)</label><span class="val num" id="v_amen">$3M</span></div><input type="range" id="amen" min="2" max="20" step="1" value="3"></div>
+          <div class="ctrl"><div class="row"><label>Site, utilities &amp; access</label><span class="val num" id="v_infra">$3M</span></div><input type="range" id="infra" min="2" max="20" step="1" value="3"></div>
           <div class="ctrl"><div class="row"><label>Soft costs (% of hard)</label><span class="val num" id="v_soft">20%</span></div><input type="range" id="soft" min="10" max="35" step="1" value="20"></div>
           <div class="ctrl"><div class="row"><label>EBITDA margin</label><span class="val num" id="v_margin">30%</span></div><input type="range" id="margin" min="18" max="42" step="1" value="30"></div>
           <div class="ctrl"><div class="row"><label>Exit multiple (× EBITDA)</label><span class="val num" id="v_mult">14×</span></div><input type="range" id="mult" min="8" max="20" step="0.5" value="14"></div>
@@ -908,8 +908,8 @@
   const el = {}; ids.forEach(i=> el[i]=document.getElementById(i));
 
   const PRESETS = {
-    1: {lodge:24,casita:40,villa:12,occ:58,adrL:550,adrC:700,adrV:1100,fee:65,rest:2,restRev:3.2,spa:4.5,exp:2.5,events:1.5,condoN:8,condoP:2.4,condoM:22,cpk:450,amen:25,infra:20,soft:20,margin:30,mult:14,debt:55},
-    2: {lodge:80,casita:90,villa:30,occ:64,adrL:600,adrC:750,adrV:1300,fee:75,rest:5,restRev:4.0,spa:9,exp:6,events:5,condoN:30,condoP:2.8,condoM:25,cpk:475,amen:70,infra:45,soft:20,margin:33,mult:15,debt:60}
+    1: {lodge:24,casita:40,villa:12,occ:58,adrL:550,adrC:700,adrV:1100,fee:65,rest:2,restRev:3.2,spa:4.5,exp:2.5,events:1.5,condoN:8,condoP:2.4,condoM:22,cpk:450,amen:3,infra:3,soft:20,margin:30,mult:14,debt:55},
+    2: {lodge:80,casita:90,villa:30,occ:64,adrL:600,adrC:750,adrV:1300,fee:75,rest:5,restRev:4.0,spa:9,exp:6,events:5,condoN:30,condoP:2.8,condoM:25,cpk:475,amen:16,infra:12,soft:20,margin:33,mult:15,debt:60}
   };
   const PHASE_NAME = {1:'Phase 1 — The Founding', 2:'Full Buildout'};
 
