@@ -106,14 +106,15 @@
   }
   .hero-bg {
     position: absolute; inset: 0;
-    background: url('assets/maps/r1-ranch-satellite.png') center 30% / cover no-repeat;
-    opacity: 0.22; filter: saturate(0.7) contrast(1.05);
-    transform: scale(1.08);
+    background: url('assets/maps/rzr-chauffeur.jpg') center 42% / cover no-repeat;
+    opacity: 0.85; filter: saturate(0.96) contrast(1.02);
+    transform: scale(1.05);
   }
   .hero::after {
     content:''; position:absolute; inset:0;
-    background: radial-gradient(ellipse at 50% 40%, rgba(23,19,14,0.45), rgba(23,19,14,0.92) 78%),
-                linear-gradient(180deg, rgba(23,19,14,0.7), rgba(23,19,14,0.3) 40%, var(--ink));
+    background: linear-gradient(100deg, rgba(23,19,14,0.94) 0%, rgba(23,19,14,0.74) 36%, rgba(23,19,14,0.34) 70%, rgba(23,19,14,0.18) 100%),
+                linear-gradient(0deg, var(--ink) 2%, rgba(23,19,14,0.0) 42%),
+                linear-gradient(180deg, rgba(23,19,14,0.55) 0%, rgba(23,19,14,0.0) 18%);
   }
   .hero .wrap { position: relative; z-index: 2; }
   .hero .eyebrow { margin-bottom: 1.6rem; }
@@ -793,7 +794,7 @@
             </div>
           </div>
 
-          <p class="model-foot">Land held at <b style="color:var(--gold-soft)">$6.5M, paid in cash</b>, treated as contributed equity. Figures are illustrative for discussion — not a forecast, offering, or guarantee. Hospitality returns depend on execution, market, and financing.</p>
+          <p class="model-foot">The land may qualify as <b style="color:var(--gold-soft)">up to $6.5M of already-contributed equity</b> to strengthen the raise. Figures are illustrative for discussion — not a forecast, offering, or guarantee. Hospitality returns depend on execution, market, and financing.</p>
         </div>
       </div>
     </div>
@@ -825,7 +826,7 @@
     <div class="sec-head reveal">
       <div class="eyebrow">The Partnership</div>
       <h2>How we might <em>build it together.</em></h2>
-      <div class="lead" style="margin-top:1rem; color:var(--cream-2)">We've left this open by design. The land carries a current value of <b style="color:var(--gold)">~$6.5M</b>, paid in cash today — the question is simply how the Edson family wants to participate in what it becomes.</div>
+      <div class="lead" style="margin-top:1rem; color:var(--cream-2)">We've left this open by design. The land may qualify as <b style="color:var(--gold)">up to ~$6.5M of already-contributed equity</b> to aid the raise — the question is simply how the Edson family wants to participate in what it becomes.</div>
     </div>
     <div class="deal">
       <div class="d reveal"><h4>Land for Equity</h4><div class="tagline">Build together</div><p>The Edsons contribute the land as their stake in a joint venture; our team brings the development, the capital raise, and operations. Greatest upside, shared risk.</p></div>
@@ -931,7 +932,7 @@
   const el = {}; ids.forEach(i=> el[i]=document.getElementById(i));
 
   const PRESETS = {
-    1: {lodge:16,casita:26,villa:8,occ:55,adrL:525,adrC:675,adrV:1050,fee:55,rest:2,restRev:2.2,spa:2.5,exp:2.0,events:1.5,condoN:6,condoP:2.2,condoM:22,cpk:420,amen:6,infra:5,soft:20,margin:30,mult:14,debt:55},
+    1: {lodge:106,casita:26,villa:8,occ:55,adrL:525,adrC:675,adrV:1050,fee:55,rest:2,restRev:2.2,spa:2.5,exp:2.0,events:1.5,condoN:6,condoP:2.2,condoM:22,cpk:420,amen:6,infra:5,soft:20,margin:30,mult:14,debt:55},
     2: {lodge:30,casita:44,villa:16,occ:58,adrL:575,adrC:700,adrV:1150,fee:60,rest:3,restRev:2.4,spa:3.5,exp:2.0,events:2.0,condoN:16,condoP:2.6,condoM:24,cpk:470,amen:9,infra:7,soft:20,margin:32,mult:15,debt:60}
   };
   const PHASE_NAME = {1:'Phase 1 — The Founding', 2:'Full Buildout'};
