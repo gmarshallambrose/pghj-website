@@ -7,7 +7,7 @@
 <meta name="description" content="A confidential concept for 4000 E Granite Dells Rd, Payson, Arizona — presented to the Edson family.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700&family=Zilla+Slab:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -429,11 +429,93 @@
 
   .disclaimer { background: var(--ink-soft); color: var(--muted); font-size: 0.72rem; text-align: center; padding: 0.6rem 2rem; letter-spacing: 0.02em; }
   .disclaimer b { color: var(--gold-soft); text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.66rem; }
+
+  /* ============ CONCEPT SWITCHER ============ */
+  .concept-switch {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 320; height: 46px;
+    display: flex; align-items: center; justify-content: center; gap: 0;
+    background: #0F0D0A; border-bottom: 1px solid rgba(255,247,235,0.1);
+  }
+  .concept-switch .cs-btn {
+    font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: rgba(246,240,228,0.55); background: transparent; border: none;
+    padding: 0.55rem 1.3rem; cursor: pointer; transition: color 0.2s; position: relative; white-space: nowrap;
+  }
+  .concept-switch .cs-btn b { font-weight: 700; }
+  .concept-switch .cs-btn.active { color: var(--cream); }
+  .concept-switch .cs-btn.active::after {
+    content:''; position:absolute; left:1.3rem; right:1.3rem; bottom:6px; height:2px; border-radius:2px;
+  }
+  .concept-switch .cs-btn[data-concept="1"].active::after { background: #C7A35B; }
+  .concept-switch .cs-btn[data-concept="2"].active::after { background: #B0894E; }
+  .concept-switch .cs-div { width:1px; height:18px; background: rgba(255,247,235,0.18); }
+  @media (max-width: 480px){ .concept-switch .cs-btn { font-size: 0.6rem; padding: 0.55rem 0.7rem; letter-spacing: 0.04em; } }
+
+  /* push the fixed navs below the switcher */
+  .nav { top: 46px; }
+  .nav.scrolled { top: 46px; }
+  .concept-switch ~ .scroll-progress, .scroll-progress { top: 46px; }
+
+  .pane[hidden] { display: none; }
+
+  /* ============ CONCEPT 2 — CORNERSTONE TRADES (rustic theme) ============ */
+  #concept2 {
+    --ink:        #1A1712;
+    --ink-2:      #221D16;
+    --ink-soft:   #2C2519;
+    --cream:      #F1EADD;
+    --cream-2:    #E2D6C1;
+    --paper:      #F4EEE1;
+    --sand:       #9A6A3C;
+    --sand-deep:  #7C5430;
+    --juniper:    #4F5C46;
+    --gold:       #B0894E;
+    --gold-soft:  #D6B679;
+    --rim:        #6E818C;   /* steel / workwear blue */
+    --muted:      #8A7E68;
+    --muted-dk:   #6A5F4B;
+    --line:       rgba(120,95,55,0.26);
+    --line-dk:    rgba(241,234,221,0.14);
+    background: var(--paper);
+  }
+  #concept2 h1, #concept2 h2, #concept2 h3, #concept2 h4,
+  #concept2 .serif, #concept2 .nav .brand, #concept2 .signoff b {
+    font-family: 'Zilla Slab', Georgia, serif !important;
+  }
+  #concept2 .hero h1 { letter-spacing: -0.01em; }
+  #concept2 .nav .brand b { color: var(--gold); }
+  #concept2 .nav-tag { background: var(--gold); }
+  #concept2 .lead, #concept2 .letter p, #concept2 .cine-sub { font-family: 'Cormorant Garamond', Georgia, serif; }
+  /* trade list */
+  .trades { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1px; background: var(--line-dk); border:1px solid var(--line-dk); border-radius:6px; overflow:hidden; }
+  .trades .t { background: var(--ink-2); padding: 1.5rem 1.4rem; transition: background 0.25s; }
+  .trades .t:hover { background: var(--ink-soft); }
+  .trades .t .ic { font-size: 1.5rem; display:block; margin-bottom:0.6rem; }
+  .trades .t h4 { font-size: 1.3rem; color: var(--cream); }
+  .trades .t p { font-size: 0.82rem; color: var(--cream-2); margin-top: 0.3rem; }
+  @media (max-width: 760px){ .trades { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 460px){ .trades { grid-template-columns: 1fr; } }
+  /* impact stat band */
+  .impact { display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 1.4rem; }
+  .impact .s { text-align:center; }
+  .impact .s .n { font-family:'Zilla Slab',serif; font-size: 2.8rem; line-height:1; color: var(--gold); font-weight:600; }
+  .impact .s .l { font-size: 0.74rem; color: var(--cream-2); margin-top:0.5rem; letter-spacing:0.04em; }
+  @media (max-width: 700px){ .impact { grid-template-columns: 1fr 1fr; gap:1.8rem; } }
 </style>
 </head>
 <body>
 
+<!-- CONCEPT SWITCHER -->
+<div class="concept-switch">
+  <button class="cs-btn active" data-concept="1">Concept 1 · <b>The Reserve</b></button>
+  <span class="cs-div"></span>
+  <button class="cs-btn" data-concept="2">Concept 2 · <b>Cornerstone Trades</b></button>
+</div>
+
 <div class="scroll-progress" id="progress"></div>
+
+<!-- ============================ CONCEPT 1 ============================ -->
+<div id="concept1" class="pane">
 
 <!-- NAV -->
 <nav class="nav" id="nav">
@@ -908,18 +990,305 @@
   </div>
 </footer>
 
+</div><!-- /#concept1 -->
+
+<!-- ============================ CONCEPT 2 — CORNERSTONE TRADES ============================ -->
+<div id="concept2" class="pane" hidden>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="brand">Cornerstone <b>Trades</b> <span>Payson · AZ</span></div>
+    <div class="nav-links">
+      <a href="#c2-mission">Mission</a>
+      <a href="#c2-trades">The Trades</a>
+      <a href="#c2-build">Build &amp; Learn</a>
+      <a href="#c2-chapel">The Chapel</a>
+      <a href="#c2-model">The Model</a>
+      <a href="#c2-path">The Path</a>
+    </div>
+    <div class="nav-tag">Confidential</div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-bg" style="background:url('assets/maps/rzr-chauffeur.jpg') center 45%/cover no-repeat; opacity:0.6; filter:grayscale(0.25) saturate(0.85);"></div>
+    <div class="wrap">
+      <div class="eyebrow">A Second Concept for 4000 E Granite Dells Road</div>
+      <h1 class="serif" style="font-size:clamp(3rem,8.5vw,6.8rem); color:var(--cream); line-height:0.98; margin-bottom:0.4rem;">Cornerstone Trades</h1>
+      <h1 class="serif" style="font-size:clamp(1.5rem,4vw,2.8rem); color:var(--gold-soft); font-weight:500; margin-bottom:1.8rem;">A Christian Vocational School on the Rim</h1>
+      <p class="sub" style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(1.05rem,2.2vw,1.5rem); color:var(--cream-2); max-width:640px; margin-bottom:2.6rem;">A for-profit trade school — built to last because it pays its own way. Master craftsmen and pastors train debt-light students who learn by building real things on these eighty acres.</p>
+      <div class="hero-meta">
+        <div class="m"><div class="k">Presented by</div><div class="v">Isaiah <b>Sears</b> · Tristan <b>Gaynor</b> · George <b>Heiler</b></div></div>
+        <div class="m"><div class="k">Prepared for</div><div class="v">Bret <b>Edson</b> Sr. &amp; Bret <b>Edson</b> Jr.</div></div>
+        <div class="m"><div class="k">The Property</div><div class="v">±79.6 acres · Payson, <b>Gila County</b>, AZ</div></div>
+      </div>
+    </div>
+    <div class="scroll-cue"><span>Scroll</span><span class="line"></span></div>
+  </header>
+
+  <!-- MISSION / LETTER -->
+  <section class="pad" id="c2-mission">
+    <div class="wrap narrow letter">
+      <div class="eyebrow reveal">The Mission</div>
+      <div style="height:1.4rem"></div>
+      <p class="dropcap reveal">Bret — the same eighty acres can raise more than a resort. It can raise people. We propose a Christian vocational school where students learn a real trade, graduate with little or no debt, and walk into jobs the country is desperate to fill.</p>
+      <p class="reveal d1">It is a <em>ministry</em> at heart and a <em>business</em> by design — deliberately for-profit so it never depends on the next donation to keep its doors open. Tuition, the work students produce, and housing carry the school; faith and craftsmanship carry the students.</p>
+      <p class="reveal d2">They won't practice on scrap lumber. They'll build the campus itself — shops, cabins, and a stone chapel that will stand for a hundred years — and take on real projects for the community and for the resort next door.</p>
+      <div class="signoff reveal d2">
+        <b>Sears · Gaynor · Heiler</b>
+        Faith, work, and a trade that lasts.
+      </div>
+    </div>
+  </section>
+
+  <!-- THE CAMPUS -->
+  <section class="pad dark" id="c2-campus">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="eyebrow">The Campus</div>
+        <h2>A working campus, <em>built by its own students.</em></h2>
+        <div class="lead" style="margin-top:1rem">The land becomes the classroom. Every shop, dorm, and the chapel is a teaching project — and a permanent asset on the books.</div>
+      </div>
+      <div class="land-grid">
+        <div class="land-fig reveal">
+          <img src="assets/maps/concept-site-plan.jpg" alt="Conceptual campus layout">
+          <div class="tag">Working trades campus · <b>±79.65 ac</b></div>
+        </div>
+        <div class="land-stats reveal d1">
+          <div class="stat"><div class="n num">80<small> ac</small></div><div class="l">Room for shops, a chapel, student housing, and outdoor build yards</div></div>
+          <div class="stat"><div class="n num">10+</div><div class="l">Trades taught hands-on by working master craftsmen</div></div>
+          <div class="stat"><div class="n num">Debt-<br>light</div><div class="l">Students earn as they build — graduating ready to work, not buried in loans</div></div>
+          <div class="stat"><div class="n num">360°</div><div class="l">Tonto National Forest setting — timber, stone, and sky as the backdrop</div></div>
+          <div class="land-note">In <b style="color:var(--gold)">Gila County</b>, minutes from Payson — a region (and a nation) short on skilled tradespeople and the housing they build.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE TRADES -->
+  <section class="pad" id="c2-trades">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="eyebrow">The Trades</div>
+        <h2>Every skill that <em>builds the world.</em></h2>
+        <div class="lead" style="margin-top:1rem">Hands-on programs in the trades with the longest demand and the best pay — taught by people who do the work for a living.</div>
+      </div>
+      <div class="trades reveal d1">
+        <div class="t"><span class="ic">🔨</span><h4>Carpentry &amp; Framing</h4><p>Rough framing to fine finish, plus traditional timber framing.</p></div>
+        <div class="t"><span class="ic">🧱</span><h4>Masonry &amp; Stonework</h4><p>Stone, brick, and block — the craft behind the chapel.</p></div>
+        <div class="t"><span class="ic">⚡</span><h4>Electrical</h4><p>Residential and commercial wiring toward licensure.</p></div>
+        <div class="t"><span class="ic">🔧</span><h4>Plumbing</h4><p>Water, waste, and gas systems, code to completion.</p></div>
+        <div class="t"><span class="ic">🔥</span><h4>Welding &amp; Metal Fab</h4><p>Structural, pipe, and ornamental fabrication.</p></div>
+        <div class="t"><span class="ic">❄️</span><h4>HVAC</h4><p>Heating, cooling, and refrigeration installation &amp; service.</p></div>
+        <div class="t"><span class="ic">🚜</span><h4>Heavy Equipment</h4><p>Grading, excavation, and site work operation.</p></div>
+        <div class="t"><span class="ic">🪚</span><h4>Cabinetry &amp; Millwork</h4><p>Fine woodworking, doors, and built-in furniture.</p></div>
+        <div class="t"><span class="ic">🛠️</span><h4>Diesel &amp; Mechanics</h4><p>Engines, hydraulics, and equipment maintenance.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUILD AS YOU LEARN (cinematic) -->
+  <section class="cinematic" id="c2-build" style="background-image:linear-gradient(0deg, rgba(26,23,18,0.4), rgba(26,23,18,0.4)), url('assets/maps/rzr-chauffeur.jpg');">
+    <div class="wrap">
+      <div class="eyebrow reveal">Build &amp; Learn</div>
+      <h2 class="reveal d1">They don't practice on scrap — <em>they build the campus.</em></h2>
+      <p class="cine-sub reveal d2">Student labor raises real, permanent structures: the shops they train in, cabins for housing, and contract work for the community and the resort next door. Every project teaches a skill and books an asset — the engine that lets tuition stay low.</p>
+    </div>
+    <div class="credit">Illustrative concept</div>
+  </section>
+
+  <!-- THE STONE CHAPEL -->
+  <section class="pad dark ink2" id="c2-chapel">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="eyebrow">The Stone Chapel</div>
+        <h2>The cornerstone, <em>laid by hand.</em></h2>
+      </div>
+      <div class="icons">
+        <div class="icon-card reveal" style="background:var(--ink-2);">
+          <div class="body">
+            <h3 style="color:var(--cream);">A chapel that stands for a century</h3>
+            <div class="where">Masonry · Timber · Glass · Finish</div>
+            <p style="color:var(--cream-2);">A beautiful, fully operational stone chapel — the spiritual heart of the campus and the school's flagship teaching project. Masons set the stone, carpenters raise the timber roof, electricians light it, and finish crews complete it. Sunday services, weddings, and chapel for students and the resort next door.</p>
+            <div class="pills"><span>Built by students</span><span>Fully operational</span><span>Open to the resort</span></div>
+          </div>
+        </div>
+        <div class="icon-card reveal d1" style="background:var(--ink-2);">
+          <div class="body">
+            <h3 style="color:var(--cream);">Faith woven through the work</h3>
+            <div class="where">Pastors · Chaplains · Mentorship</div>
+            <p style="color:var(--cream-2);">Resident pastors and chaplains walk alongside students — character, discipleship, and purpose taught beside the trade. The conviction is simple: good work is worship, and a skilled, grounded graduate changes a family for generations.</p>
+            <div class="pills"><span>Daily chapel</span><span>Mentorship</span><span>Service projects</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE MODEL -->
+  <section class="pad dark" id="c2-model">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="eyebrow">The Model</div>
+        <h2>A ministry that <em>pays its own way.</em></h2>
+        <div class="lead" style="margin-top:1rem">For-profit by design. Move the levers — tuition stays affordable while the work students produce makes the school sustainable.</div>
+      </div>
+      <div class="model-grid">
+        <div class="controls reveal d1">
+          <div class="ctrl-group">
+            <h4>Enrollment &amp; Tuition</h4>
+            <div class="ctrl"><div class="row"><label>Students enrolled</label><span class="val num" id="c2_students">150</span></div><input type="range" id="c2_studentsR" min="40" max="400" step="10" value="150"></div>
+            <div class="ctrl"><div class="row"><label>Tuition / student / year</label><span class="val num" id="c2_tuition">$12,000</span></div><input type="range" id="c2_tuitionR" min="6000" max="22000" step="500" value="12000"></div>
+          </div>
+          <div class="ctrl-group">
+            <h4>Revenue Engines (annual)</h4>
+            <div class="ctrl"><div class="row"><label>Build &amp; contract work</label><span class="val num" id="c2_build">$2.5M</span></div><input type="range" id="c2_buildR" min="0" max="10" step="0.25" value="2.5"></div>
+            <div class="ctrl"><div class="row"><label>Room &amp; board / student</label><span class="val num" id="c2_rb">$6,000</span></div><input type="range" id="c2_rbR" min="0" max="14000" step="500" value="6000"></div>
+            <div class="ctrl"><div class="row"><label>Ministry support &amp; grants</label><span class="val num" id="c2_grants">$0.5M</span></div><input type="range" id="c2_grantsR" min="0" max="5" step="0.1" value="0.5"></div>
+          </div>
+          <div class="ctrl-group">
+            <h4>Annual Costs</h4>
+            <div class="ctrl"><div class="row"><label>Faculty &amp; staff</label><span class="val num" id="c2_staff">$2.2M</span></div><input type="range" id="c2_staffR" min="0.5" max="8" step="0.1" value="2.2"></div>
+            <div class="ctrl"><div class="row"><label>Materials &amp; tools</label><span class="val num" id="c2_mat">$1.3M</span></div><input type="range" id="c2_matR" min="0.2" max="6" step="0.1" value="1.3"></div>
+            <div class="ctrl"><div class="row"><label>Facilities &amp; admin</label><span class="val num" id="c2_fac">$1.0M</span></div><input type="range" id="c2_facR" min="0.2" max="6" step="0.1" value="1.0"></div>
+          </div>
+        </div>
+        <div class="results reveal d2">
+          <div class="result-card">
+            <div class="phase-label">Modeled scenario · <b>Sustainable Ministry</b></div>
+            <div class="kpi-strip">
+              <div class="kpi"><div class="v num" id="c2o_students">150</div><div class="k">Students / yr</div></div>
+              <div class="kpi"><div class="v num" id="c2o_cps">$38K</div><div class="k">All-in / student</div></div>
+              <div class="kpi"><div class="v num" id="c2o_margin">21%</div><div class="k">Surplus margin</div></div>
+            </div>
+            <div class="headline-num">
+              <div class="k">Total annual revenue</div>
+              <div class="v num" id="c2o_rev">$5.7M</div>
+            </div>
+            <div class="headline-num">
+              <div class="k">Operating surplus (profit)</div>
+              <div class="v big num" id="c2o_surplus">$1.2M</div>
+            </div>
+            <div class="res-row"><span class="k">Tuition</span><span class="v num" id="c2o_tuition">$1.8M</span></div>
+            <div class="res-row"><span class="k">Build &amp; contract work</span><span class="v num" id="c2o_build">$2.5M</span></div>
+            <div class="res-row"><span class="k">Room &amp; board</span><span class="v num" id="c2o_rb">$0.9M</span></div>
+            <div class="res-row"><span class="k">Ministry support &amp; grants</span><span class="v num" id="c2o_grants">$0.5M</span></div>
+            <div class="res-row"><span class="k">Total annual cost</span><span class="v num" id="c2o_cost">$4.5M</span></div>
+            <p class="model-foot">Built to run a healthy surplus so it never depends on donations to stay open — the surplus funds scholarships, expansion, and debt-light tuition. Figures are illustrative for discussion, not a forecast.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OUTCOMES / IMPACT -->
+  <section class="pad sand-bg" id="c2-impact">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="eyebrow">Outcomes</div>
+        <h2>Affordable in. <em>Employed out.</em></h2>
+      </div>
+      <div class="impact reveal d1">
+        <div class="s"><div class="n num">&lt;$15K</div><div class="l">Typical all-in cost to a graduate — a fraction of a 4-year degree</div></div>
+        <div class="s"><div class="n num">~$55K</div><div class="l">Realistic starting wage for a credentialed tradesperson</div></div>
+        <div class="s"><div class="n num">90%+</div><div class="l">Placement target — these jobs are unfilled and local</div></div>
+        <div class="s"><div class="n num">1–2 yr</div><div class="l">To a working trade, not four years to a maybe</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE PATH -->
+  <section class="pad" id="c2-path">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="eyebrow">The Path</div>
+        <h2>What it takes — <em>and who we bring.</em></h2>
+      </div>
+      <div class="path">
+        <div class="step reveal"><span class="no num">01</span><h4>Accreditation &amp; Licensure</h4><p>Pursue trade-specific certifications and state vocational approval so graduates earn recognized, employable credentials.</p><div class="who">Lead: Education counsel + trade boards</div></div>
+        <div class="step reveal d1"><span class="no num">02</span><h4>Faculty &amp; Pastors</h4><p>Recruit master tradesmen as instructors and resident pastors as chaplains — the people who make it both excellent and grounded.</p><div class="who">Lead: Founders + church network</div></div>
+        <div class="step reveal d2"><span class="no num">03</span><h4>Zoning &amp; Build-Out</h4><p>Gila County approval for an educational/residential campus, phased so early cohorts build later phases.</p><div class="who">Lead: Land-use + civil</div></div>
+        <div class="step reveal"><span class="no num">04</span><h4>Employer &amp; Church Partners</h4><p>Contractors and churches for job placement, project pipeline, and student recruiting across the region.</p><div class="who">Lead: Partnership development</div></div>
+        <div class="step reveal d1"><span class="no num">05</span><h4>For-Profit + Foundation</h4><p>A for-profit core for sustainability, paired with a foundation for scholarships and tax-advantaged giving.</p><div class="who">Lead: Counsel + founders</div></div>
+        <div class="step reveal d2"><span class="no num">06</span><h4>Synergy with The Reserve</h4><p>If the resort proceeds, the school becomes its builder and talent pipeline — chapel, maintenance, and craft on demand.</p><div class="who">Lead: Founders</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEXT STEPS -->
+  <section class="pad dark" id="c2-next">
+    <div class="wrap narrow">
+      <div class="sec-head reveal">
+        <div class="eyebrow">Next Steps</div>
+        <h2>From calling to <em>cornerstone.</em></h2>
+        <div class="lead" style="margin-top:1rem; color:var(--cream-2)">A measured path — prove the model, gather the people, then break ground.</div>
+      </div>
+      <div class="deal">
+        <div class="d reveal"><h4>Feasibility with the Edsons</h4><div class="tagline">Together · first</div><p>Test the concept and the land fit with Bret Sr. &amp; Jr. before anything else.</p></div>
+        <div class="d reveal d1"><h4>People &amp; Pilot</h4><div class="tagline">Faculty · pastors · first cohort</div><p>Line up master-tradesmen instructors and a founding cohort; a pilot program can start lean.</p></div>
+        <div class="d reveal d2"><h4>Capital &amp; Credentials</h4><div class="tagline">Fund · accredit · build</div><p>Raise start-up capital, secure approvals, and let early students help build the campus.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSE / TEAM -->
+  <section class="pad dark ink2" id="c2-team">
+    <div class="wrap narrow">
+      <div class="sec-head reveal" style="text-align:center">
+        <div class="eyebrow" style="display:block">The Team</div>
+        <h2>Who's <em>asking.</em></h2>
+      </div>
+      <div class="team">
+        <div class="person reveal"><div class="mono">IS</div><h4>Isaiah Sears</h4><div class="role">Founding Partner</div></div>
+        <div class="person reveal d1"><div class="mono">TG</div><h4>Tristan Gaynor</h4><div class="role">Founding Partner</div></div>
+        <div class="person reveal d2"><div class="mono">GH</div><h4>George Heiler</h4><div class="role">Founding Partner</div></div>
+      </div>
+      <div class="cta-line reveal d1">
+        <div class="big">Raise buildings — <em>and the people who build them.</em></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="conf">Confidential · Prepared for the Edson Family</div>
+      <p>Cornerstone Trades (concept) · 4000 E Granite Dells Rd, Payson, AZ 85541 · Gila County. This concept is illustrative and for discussion only; it is not an offer, solicitation, forecast, or guarantee. All figures are estimates subject to diligence, accreditation, financing, and market conditions.</p>
+    </div>
+  </footer>
+
+</div><!-- /#concept2 -->
+
 <script>
   // nav + progress
-  const nav = document.getElementById('nav');
+  const navs = document.querySelectorAll('.nav');
   const prog = document.getElementById('progress');
   function onScroll(){
     const y = window.scrollY;
-    nav.classList.toggle('scrolled', y > 60);
+    navs.forEach(n=> n.classList.toggle('scrolled', y > 60));
     const h = document.documentElement.scrollHeight - window.innerHeight;
     prog.style.width = (h>0 ? (y/h)*100 : 0) + '%';
   }
   window.addEventListener('scroll', onScroll, {passive:true});
   onScroll();
+
+  // concept switcher
+  (function(){
+    const panes = {1: document.getElementById('concept1'), 2: document.getElementById('concept2')};
+    const btns = document.querySelectorAll('.concept-switch .cs-btn');
+    btns.forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const c = btn.dataset.concept;
+        btns.forEach(b=> b.classList.toggle('active', b===btn));
+        Object.keys(panes).forEach(k=> { panes[k].hidden = (k !== c); });
+        // reveal everything in the shown pane and reset scroll
+        panes[c].querySelectorAll('.reveal').forEach(el=> el.classList.add('in'));
+        window.scrollTo(0,0);
+        document.title = (c==='2')
+          ? 'Cornerstone Trades — A Christian Vocational School on the Rim'
+          : 'Granite Rim Reserve — A Sanctuary on the Rim';
+      });
+    });
+  })();
 
   // reveal on scroll
   const io = new IntersectionObserver((entries)=>{
@@ -1078,6 +1447,68 @@
   // load with Phase 1 preset so on-screen defaults always match
   ids.forEach(i=>{ el[i].value = PRESETS[1][i]; });
   recompute();
+
+  /* ===================== CONCEPT 2 MODEL ===================== */
+  (function(){
+    const R = {
+      students: document.getElementById('c2_studentsR'),
+      tuition:  document.getElementById('c2_tuitionR'),
+      build:    document.getElementById('c2_buildR'),
+      rb:       document.getElementById('c2_rbR'),
+      grants:   document.getElementById('c2_grantsR'),
+      staff:    document.getElementById('c2_staffR'),
+      mat:      document.getElementById('c2_matR'),
+      fac:      document.getElementById('c2_facR'),
+    };
+    if (!R.students) return;
+    const usd = n => '$' + Math.round(n).toLocaleString();
+    function setFill(input){ const mn=+input.min,mx=+input.max,v=+input.value; input.style.setProperty('--fill', ((v-mn)/(mx-mn)*100)+'%'); }
+    function recomputeC2(){
+      const students = +R.students.value;
+      const tuition  = +R.tuition.value;
+      const build    = +R.build.value;   // $M
+      const rb       = +R.rb.value;       // $/student
+      const grants   = +R.grants.value;   // $M
+      const staff    = +R.staff.value, mat=+R.mat.value, fac=+R.fac.value; // $M
+
+      // labels
+      document.getElementById('c2_students').textContent = students;
+      document.getElementById('c2_tuition').textContent = usd(tuition);
+      document.getElementById('c2_build').textContent = '$' + build.toFixed(2).replace(/\.?0+$/,'') + 'M';
+      document.getElementById('c2_rb').textContent = usd(rb);
+      document.getElementById('c2_grants').textContent = '$' + grants.toFixed(2).replace(/\.?0+$/,'') + 'M';
+      document.getElementById('c2_staff').textContent = '$' + staff.toFixed(1) + 'M';
+      document.getElementById('c2_mat').textContent = '$' + mat.toFixed(1) + 'M';
+      document.getElementById('c2_fac').textContent = '$' + fac.toFixed(1) + 'M';
+      Object.values(R).forEach(setFill);
+
+      // revenue ($M)
+      const tuitionRev = students * tuition / 1e6;
+      const rbRev = students * rb / 1e6;
+      const rev = tuitionRev + build + rbRev + grants;
+      const cost = staff + mat + fac;
+      const surplus = rev - cost;
+      const margin = rev > 0 ? surplus/rev*100 : 0;
+      const cps = students > 0 ? cost*1e6/students : 0;
+
+      const fmtM = v => (Math.abs(v)>=10? '$'+v.toFixed(1)+'M' : '$'+v.toFixed(1)+'M');
+      const fmtK = v => '$' + Math.round(v/1000) + 'K';
+      document.getElementById('c2o_students').textContent = students;
+      document.getElementById('c2o_cps').textContent = fmtK(cps);
+      document.getElementById('c2o_margin').textContent = Math.round(margin) + '%';
+      document.getElementById('c2o_rev').textContent = fmtM(rev);
+      document.getElementById('c2o_surplus').textContent = (surplus<0?'−':'') + fmtM(Math.abs(surplus));
+      document.getElementById('c2o_tuition').textContent = fmtM(tuitionRev);
+      document.getElementById('c2o_build').textContent = fmtM(build);
+      document.getElementById('c2o_rb').textContent = fmtM(rbRev);
+      document.getElementById('c2o_grants').textContent = fmtM(grants);
+      document.getElementById('c2o_cost').textContent = fmtM(cost);
+      const sEl = document.getElementById('c2o_surplus');
+      sEl.style.color = surplus>=0 ? 'var(--gold)' : 'var(--sand)';
+    }
+    Object.values(R).forEach(i=> i.addEventListener('input', recomputeC2));
+    recomputeC2();
+  })();
 </script>
 </body>
 </html>
