@@ -501,9 +501,20 @@
   /* section heads: left rule + boxed eyebrow tag */
   #concept2 .sec-head { border-left: 3px solid var(--gold); padding-left: 1.5rem; }
   #concept2 .sec-head .eyebrow { background: var(--gold); color: #EFF5FA; padding: 0.28rem 0.7rem; border-radius: 2px; display: inline-block; }
-  #concept2 .icon-card, #concept2 .step, #concept2 .deal .d, #concept2 .ctrl-group, #concept2 .result-card, #concept2 .nav-tag, #concept2 .impact .s .n { border-radius: 2px; }
+  /* readability fixes for light theme */
+  #concept2 .letter p { color: var(--cream); }
+  #concept2 .signoff b { color: var(--cream); }
+  #concept2 .letter .dropcap::first-letter { color: var(--sand); }
+  /* rounded everything — soft corners on blueprint paper */
+  #concept2 .icon-card, #concept2 .step, #concept2 .deal .d, #concept2 .ctrl-group, #concept2 .result-card, #concept2 .svg-figure, #concept2 .trades-wrap { border-radius: 16px; }
+  #concept2 .kpi-strip { border-radius: 14px; }
+  #concept2 .nav-tag, #concept2 .sec-head .eyebrow { border-radius: 8px; }
+  #concept2 .c2-hero-art { border-radius: 18px; }
+  #concept2 .nav.scrolled { border-radius: 0 0 16px 16px; }
+  #concept2 input[type=range] { border-radius: 6px; }
   /* spec-sheet / ledger: trades roster table */
-  .trades-table { width:100%; border-collapse:collapse; background: var(--ink-2); border:1px solid var(--line); }
+  #concept2 .trades-wrap { overflow:hidden; border:1px solid var(--line); background: var(--ink-2); }
+  .trades-table { width:100%; border-collapse:collapse; background: var(--ink-2); }
   .trades-table th, .trades-table td { text-align:left; padding:0.8rem 1.1rem; border-bottom:1px solid var(--line-dk); vertical-align:baseline; }
   .trades-table thead th { font-family:'Inter',sans-serif; font-size:0.64rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold); font-weight:700; }
   .trades-table tbody tr:last-child th, .trades-table tbody tr:last-child td { border-bottom:none; }
@@ -1186,7 +1197,7 @@
         <h2>Every skill that <em>builds the world.</em></h2>
         <div class="lead" style="margin-top:1rem">Hands-on programs in the trades with the longest demand and the best pay — taught by people who do the work for a living.</div>
       </div>
-      <div class="reveal d1" style="overflow-x:auto;">
+      <div class="trades-wrap reveal d1">
         <table class="trades-table">
           <thead><tr><th>#</th><th>Trade</th><th>What you'll build</th><th>Credential path</th></tr></thead>
           <tbody>
