@@ -458,42 +458,77 @@
   .pane[hidden] { display: none; }
 
   /* ============ CONCEPT 2 — CORNERSTONE TRADES (rustic theme) ============ */
+  /* LIGHT blueprint-paper theme — deliberately the inverse of Concept 1's dark cinematic look */
   #concept2 {
-    --ink:        #122236;   /* deep denim navy (not near-black) */
-    --ink-2:      #18304A;
-    --ink-soft:   #20405F;
-    --cream:      #EEF2F5;
-    --cream-2:    #AFC4D4;
-    --paper:      #E7DEC9;   /* kraft / blueprint paper */
-    --sand:       #D5851F;   /* amber (secondary) */
-    --sand-deep:  #AD681A;
-    --juniper:    #51625B;
-    --gold:       #4E97CB;   /* PRIMARY = bright steel/denim blue */
-    --gold-soft:  #A6CBE6;
-    --rim:        #DBA64C;   /* amber-gold labels */
-    --muted:      #7E94A6;
-    --muted-dk:   #5B6E7E;
-    --line:       rgba(40,90,140,0.30);
-    --line-dk:    rgba(166,203,230,0.18);
+    --ink:        #DBE3EC;   /* pale blueprint blue-grey (.dark/.ink2 sections) */
+    --ink-2:      #F3EDDE;   /* warm card surface */
+    --ink-soft:   #E7DECB;
+    --cream:      #1D2B39;   /* DARK navy-slate = primary TEXT */
+    --cream-2:    #46586A;   /* muted dark text */
+    --paper:      #EBE3D0;   /* warm kraft paper (.pad sections + body) */
+    --sand:       #B0691A;   /* amber */
+    --sand-deep:  #8A5113;
+    --juniper:    #4F6E57;
+    --gold:       #2E6FA1;   /* steel / denim blue (primary) */
+    --gold-soft:  #36658C;
+    --rim:        #9E640F;   /* amber labels */
+    --muted:      #6A7884;
+    --muted-dk:   #51606B;
+    --line:       rgba(45,95,150,0.26);   /* blue blueprint grid / borders */
+    --line-dk:    rgba(29,43,57,0.16);     /* dividers on light */
     background: var(--paper);
+    color: var(--cream);
   }
-  /* blueprint grid texture across every Concept 2 section */
+  /* blueprint grid texture (blue lines on light paper) */
   #concept2 .pad, #concept2 .c2-hero { position: relative; }
   #concept2 .pad::before, #concept2 .c2-hero::after {
-    content:''; position:absolute; inset:0; pointer-events:none; z-index:0; opacity:0.55;
+    content:''; position:absolute; inset:0; pointer-events:none; z-index:0; opacity:0.6;
     background:
       repeating-linear-gradient(0deg, var(--line) 0 1px, transparent 1px 58px),
       repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 58px);
   }
   #concept2 .pad > .wrap { position: relative; z-index: 1; }
-  #concept2 .sec-head .eyebrow { background: var(--gold); color: var(--ink); padding: 0.28rem 0.7rem; border-radius: 2px; display: inline-block; }
-  #concept2 .sec-head .eyebrow::before { content: none; }
-  /* layout differentiators: blueprint/ledger section heads */
+  /* fixes for components that assume dark bg + light text */
+  #concept2 .nav.scrolled { background: rgba(235,227,208,0.96); box-shadow: 0 1px 0 var(--line-dk); }
+  #concept2 .nav-tag { color: #EFF5FA; }
+  #concept2 .c2-hero { background: var(--paper); }
+  #concept2 input[type=range] { background: linear-gradient(90deg, var(--gold) var(--fill,40%), rgba(30,50,70,0.16) var(--fill,40%)); }
+  #concept2 .result-card { box-shadow: 0 22px 55px rgba(40,60,90,0.16); }
+  #concept2 footer { background: var(--ink-soft); border-top: 1px solid var(--line-dk); }
+  /* SVG illustrations sit as framed dark blueprint panels on the light page */
+  #concept2 .svg-figure { background: #102234; border-color: rgba(45,95,150,0.4); }
+  #concept2 .svg-figure .cap { color: #AFC4D4; border-top-color: rgba(255,255,255,0.1); }
+  /* section heads: left rule + boxed eyebrow tag */
   #concept2 .sec-head { border-left: 3px solid var(--gold); padding-left: 1.5rem; }
-  #concept2 .sec-head .eyebrow::before { content: '— '; color: var(--rim); }
-  #concept2 .icon-card, #concept2 .step, #concept2 .deal .d, #concept2 .ctrl-group, #concept2 .result-card { border-radius: 2px; }
-  #concept2 .nav-tag { border-radius: 2px; }
-  #concept2 .trades .t, #concept2 .impact .s .n { border-radius: 2px; }
+  #concept2 .sec-head .eyebrow { background: var(--gold); color: #EFF5FA; padding: 0.28rem 0.7rem; border-radius: 2px; display: inline-block; }
+  #concept2 .icon-card, #concept2 .step, #concept2 .deal .d, #concept2 .ctrl-group, #concept2 .result-card, #concept2 .nav-tag, #concept2 .impact .s .n { border-radius: 2px; }
+  /* spec-sheet / ledger: trades roster table */
+  .trades-table { width:100%; border-collapse:collapse; background: var(--ink-2); border:1px solid var(--line); }
+  .trades-table th, .trades-table td { text-align:left; padding:0.8rem 1.1rem; border-bottom:1px solid var(--line-dk); vertical-align:baseline; }
+  .trades-table thead th { font-family:'Inter',sans-serif; font-size:0.64rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold); font-weight:700; }
+  .trades-table tbody tr:last-child th, .trades-table tbody tr:last-child td { border-bottom:none; }
+  .trades-table tbody tr:hover { background: rgba(46,111,161,0.06); }
+  .trades-table .no { color:var(--gold); font-family:'Zilla Slab',serif; font-weight:600; width:2.4rem; }
+  .trades-table .tname { font-family:'Zilla Slab',serif; font-weight:600; font-size:1.08rem; color:var(--cream); width:30%; }
+  .trades-table td { font-size:0.88rem; color:var(--cream-2); }
+  .trades-table .cred { color:var(--gold-soft); font-weight:600; white-space:nowrap; }
+  @media (max-width:640px){
+    .trades-table thead{display:none;}
+    .trades-table, .trades-table tbody, .trades-table tr, .trades-table th, .trades-table td{display:block; width:auto;}
+    .trades-table tr{border-bottom:2px solid var(--line); padding:0.5rem 0;}
+    .trades-table td, .trades-table th{border:none; padding:0.15rem 1.1rem;}
+    .trades-table .tname{padding-top:0.5rem;} .trades-table .no{display:none;}
+  }
+  /* ledger worksheet for the model result */
+  #concept2 .ledger-row { display:flex; align-items:baseline; gap:0.6rem; padding:0.6rem 0; }
+  #concept2 .ledger-row .lbl { font-size:0.9rem; color:var(--cream-2); white-space:nowrap; }
+  #concept2 .ledger-row .dots { flex:1; border-bottom:1px dotted var(--line); transform:translateY(-3px); }
+  #concept2 .ledger-row .amt { font-variant-numeric:tabular-nums; font-weight:600; color:var(--cream); }
+  #concept2 .ledger-rule { border-top:1px solid var(--line); margin:0.4rem 0; }
+  #concept2 .ledger-row.total .lbl { color:var(--cream); font-weight:600; }
+  #concept2 .ledger-row.grand { padding:0.9rem 0; }
+  #concept2 .ledger-row.grand .lbl { font-family:'Zilla Slab',serif; font-size:1.05rem; color:var(--cream); }
+  #concept2 .ledger-row.grand .amt { font-family:'Zilla Slab',serif; font-size:1.7rem; color:var(--gold); }
   /* split hero (distinct from Concept 1's centered full-bleed) */
   .c2-hero { min-height: 100vh; display: flex; align-items: center; background: var(--ink); color: var(--cream); padding: 7rem 0 4rem; position: relative; overflow: hidden; }
   .c2-hero::before { content:''; position:absolute; inset:0; background:
@@ -1157,16 +1192,21 @@
         <h2>Every skill that <em>builds the world.</em></h2>
         <div class="lead" style="margin-top:1rem">Hands-on programs in the trades with the longest demand and the best pay — taught by people who do the work for a living.</div>
       </div>
-      <div class="trades reveal d1">
-        <div class="t"><span class="ic">🔨</span><h4>Carpentry &amp; Framing</h4><p>Rough framing to fine finish, plus traditional timber framing.</p></div>
-        <div class="t"><span class="ic">🧱</span><h4>Masonry &amp; Stonework</h4><p>Stone, brick, and block — the craft behind the chapel.</p></div>
-        <div class="t"><span class="ic">⚡</span><h4>Electrical</h4><p>Residential and commercial wiring toward licensure.</p></div>
-        <div class="t"><span class="ic">🔧</span><h4>Plumbing</h4><p>Water, waste, and gas systems, code to completion.</p></div>
-        <div class="t"><span class="ic">🔥</span><h4>Welding &amp; Metal Fab</h4><p>Structural, pipe, and ornamental fabrication.</p></div>
-        <div class="t"><span class="ic">❄️</span><h4>HVAC</h4><p>Heating, cooling, and refrigeration installation &amp; service.</p></div>
-        <div class="t"><span class="ic">🚜</span><h4>Heavy Equipment</h4><p>Grading, excavation, and site work operation.</p></div>
-        <div class="t"><span class="ic">🪚</span><h4>Cabinetry &amp; Millwork</h4><p>Fine woodworking, doors, and built-in furniture.</p></div>
-        <div class="t"><span class="ic">🛠️</span><h4>Diesel &amp; Mechanics</h4><p>Engines, hydraulics, and equipment maintenance.</p></div>
+      <div class="reveal d1" style="overflow-x:auto;">
+        <table class="trades-table">
+          <thead><tr><th>#</th><th>Trade</th><th>What you'll build</th><th>Credential path</th></tr></thead>
+          <tbody>
+            <tr><td class="no">01</td><th class="tname">Carpentry &amp; Framing</th><td>Rough framing to fine finish; traditional timber framing</td><td class="cred">NCCER / apprenticeship</td></tr>
+            <tr><td class="no">02</td><th class="tname">Masonry &amp; Stonework</th><td>Stone, brick &amp; block — the craft behind the chapel</td><td class="cred">NCCER / journeyman</td></tr>
+            <tr><td class="no">03</td><th class="tname">Electrical</th><td>Residential &amp; commercial wiring</td><td class="cred">AZ apprentice → license</td></tr>
+            <tr><td class="no">04</td><th class="tname">Plumbing</th><td>Water, waste &amp; gas systems, code to completion</td><td class="cred">AZ apprentice → license</td></tr>
+            <tr><td class="no">05</td><th class="tname">Welding &amp; Metal Fab</th><td>Structural, pipe &amp; ornamental fabrication</td><td class="cred">AWS certification</td></tr>
+            <tr><td class="no">06</td><th class="tname">HVAC</th><td>Heating, cooling &amp; refrigeration install/service</td><td class="cred">EPA 608 / NATE</td></tr>
+            <tr><td class="no">07</td><th class="tname">Heavy Equipment</th><td>Grading, excavation &amp; site-work operation</td><td class="cred">NCCER / OSHA</td></tr>
+            <tr><td class="no">08</td><th class="tname">Cabinetry &amp; Millwork</th><td>Fine woodworking, doors &amp; built-in furniture</td><td class="cred">Shop certificate</td></tr>
+            <tr><td class="no">09</td><th class="tname">Diesel &amp; Mechanics</th><td>Engines, hydraulics &amp; equipment maintenance</td><td class="cred">ASE certification</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </section>
@@ -1282,25 +1322,23 @@
         </div>
         <div class="results reveal d2">
           <div class="result-card">
-            <div class="phase-label">Modeled scenario · <b>Sustainable Ministry</b></div>
+            <div class="phase-label">Annual P&amp;L · <b>Worksheet</b></div>
             <div class="kpi-strip">
               <div class="kpi"><div class="v num" id="c2o_students">150</div><div class="k">Students / yr</div></div>
               <div class="kpi"><div class="v num" id="c2o_cps">$38K</div><div class="k">All-in / student</div></div>
               <div class="kpi"><div class="v num" id="c2o_margin">21%</div><div class="k">Surplus margin</div></div>
             </div>
-            <div class="headline-num">
-              <div class="k">Total annual revenue</div>
-              <div class="v num" id="c2o_rev">$5.7M</div>
-            </div>
-            <div class="headline-num">
-              <div class="k">Operating surplus (profit)</div>
-              <div class="v big num" id="c2o_surplus">$1.2M</div>
-            </div>
-            <div class="res-row"><span class="k">Tuition</span><span class="v num" id="c2o_tuition">$1.8M</span></div>
-            <div class="res-row"><span class="k">Build &amp; contract work</span><span class="v num" id="c2o_build">$2.5M</span></div>
-            <div class="res-row"><span class="k">Room &amp; board</span><span class="v num" id="c2o_rb">$0.9M</span></div>
-            <div class="res-row"><span class="k">Ministry support &amp; grants</span><span class="v num" id="c2o_grants">$0.5M</span></div>
-            <div class="res-row"><span class="k">Total annual cost</span><span class="v num" id="c2o_cost">$4.5M</span></div>
+            <div style="font-size:0.64rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold); font-weight:700; margin:1.2rem 0 0.2rem;">Revenue</div>
+            <div class="ledger-row"><span class="lbl">Tuition</span><span class="dots"></span><span class="amt" id="c2o_tuition">$1.8M</span></div>
+            <div class="ledger-row"><span class="lbl">Build &amp; contract work</span><span class="dots"></span><span class="amt" id="c2o_build">$2.5M</span></div>
+            <div class="ledger-row"><span class="lbl">Room &amp; board</span><span class="dots"></span><span class="amt" id="c2o_rb">$0.9M</span></div>
+            <div class="ledger-row"><span class="lbl">Ministry support &amp; grants</span><span class="dots"></span><span class="amt" id="c2o_grants">$0.5M</span></div>
+            <div class="ledger-rule"></div>
+            <div class="ledger-row total"><span class="lbl">Total revenue</span><span class="dots"></span><span class="amt" id="c2o_rev">$5.7M</span></div>
+            <div style="font-size:0.64rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold); font-weight:700; margin:1.1rem 0 0.2rem;">Less — Operating Costs</div>
+            <div class="ledger-row"><span class="lbl">Faculty, materials &amp; facilities</span><span class="dots"></span><span class="amt" id="c2o_cost">$4.5M</span></div>
+            <div class="ledger-rule"></div>
+            <div class="ledger-row grand"><span class="lbl">Operating surplus</span><span class="dots"></span><span class="amt" id="c2o_surplus">$1.2M</span></div>
             <p class="model-foot">Built to run a healthy surplus so it never depends on donations to stay open — the surplus funds scholarships, expansion, and debt-light tuition. Figures are illustrative for discussion, not a forecast.</p>
           </div>
         </div>
