@@ -459,24 +459,35 @@
 
   /* ============ CONCEPT 2 — CORNERSTONE TRADES (rustic theme) ============ */
   #concept2 {
-    --ink:        #14181D;   /* cool slate-charcoal */
-    --ink-2:      #1B222A;
-    --ink-soft:   #232C35;
-    --cream:      #EEF1F3;   /* cool bone */
-    --cream-2:    #C7D1D8;
-    --paper:      #ECE5D5;   /* warm kraft/canvas */
-    --sand:       #C07A2E;   /* amber (secondary) */
-    --sand-deep:  #9C5D20;
+    --ink:        #122236;   /* deep denim navy (not near-black) */
+    --ink-2:      #18304A;
+    --ink-soft:   #20405F;
+    --cream:      #EEF2F5;
+    --cream-2:    #AFC4D4;
+    --paper:      #E7DEC9;   /* kraft / blueprint paper */
+    --sand:       #D5851F;   /* amber (secondary) */
+    --sand-deep:  #AD681A;
     --juniper:    #51625B;
-    --gold:       #5285AD;   /* PRIMARY = steel / denim blue */
-    --gold-soft:  #93B6D0;
-    --rim:        #C58A3A;   /* warm amber for small labels */
-    --muted:      #87919C;
-    --muted-dk:   #5C6770;
-    --line:       rgba(70,92,112,0.28);
-    --line-dk:    rgba(238,241,243,0.13);
+    --gold:       #4E97CB;   /* PRIMARY = bright steel/denim blue */
+    --gold-soft:  #A6CBE6;
+    --rim:        #DBA64C;   /* amber-gold labels */
+    --muted:      #7E94A6;
+    --muted-dk:   #5B6E7E;
+    --line:       rgba(40,90,140,0.30);
+    --line-dk:    rgba(166,203,230,0.18);
     background: var(--paper);
   }
+  /* blueprint grid texture across every Concept 2 section */
+  #concept2 .pad, #concept2 .c2-hero { position: relative; }
+  #concept2 .pad::before, #concept2 .c2-hero::after {
+    content:''; position:absolute; inset:0; pointer-events:none; z-index:0; opacity:0.55;
+    background:
+      repeating-linear-gradient(0deg, var(--line) 0 1px, transparent 1px 58px),
+      repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 58px);
+  }
+  #concept2 .pad > .wrap { position: relative; z-index: 1; }
+  #concept2 .sec-head .eyebrow { background: var(--gold); color: var(--ink); padding: 0.28rem 0.7rem; border-radius: 2px; display: inline-block; }
+  #concept2 .sec-head .eyebrow::before { content: none; }
   /* layout differentiators: blueprint/ledger section heads */
   #concept2 .sec-head { border-left: 3px solid var(--gold); padding-left: 1.5rem; }
   #concept2 .sec-head .eyebrow::before { content: '— '; color: var(--rim); }
