@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="AZ Nerd Network event display — hosted by LAB/rinth studio.">
+<link rel="icon" href="/favicon.svg">
+<title>AZ Nerd Network — Event Display</title>
+<style>
+  :root{
+    --twilight-top:#160c28;
+    --twilight-mid:#4e2445;
+    --sunset:#d95c2c;
+    --horizon:#f4a24a;
+    --cream:#f7ecd6;
+    --amber:#f4c86a;
+    --cactus:#3f9a56;
+    --cactus-lit:#54b46b;
+    --cactus-dark:#256b38;
+    --navy:#111828;
+    --navy-deep:#0b1020;
+    --heart:#e8593e;
+    --mesa-far:#57303f;
+    --mesa-near:#8a3f38;
+    --mesa-shadow:#41202c;
+    /* resting slot the host mark is centred on */
+    --mark-w:clamp(46px,5vw,78px);
+    --mark-h:clamp(40px,4.33vw,68px);
+    --host-x:clamp(20px,3vw,52px);
+    --host-y:clamp(18px,3.2vh,40px);
+  }
+  *{box-sizing:border-box;-webkit-font-smoothing:antialiased;}
+  html,body{
+    margin:0;padding:0;width:100%;height:100%;overflow:hidden;
+    background:var(--navy-deep);
+    font-family:"Avenir Next","Avenir","Segoe UI",Helvetica,Arial,sans-serif;
+    cursor:none;
+  }
+
+  .stage{ position:relative; width:100vw; height:100vh; overflow:hidden; }
+  /* explicit layering: the host mark must never be covered */
+  .mesas,.floor,.floor-glow{ z-index:1; }
+  .signal{ z-index:8; }
+  .hero{ z-index:10; }
+  .ticker{ z-index:40; }
+  .host,.clock{ z-index:50; }
+  /* darkens sky + terrain while the mark is out. Sits BELOW .hero (z-index 10)
+     so the fallen pieces stay readable instead of being crushed along with it. */
+  .dim{
+    position:absolute; inset:0; z-index:6;
+    background:#06080d; opacity:0; pointer-events:none;
+    animation:dim-cycle 120s ease-in-out infinite;
+  }
+  @keyframes dim-cycle{
+    0%,18%{ opacity:0; }
+    23%{ opacity:.88; }
+    32%{ opacity:.92; }
+    37%{ opacity:.88; }
+    42%,100%{ opacity:0; }
+  }
+
+  /* ============ sky ============ */
+  .sky{
+    position:absolute;inset:0;
+    background:linear-gradient(180deg,
+      var(--twilight-top) 0%,
+      var(--twilight-mid) 34%,
+      var(--sunset) 64%,
+      var(--horizon) 100%);
+  }
+  .sun{
+    position:absolute; left:13%; top:56%;
+    width:min(24vw,340px); height:min(24vw,340px);
+    border-radius:50%;
+    background:radial-gradient(circle at 50% 50%, #ffe7b0 0%, var(--horizon) 44%, rgba(244,162,74,0) 72%);
+    transform:translate(-50%,-50%);
+    animation:sun-pulse 7s ease-in-out infinite;
+  }
+  @keyframes sun-pulse{
+    0%,100%{opacity:.82; transform:translate(-50%,-50%) scale(1);}
+    50%{opacity:1; transform:translate(-50%,-50%) scale(1.05);}
+  }
+
+  .stars{position:absolute; inset:0 0 58% 0;}
+  .star{
+    position:absolute; border-radius:50%;
+    background:var(--cream);
+    animation:twinkle 3.4s ease-in-out infinite;
+  }
+  @keyframes twinkle{ 0%,100%{opacity:.12;} 50%{opacity:.85;} }
+
+  .circuit{
+    position:absolute; inset:0; opacity:.5;
+    -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 42%,transparent 74%);
+            mask-image:linear-gradient(180deg,#000 0%,#000 42%,transparent 74%);
+  }
+  .trace{
+    stroke:var(--amber); stroke-width:1.2; fill:none;
+    stroke-dasharray:6 11;
+    animation:flow 6s linear infinite;
+  }
+  .node{ fill:var(--amber); }
+  @keyframes flow{ to{ stroke-dashoffset:-170; } }
+
+  .signal{
+    position:absolute;
+    right:clamp(24px,5vw,120px);
+    top:clamp(96px,17vh,220px);
+    width:min(18vw,230px); height:auto;
+    opacity:.6;
+  }
+  .arc{ animation:pulse-arc 2.6s ease-out infinite; }
+  @keyframes pulse-arc{ 0%{opacity:0;} 22%{opacity:1;} 68%,100%{opacity:0;} }
+
+  /* ============ terrain ============ */
+  .mesas{ position:absolute; left:0; right:0; bottom:19vh; }
+  .mesas svg{ display:block; width:100%; height:auto; }
+
+  .floor{
+    position:absolute; left:0; right:0;
+    bottom:clamp(48px,7.5vh,76px);
+    height:22vh;
+    pointer-events:none;
+    -webkit-mask-image:linear-gradient(0deg,#000 55%,transparent 100%);
+            mask-image:linear-gradient(0deg,#000 55%,transparent 100%);
+  }
+  .floor svg{ display:block; width:100%; height:100%; }
+  .floor .gl{ stroke:var(--amber); fill:none; stroke-width:1.6; }
+  .floor-glow{
+    position:absolute; left:0; right:0;
+    bottom:clamp(48px,7.5vh,76px);
+    height:14vh;
+    background:linear-gradient(0deg, rgba(232,89,62,.16), transparent 80%);
+    pointer-events:none;
+  }
+
+  /* ============ hero ============ */
+  .hero{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    gap:clamp(20px,4.5vw,80px);
+    padding:0 5vw 6vh;
+  }
+
+  .mascot-body{ flex:0 0 auto; }
+  .mascot{
+    flex:0 0 auto;
+    animation:sway 5s ease-in-out infinite;
+    transform-origin:50% 96%;
+  }
+  @keyframes sway{
+    0%,100%{ transform:rotate(-1.6deg) translateY(0); }
+    50%{ transform:rotate(1.6deg) translateY(-7px); }
+  }
+  .mascot svg{
+    width:min(33vw,410px); height:auto; display:block;
+    filter:drop-shadow(0 22px 34px rgba(0,0,0,.5));
+  }
+  .heart{ animation:beat 1.6s ease-in-out infinite; transform-origin:145px 199px; }
+  @keyframes beat{
+    0%,100%{ transform:scale(1); }
+    22%{ transform:scale(1.16); }
+    40%{ transform:scale(1); }
+  }
+  .flexL{ animation:flex-l 5s ease-in-out infinite; transform-origin:100px 122px; }
+  .flexR{ animation:flex-r 5s ease-in-out infinite; transform-origin:190px 122px; }
+  @keyframes flex-l{
+    0%,100%{ transform:rotate(0deg); }
+    50%{ transform:rotate(-5deg) translateY(-3px); }
+  }
+  @keyframes flex-r{
+    0%,100%{ transform:rotate(0deg); }
+    50%{ transform:rotate(5deg) translateY(-3px); }
+  }
+  .glint{ animation:glint-move 4.4s ease-in-out infinite; }
+  @keyframes glint-move{
+    0%{ transform:translateX(-64px); opacity:0; }
+    8%{ opacity:.85; }
+    42%{ transform:translateX(64px); opacity:0; }
+    100%{ transform:translateX(64px); opacity:0; }
+  }
+
+  .wordmark{ flex:0 1 auto; text-align:left; max-width:52vw; }
+  .wordmark h1{
+    margin:0;
+    font-size:clamp(2.5rem,6.2vw,6.4rem);
+    line-height:.95;
+    letter-spacing:-.015em;
+    font-weight:800;
+    color:var(--cream);
+    text-wrap:balance;
+    text-shadow:0 4px 26px rgba(0,0,0,.4);
+  }
+  .wordmark h1 em{ font-style:normal; color:var(--amber); }
+  .rule{ display:flex; align-items:center; gap:10px; margin-top:1.05em; }
+  .rule i{
+    display:block; height:5px; border-radius:3px;
+    background:var(--cream);
+    box-shadow:0 0 14px rgba(247,236,214,.45);
+  }
+  .rule i:nth-child(1){ width:78px; }
+  .rule i:nth-child(2){ width:18px; opacity:.65; }
+  .rule i:nth-child(3){ width:8px;  opacity:.4; }
+  .tagline{
+    margin:.85em 0 0;
+    font-size:clamp(.82rem,1.55vw,1.3rem);
+    letter-spacing:.3em; text-transform:uppercase;
+    font-weight:600; color:var(--cream); opacity:.92;
+  }
+
+  /* ============ top rail ============ */
+  .host{
+    position:absolute;
+    top:clamp(18px,3.2vh,40px);
+    left:clamp(20px,3vw,52px);
+    display:flex; align-items:center;
+    gap:clamp(12px,1.4vw,20px);
+  }
+  .host-slot{ width:var(--mark-w); height:var(--mark-h); flex:0 0 auto; }
+  /* Size is animated via `width`, NOT transform:scale(): a scaled SVG gets
+     rasterised once at its layout size and then stretched, which is what made
+     the mark blurry. Animating width re-lays-out and re-renders it crisp. */
+  .host-mark{
+    position:fixed;
+    left:calc(var(--host-x) + var(--mark-w)/2);
+    top:calc(var(--host-y) + var(--mark-h)/2);
+    width:var(--mark-w);
+    height:auto; display:block;
+    fill:var(--cream);
+    opacity:.9;
+    transform:translate(-50%,-50%) rotate(0deg);
+    animation:host-journey 120s ease-in-out infinite;
+    z-index:60;
+    stroke:#fff; stroke-width:0.9; stroke-opacity:0;
+    paint-order:stroke;
+  }
+  /* Percentages are halved against the old 60s timing, so the whole
+     performance lands in the first 60s and 50% to 100% holds it at rest:
+     a full minute of stillness between runs. */
+  @keyframes host-journey{
+    0%    { left:calc(var(--host-x) + var(--mark-w)/2);
+            top:calc(var(--host-y) + var(--mark-h)/2);
+            width:var(--mark-w);
+            transform:translate(-50%,-50%) rotate(0deg);
+            fill:var(--cream); opacity:.9; stroke-opacity:0; }
+    3%    { width:calc(var(--mark-w)*1.22); }
+    5.5%  { width:var(--mark-w); }
+    9%    { width:calc(var(--mark-w)*1.5); fill:var(--amber); }
+    12%   { width:calc(var(--mark-w)*1.1); }
+    16%   { left:22%; top:26%; width:calc(var(--mark-w)*2.2);
+            transform:translate(-50%,-50%) rotate(22deg);
+            fill:var(--amber); opacity:.92; }
+    19%   { left:30%; top:32%; width:calc(var(--mark-w)*1.7);
+            transform:translate(-50%,-50%) rotate(-12deg); stroke-opacity:0; }
+    24%   { left:50%; top:44%; width:min(34vw,440px);
+            transform:translate(-50%,-50%) rotate(180deg);
+            fill:var(--cactus-lit); opacity:.95; stroke-opacity:1; }
+    28%   { left:50%; top:44%; width:min(46vw,600px);
+            transform:translate(-50%,-50%) rotate(540deg);
+            fill:var(--heart); opacity:.95; }
+    32%   { left:50%; top:44%; width:min(46vw,600px);
+            transform:translate(-50%,-50%) rotate(900deg);
+            fill:var(--amber); opacity:.95; }
+    36%   { left:44%; top:38%; width:min(28vw,360px);
+            transform:translate(-50%,-50%) rotate(1080deg);
+            fill:var(--horizon); opacity:.95; stroke-opacity:1; }
+    41%   { left:20%; top:20%; width:calc(var(--mark-w)*2.4);
+            transform:translate(-50%,-50%) rotate(1080deg);
+            fill:var(--amber); opacity:.92; stroke-opacity:0; }
+    46%   { left:calc(var(--host-x) + var(--mark-w)/2);
+            top:calc(var(--host-y) + var(--mark-h)/2);
+            width:calc(var(--mark-w)*1.15); fill:var(--cream); }
+    50%, 100% { left:calc(var(--host-x) + var(--mark-w)/2);
+            top:calc(var(--host-y) + var(--mark-h)/2);
+            width:var(--mark-w);
+            transform:translate(-50%,-50%) rotate(1080deg);
+            fill:var(--cream); opacity:.9; stroke-opacity:0; }
+  }
+  .host-divider{
+    width:2px; align-self:stretch;
+    background:linear-gradient(180deg,transparent,rgba(247,236,214,.5),transparent);
+  }
+  .host-text{
+    display:flex; flex-direction:column; gap:.35em;
+    animation:host-text-yield 120s ease-in-out infinite;
+  }
+  @keyframes host-text-yield{
+    0%,13%{ opacity:1; }
+    16%,37%{ opacity:0; }
+    43%,100%{ opacity:1; }
+  }
+  .host-eyebrow{
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:clamp(.55rem,.78vw,.8rem);
+    letter-spacing:.34em; text-transform:uppercase;
+    color:var(--amber); opacity:.85;
+  }
+  .host-name{
+    font-size:clamp(.9rem,1.5vw,1.4rem);
+    font-weight:700; letter-spacing:.02em;
+    color:var(--cream);
+  }
+  .host-name em{ font-style:normal; color:var(--amber); padding:0 .06em; }
+  .host-name span{ font-weight:400; opacity:.75; }
+
+  .clock{
+    position:absolute;
+    top:clamp(18px,3.2vh,40px);
+    right:clamp(20px,3vw,52px);
+    text-align:right;
+    display:flex; flex-direction:column; gap:.3em;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .clock-time{
+    font-size:clamp(1rem,1.9vw,1.7rem);
+    letter-spacing:.08em;
+    color:var(--amber);
+    text-shadow:0 0 12px rgba(244,200,106,.5);
+  }
+  .clock-date{
+    font-size:clamp(.55rem,.78vw,.8rem);
+    letter-spacing:.28em; text-transform:uppercase;
+    color:var(--cream); opacity:.6;
+  }
+
+  /* ---- operator triggers: click the clock or the host lockup ---- */
+  .clock, .host{ cursor:pointer; }
+  .clock{                                  /* bigger hit area, same visual spot */
+    top:calc(clamp(18px,3.2vh,40px) - 12px);
+    right:calc(clamp(20px,3vw,52px) - 14px);
+    padding:12px 14px;
+    border-radius:6px;
+    transition:background .18s ease;
+  }
+  .host{
+    top:calc(clamp(18px,3.2vh,40px) - 10px);
+    left:calc(clamp(20px,3vw,52px) - 12px);
+    padding:10px 12px;
+    border-radius:6px;
+    transition:background .18s ease;
+  }
+  .clock:hover, .host:hover{ background:rgba(247,236,214,.10); }
+  .host-mark{ pointer-events:none; }       /* never swallow a click when large */
+
+  .toast{
+    position:fixed; left:50%; bottom:calc(clamp(48px,7.5vh,76px) + 20px);
+    z-index:70; pointer-events:none; opacity:0;
+    transform:translateX(-50%);
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:clamp(.6rem,.95vw,.92rem);
+    letter-spacing:.28em; text-transform:uppercase; font-weight:700;
+    color:var(--navy-deep); background:var(--amber);
+    padding:.55em 1.1em; border-radius:3px;
+    box-shadow:0 6px 22px rgba(0,0,0,.45);
+  }
+  .toast.show{ animation:toast-pop 2.4s ease forwards; }
+  @keyframes toast-pop{
+    0%{ opacity:0; transform:translateX(-50%) translateY(10px); }
+    10%,72%{ opacity:1; transform:translateX(-50%) translateY(0); }
+    100%{ opacity:0; transform:translateX(-50%) translateY(-8px); }
+  }
+
+  /* ============ range day ============ */
+  .fx{ position:absolute; inset:0; z-index:20; pointer-events:none; }
+  .ch{ display:inline-block; }            /* per-letter targets */
+  .chunk,.floor line{ transform-box:fill-box; transform-origin:50% 50%; }
+  .rig{ opacity:0; transition:opacity .4s ease; }
+  .armed .rig{ opacity:1; }
+  /* the flex arms hand off to the rig's own purpose-drawn holding arms */
+  .flexL,.flexR{ transition:opacity .3s ease; }
+  .armed .flexL,.armed .flexR{ animation:none; opacity:0; }
+
+  /* ============ ticker ============ */
+  .ticker{
+    position:absolute; left:0; right:0; bottom:0;
+    height:clamp(48px,7.5vh,76px);
+    background:var(--navy);
+    border-top:2px solid var(--amber);
+    overflow:hidden; display:flex; align-items:center;
+    box-shadow:0 -10px 28px rgba(0,0,0,.4);
+  }
+  .track{
+    display:flex; white-space:nowrap;
+    animation:marquee 18s linear infinite;
+    will-change:transform;
+  }
+  .unit{
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:clamp(1rem,2.7vh,1.8rem);
+    font-weight:700; letter-spacing:.42em;
+    color:var(--amber);
+    text-shadow:0 0 10px rgba(244,200,106,.55);
+    padding:0 2.5em;
+  }
+  .unit::after{
+    content:"\2726";
+    color:var(--heart);
+    margin-left:2.5em; letter-spacing:0;
+  }
+  @keyframes marquee{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+  @media (prefers-reduced-motion:reduce){
+    .sun,.mascot,.heart,.glint,.trace,.star,.track,.arc,.flexL,.flexR,
+    .host-mark,.host-text{
+      animation-duration:0s !important;
+      animation-iteration-count:1 !important;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="sky"></div>
+  <div class="sun"></div>
+  <div class="stars" id="stars"></div>
+
+  <svg class="circuit" viewBox="0 0 1600 900" preserveAspectRatio="none" aria-hidden="true">
+    <path class="trace" d="M0,118 L280,118 L340,178 L620,178 L680,118 L1000,118 L1060,58 L1600,58" style="animation-delay:0s"/>
+    <path class="trace" d="M0,258 L200,258 L260,318 L560,318 L620,258 L900,258 L960,318 L1600,318" style="animation-delay:-1.5s"/>
+    <path class="trace" d="M0,38 L140,38 L200,98 L420,98 L480,38 L760,38 L820,98 L1600,98" style="animation-delay:-3s"/>
+    <path class="trace" d="M1600,198 L1360,198 L1300,258 L1080,258 L1020,198 L800,198" style="animation-delay:-2s"/>
+    <circle class="node" cx="340" cy="178" r="4"/>
+    <circle class="node" cx="680" cy="118" r="4"/>
+    <circle class="node" cx="1060" cy="58" r="4"/>
+    <circle class="node" cx="260" cy="318" r="4"/>
+    <circle class="node" cx="960" cy="318" r="4"/>
+    <circle class="node" cx="200" cy="98" r="4"/>
+    <circle class="node" cx="820" cy="98" r="4"/>
+  </svg>
+
+  <svg class="signal" viewBox="0 0 240 200" aria-hidden="true">
+    <g fill="none" stroke="var(--amber)" stroke-width="7" stroke-linecap="round">
+      <circle cx="120" cy="168" r="9" fill="var(--amber)" stroke="none"/>
+      <path class="arc" d="M78,138 A58,58 0 0 1 162,138" style="animation-delay:0s"/>
+      <path class="arc" d="M56,110 A92,92 0 0 1 184,110" style="animation-delay:.35s"/>
+      <path class="arc" d="M34,82 A126,126 0 0 1 206,82" style="animation-delay:.7s"/>
+    </g>
+  </svg>
+
+  <div class="mesas">
+    <svg viewBox="0 0 1600 300" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <g id="sag">
+          <rect x="-4" y="-44" width="8" height="44" rx="4"/>
+          <rect x="-15" y="-40" width="7" height="16" rx="3.5"/>
+          <rect x="-15" y="-31" width="15" height="7" rx="3.5"/>
+          <rect x="8" y="-36" width="7" height="14" rx="3.5"/>
+          <rect x="0" y="-29" width="15" height="7" rx="3.5"/>
+        </g>
+      </defs>
+
+      <polygon points="0,300 0,150 90,108 300,108 356,150 520,150 578,64 820,64 878,140 1080,140 1138,92 1360,92 1418,144 1600,144 1600,300"
+               fill="var(--mesa-far)" opacity="0.9"/>
+
+      <g fill="var(--mesa-shadow)" opacity="0.75">
+        <use href="#sag" transform="translate(170,150) scale(0.55)"/>
+        <use href="#sag" transform="translate(640,64) scale(0.6)"/>
+        <use href="#sag" transform="translate(1240,92) scale(0.5)"/>
+      </g>
+
+      <polygon points="0,300 0,218 200,218 252,176 480,176 532,212 760,212 812,160 1020,160 1072,206 1300,206 1352,170 1560,170 1600,200 1600,300"
+               fill="var(--mesa-near)"/>
+
+      <g fill="var(--mesa-shadow)" opacity="0.85">
+        <use href="#sag" transform="translate(320,176) scale(0.85)"/>
+        <use href="#sag" transform="translate(900,160) scale(1)"/>
+        <use href="#sag" transform="translate(1180,206) scale(0.7)"/>
+        <use href="#sag" transform="translate(1440,170) scale(0.6)"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="floor"><svg viewBox="0 0 1600 200" preserveAspectRatio="none" aria-hidden="true"><g class="gl"><line x1="800" y1="-520" x2="-2000" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="-1850" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="-1700" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="-1550" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="-1400" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="-1250" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="-1100" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="-950" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="-800" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="-650" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="-500" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="-350" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="-200" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="-50" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="100" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="250" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="400" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="550" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="700" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="850" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="1000" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="1150" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="1300" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="1450" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="1600" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="1750" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="1900" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="2050" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="2200" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="2350" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="2500" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="2650" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="2800" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="2950" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="3100" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="3250" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="3400" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="3550" y2="200" opacity="0.5"/><line x1="800" y1="-520" x2="3700" y2="200" opacity="0.5"/><line x1="0" y1="71.0" x2="1600" y2="71.0" opacity="0.23"/><line x1="0" y1="104.8" x2="1600" y2="104.8" opacity="0.30"/><line x1="0" y1="124.5" x2="1600" y2="124.5" opacity="0.37"/><line x1="0" y1="137.5" x2="1600" y2="137.5" opacity="0.44"/><line x1="0" y1="146.7" x2="1600" y2="146.7" opacity="0.51"/><line x1="0" y1="153.5" x2="1600" y2="153.5" opacity="0.58"/><line x1="0" y1="158.8" x2="1600" y2="158.8" opacity="0.65"/><line x1="0" y1="163.0" x2="1600" y2="163.0" opacity="0.72"/></g></svg></div>
+  <div class="floor-glow"></div>
+  <div class="dim" aria-hidden="true"></div>
+
+  <div class="hero">
+    <div class="mascot-body">
+      <div class="mascot">
+      <svg viewBox="0 0 290 320" xmlns="http://www.w3.org/2000/svg">
+        <!-- arms: horizontal upper arm, bicep peak on top, narrower forearm raised -->
+        <g class="flexL">
+          <rect x="42" y="112" width="68" height="36" rx="18" fill="var(--cactus)"/>
+          <circle cx="72" cy="116" r="23" fill="var(--cactus)"/>
+          <rect x="36" y="46" width="30" height="80" rx="15" fill="var(--cactus)"
+                transform="rotate(8 51 124)"/>
+          <g fill="none" stroke="var(--cactus-dark)" stroke-linecap="round">
+            <path d="M50,110 Q72,90 94,110" stroke-width="4" opacity=".5"/>
+            <path d="M46,140 Q70,151 94,142" stroke-width="3.2" opacity=".32"/>
+          </g>
+          <g stroke="var(--cactus-dark)" stroke-width="3.2" opacity=".36" stroke-linecap="round"
+             transform="rotate(8 51 124)">
+            <path d="M42,64 L60,64"/><path d="M43,86 L59,86"/>
+          </g>
+        </g>
+        <g class="flexR">
+          <rect x="180" y="112" width="68" height="36" rx="18" fill="var(--cactus)"/>
+          <circle cx="218" cy="116" r="23" fill="var(--cactus)"/>
+          <rect x="224" y="46" width="30" height="80" rx="15" fill="var(--cactus)"
+                transform="rotate(-8 239 124)"/>
+          <g fill="none" stroke="var(--cactus-dark)" stroke-linecap="round">
+            <path d="M196,110 Q218,90 240,110" stroke-width="4" opacity=".5"/>
+            <path d="M196,142 Q220,151 244,140" stroke-width="3.2" opacity=".32"/>
+          </g>
+          <g stroke="var(--cactus-dark)" stroke-width="3.2" opacity=".36" stroke-linecap="round"
+             transform="rotate(-8 239 124)">
+            <path d="M230,64 L248,64"/><path d="M231,86 L247,86"/>
+          </g>
+        </g>
+
+        <!-- body: distinct head, broad shoulders, tapered waist -->
+        <g fill="var(--cactus)">
+          <rect x="111" y="170" width="68" height="104" rx="30"/>
+          <rect x="97" y="106" width="96" height="84" rx="32"/>
+          <rect x="109" y="30" width="72" height="90" rx="34"/>
+        </g>
+        <g stroke="var(--cactus-dark)" fill="none" stroke-linecap="round" opacity=".4">
+          <path d="M105,110 Q96,124 104,142" stroke-width="3.2"/>
+          <path d="M185,110 Q194,124 186,142" stroke-width="3.2"/>
+        </g>
+
+        <!-- pectorals -->
+        <g fill="var(--cactus-lit)" opacity=".35">
+          <path d="M99,124 Q121,112 143,126 L143,154 Q119,164 101,150 Z"/>
+          <path d="M191,124 Q169,112 147,126 L147,154 Q171,164 189,150 Z"/>
+        </g>
+        <!-- four-pack -->
+        <g fill="var(--cactus-lit)" opacity=".28">
+          <rect x="123" y="228" width="21" height="15" rx="6.5"/>
+          <rect x="146" y="228" width="21" height="15" rx="6.5"/>
+          <rect x="123" y="247" width="21" height="15" rx="6.5"/>
+          <rect x="146" y="247" width="21" height="15" rx="6.5"/>
+        </g>
+        <g stroke="var(--cactus-dark)" fill="none" stroke-linecap="round" opacity=".55">
+          <path d="M145,122 L145,158" stroke-width="3.2"/>
+          <path d="M101,151 Q120,165 143,155" stroke-width="3.8"/>
+          <path d="M189,151 Q170,165 147,155" stroke-width="3.8"/>
+          <path d="M145,226 L145,264" stroke-width="2.8"/>
+          <path d="M122,245 Q145,252 168,245" stroke-width="2.8"/>
+        </g>
+
+        <!-- glasses -->
+        <g>
+          <rect x="113" y="62" width="29" height="26" rx="9" fill="var(--navy)"/>
+          <rect x="148" y="62" width="29" height="26" rx="9" fill="var(--navy)"/>
+          <rect x="140" y="71" width="10" height="5" fill="var(--navy)"/>
+          <clipPath id="lens"><rect x="113" y="62" width="29" height="26" rx="9"/><rect x="148" y="62" width="29" height="26" rx="9"/></clipPath>
+          <g clip-path="url(#lens)">
+            <rect class="glint" x="95" y="56" width="13" height="38" fill="#fff"
+                  opacity=".8" transform="skewX(-20)"/>
+          </g>
+        </g>
+
+        <!-- heart -->
+        <path class="heart" d="M145,188 C137,176 122,178 122,192 C122,205 136,213 145,222
+                               C154,213 168,205 168,192 C168,178 153,176 145,188 Z"
+              fill="var(--heart)"/>
+
+
+        <!-- Shooting rig: arms, rifle and hands are ONE group so the whole
+             assembly aims together and the hands stay on the weapon.
+             Rotated about .rig-pivot to track each target. -->
+        <g class="rig">
+          <g fill="var(--cactus)">                     <!-- arms behind the rifle -->
+            <circle cx="106" cy="144" r="19"/>
+            <rect x="94"  y="131" width="58" height="27" rx="13"/>
+            <circle cx="162" cy="147" r="16"/>
+            <rect x="152" y="135" width="52" height="25" rx="12"/>
+          </g>
+          <g class="rifle">
+            <rect x="78"  y="145" width="40" height="18" rx="5"  fill="#161d2c"/>
+            <rect x="112" y="139" width="54" height="25" rx="4"  fill="#1e2739"/>
+            <rect x="130" y="162" width="17" height="27" rx="4"  fill="#161d2c"/>
+            <rect x="120" y="132" width="34" height="6"  rx="3"  fill="#2b3550"/>
+            <rect x="164" y="147" width="44" height="10" rx="2"  fill="#161d2c"/>
+            <rect x="206" y="141" width="54" height="22" rx="10" fill="#28324a"/>
+            <rect x="214" y="148" width="38" height="3"  rx="1.5" fill="#3d4a68"/>
+            <rect x="138" y="133" width="4"  height="4"  fill="var(--amber)" opacity=".85"/>
+          </g>
+          <g fill="var(--cactus)">                     <!-- hands gripping over it -->
+            <rect x="126" y="149" width="27" height="27" rx="11"/>
+            <rect x="194" y="137" width="27" height="26" rx="11"/>
+          </g>
+          <g stroke="var(--cactus-dark)" stroke-width="2.6" opacity=".4"
+             stroke-linecap="round" fill="none">
+            <path d="M104,140 L120,140"/><path d="M160,144 L176,144"/>
+          </g>
+          <circle class="rig-pivot" cx="140" cy="152" r="1.2" fill="none"/>
+          <circle class="rifle-muzzle" cx="261" cy="152" r="1.2" fill="none"/>
+        </g>
+        <!-- badge -->
+        <rect x="82" y="278" width="126" height="36" rx="18" fill="var(--navy)"/>
+        <text x="145" y="302" text-anchor="middle" font-family="ui-monospace,Menlo,monospace"
+              font-size="17" font-weight="700" letter-spacing="2.6" fill="var(--cream)">AZNN</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="wordmark">
+      <h1>AZ <em>Nerd</em><br/>Network</h1>
+      <div class="rule"><i></i><i></i><i></i></div>
+      <p class="tagline">Connecting Arizona Tech Talent</p>
+    </div>
+  </div>
+
+  <div class="host">
+    <span class="host-slot" aria-hidden="true"></span>
+    <div class="host-divider"></div>
+    <div class="host-text">
+      <span class="host-eyebrow">Hosted by</span>
+      <span class="host-name">LAB<em>/</em>rinth <span>studio</span></span>
+    </div>
+  </div>
+
+  <svg class="host-mark" viewBox="0 0 130.74 113.15" aria-label="LAB/rinth studio">
+      <polygon points="24.31 14.25 20.13 15.76 14.26 29.42 16.75 30.76 24.31 14.25"/>
+      <polygon points="38.82 10 36.84 9.75 34.85 10.47 22.71 33.97 25.19 35.31 38.82 10"/>
+      <polygon points="50.68 11.48 47.19 11.04 31.13 38.5 33.61 39.83 50.68 11.48"/>
+      <polygon points="62.52 12.99 59.03 12.54 39.53 43.02 42 44.35 62.52 12.99"/>
+      <polygon points="10.76 19.12 7.14 20.42 5.75 24.84 8.26 26.19 10.76 19.12"/>
+      <path d="M58.77,53.33l27.34-37.26-3.47-.46-26.36,36.42,1.47.79c.34.18.68.35,1.02.5Z"/>
+      <polygon points="100.84 38.21 116.11 19.09 113.17 17.96 94.49 41.57 100.84 38.21"/>
+      <polygon points="74.33 14.52 70.85 14.07 47.91 47.53 50.38 48.86 74.33 14.52"/>
+      <polygon points="48.49 43.43 75.24 3.29 72.11 2.08 45.92 42.2 48.49 43.43"/>
+      <polygon points="31.01 35.09 47.18 6.04 42.44 7.74 28.43 33.87 31.01 35.09"/>
+      <polygon points="22.23 30.95 31.51 11.67 27.15 13.23 19.64 29.74 22.23 30.95"/>
+      <polygon points="109.6 19.25 106.14 18.78 83.85 47.2 90.07 43.91 109.6 19.25"/>
+      <polygon points="39.76 39.25 63.98 0 58.93 1.81 37.19 38.02 39.76 39.25"/>
+      <polygon points="79.71 49.39 106.1 15.22 103.14 14.08 73.74 52.54 79.71 49.39"/>
+      <polygon points="123.16 26.41 126.02 22.93 123.11 21.8 116.48 29.94 123.16 26.41"/>
+      <polygon points="121.16 21.05 120.37 20.74 117.86 20.39 105.39 35.81 111.95 32.34 121.16 21.05"/>
+      <polygon points="65.86 51.87 95.98 11.31 92.97 10.15 63.31 50.62 65.86 51.87"/>
+      <polygon points="57.19 47.64 85.71 7.34 82.65 6.16 54.63 46.4 57.19 47.64"/>
+      <polygon points="4.98 21.2 2.88 21.96 4.59 22.74 4.98 21.2"/>
+      <polygon points="13.42 26.83 17.29 16.78 13.44 18.16 10.82 25.63 13.42 26.83"/>
+      <polygon points="128.12 23.74 128.06 23.82 128.17 23.76 128.12 23.74"/>
+      <path d="M97.87,17.65l-3.46-.47-28.42,37.58c1.34-.04,2.67-.25,3.96-.62l27.92-36.49Z"/>
+      <polygon points="7.05 29.6 4.67 28.22 0 25.52 0 30.03 0 79.61 18.87 90.51 18.87 84.17 7.94 77.86 7.94 35.93 7.94 30.11 7.05 29.6"/>
+      <path d="M52.42,57.37v-1.59s-1.71-.99-4.9-2.83c-.72-.42-1.52-.87-2.38-1.37-.55-.32-1.12-.64-1.72-.99l-3.99-2.3-2.38-1.37-3.09-1.78v6.6s.01,47.49.01,47.49l10.57,6.08c4.81,2.78,7.89,4.56,7.89,4.56v-23.24c0-6.18-4.72-8.46-5.41-8.76.69.29,5.41,2.05,5.41-3.54v-16.95ZM42.02,56.12l2.33,1.38,1.13.67v6.33s0,9.9,0,9.9l-4.38-2.4v-14.52s0-1.89,0-1.89l.92.55ZM41.09,97v-17.77s4.38,2.53,4.38,2.53v17.69s-4.38-2.44-4.38-2.44Z"/>
+      <path d="M30.2,42.95l-1.25-.72-5.71-3.29-2.38-1.37-5.71-3.29-2.38-1.37-1.03-.6v3s.01,40.64.01,40.64l7.13,4.12v-13.67s4.38,2.53,4.38,2.53v24.09s6.94,4,6.94,4v-54.07ZM18.88,59.17v-16.42s1.75,1.04,1.75,1.04l2.63,1.55v2.11s0,14.25,0,14.25l-4.38-2.53Z"/>
+      <path d="M74.64,78.51v-4.69c0-3.13,0-7.12,0-10.43,0-1.75,0-3.3,0-4.45v-1.99c-3.33,1.7-6.11,2.58-8.87,2.65-1.07.03-2.14-.07-3.23-.28-1.97-.39-4.03-1.17-6.37-2.36,0,3.59,0,7.18,0,10.77,0,1.47,0,2.94,0,4.41,0,.23,0,.47,0,.7,0,12.73,0,25.47,0,38.2,2.69,1.37,4.15,1.79,7.08,2.1,0-9.65,0-14.47,0-24.12,1.79.19,2.7.19,4.5-.02,0,9.63,0,14.45,0,24.08,2.84-.33,4.26-.75,6.87-2.08,0-7.98,0-11.97,0-19.94,0-6.67-5.42-5.13-5.42-5.13,0,0,1.01-.26,2.15-1.04,1.51-1.03,3.27-2.95,3.27-6.39ZM67.49,81.8c-1.61.18-2.53.17-4.22,0,0-1.22,0-2.32,0-3.35,0-.24,0-.47,0-.7,0-1.53,0-2.92,0-4.31,0-2.41,0-4.84,0-8.06,1.8.21,2.71.22,4.5.03,0,.81,0,1.57,0,2.29,0,1.59,0,3,0,4.36,0,3,0,5.76,0,9.7-.1.01-.18.02-.27.03Z"/>
+      <polygon points="123.59 52.58 119.35 55.04 119.35 61.36 123.59 58.92 123.59 83.96 130.74 79.85 130.74 36.33 123.59 40.47 123.59 52.58"/>
+      <polygon points="85.61 74.94 85.61 64.64 85.61 60.26 85.61 57.29 85.61 52.8 85.61 51.87 82.21 53.83 78.53 55.96 78.53 58.48 78.53 69.02 78.53 73.33 78.53 83.47 78.53 87.64 78.53 90.64 78.53 110.06 85.61 105.97 85.61 86.28 85.61 79.17 85.61 74.94"/>
+      <polygon points="108.18 49.14 106 50.38 102.01 52.66 101.99 55.22 101.95 59.62 101.93 62.77 101.87 69.69 100.98 63.9 100.58 61.27 100.01 57.6 99.62 55.07 99.05 51.34 98.64 48.67 98.05 44.88 98.02 44.7 93.63 47.24 89.49 49.65 89.49 52.43 89.49 55.46 89.49 59.88 89.49 63.07 89.49 63.57 89.49 70.27 89.49 74.53 89.49 81.72 89.49 103.68 95.6 100.17 95.61 74.52 95.61 67.21 95.61 62.9 95.61 60.65 95.91 62.54 96.48 66.17 97.45 72.36 101.32 96.9 108.18 92.91 108.18 55.28 108.18 52.18 108.18 49.14"/>
+      <polygon points="119.35 41.91 119.35 38.81 119.35 38.72 119.5 38.64 124.5 35.75 130.68 32.18 130.68 28.36 130.68 25.85 129.74 26.39 122.41 30.63 117.26 33.6 110.16 37.69 105.29 40.51 102.02 42.39 102.02 44.52 102.02 47.69 102.02 48.73 107.37 45.65 112.22 42.85 112.22 42.9 112.22 46.94 112.21 90.54 112.21 90.57 119.35 86.4 119.35 61.36 119.35 41.91"/>
+    </svg>
+
+  <div class="clock">
+    <span class="clock-time" id="time">--:--:--</span>
+    <span class="clock-date" id="date"></span>
+  </div>
+
+  <div class="ticker">
+    <div class="track" id="track"></div>
+  </div>
+</div>
+
+<script>
+  // starfield
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 46; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = 1.4 + Math.random() * 2.2;
+    s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*88}%;` +
+                      `width:${size}px;height:${size}px;animation-delay:${Math.random()*3.4}s`;
+    starsEl.appendChild(s);
+  }
+
+  // ticker: repeat until one half covers the screen, so the loop never gaps
+  const track = document.getElementById('track');
+  const UNIT = '<span class="unit">DITAT DEUS</span>';
+  function buildTicker(){
+    let n = 4;
+    do {
+      track.innerHTML = UNIT.repeat(n).repeat(2);
+      n += 2;
+    } while (track.scrollWidth / 2 < window.innerWidth && n <= 40);
+  }
+  buildTicker();
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(buildTicker, 200);
+  });
+
+  // clock
+  const timeEl = document.getElementById('time');
+  const dateEl = document.getElementById('date');
+  function tick(){
+    const now = new Date();
+    timeEl.textContent = now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    dateEl.textContent = now.toLocaleDateString([], {weekday:'long',month:'long',day:'numeric'});
+  }
+  tick();
+  setInterval(tick, 1000);
+</script>
+
+<script>
+/* ------------------------------------------------------------------
+   Stage clearing. When the host mark bursts out of its corner the
+   foreground elements topple to the floor under gravity, bounce, and
+   settle into a fallen lean. When the mark retreats they spring back
+   upright. Integrated per frame (semi-implicit Euler) and phase-locked
+   to the mark's own 60s CSS animation so the two can never drift apart.
+------------------------------------------------------------------ */
+(function(){
+  if (matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+
+  const CYCLE      = 120000;  // 60s performance + 60s pause
+  const FALL_AT    = 19000;   // the mark is breaking out of its corner
+  const RETURN_AT  = 46800;   // the mark is heading home
+  const REST_AFTER = 62000;   // performance over; idle until the cycle repeats
+
+  const G          = 0.0024;  // gravity, px/ms²
+  const RESTITUTION= 0.34;    // fraction of speed kept per bounce
+  const ANG_DAMP   = 0.55;    // spin lost per bounce
+  /* An impact slower than this just stops. It MUST exceed gravity's per-frame
+     velocity gain (G * max dt = 0.115) or a resting body sinks-and-bounces
+     every frame forever, never settling and accumulating spin without end. */
+  const BOUNCE_MIN = 0.14;
+  const DOWN_OPACITY = 0.80;  // fallen pieces stay clearly readable
+  const FADE_RATE    = 0.004; // per ms, both directions
+  const SPRING_K   = 2.7e-5;  // return spring stiffness
+  const SPRING_C   = 0.0073;  // ~0.7 damping ratio: settles without wobble
+  const GROUND_PAD = 6;
+
+  // distinct kick per body so the collapse reads as choreography, not a glitch
+  const SPEC = [
+    {sel:'.mascot-body', vy:-0.10, vx: 0.014, vr: 0.075, lean: 84, leanRate:0.0022},
+    {sel:'.wordmark h1', vy:-0.15, vx:-0.030, vr:-0.045, lean:-21},
+    {sel:'.rule',        vy:-0.19, vx: 0.028, vr: 0.090, lean: 27},
+    {sel:'.tagline',     vy:-0.13, vx: 0.020, vr: 0.060, lean: 19},
+    {sel:'.signal',      vy:-0.17, vx:-0.024, vr:-0.070, lean:-23}
+  ];
+
+  const bodies = SPEC.map(spec => {
+    const el = document.querySelector(spec.sel);
+    if (!el) return null;
+    el.style.transformOrigin = '50% 100%';
+    const base = parseFloat(getComputedStyle(el).opacity) || 1;
+    return {el, spec, base, k:1,
+            x:0, y:0, vx:0, vy:0, rot:0, vr:0, floor:0, landed:false};
+  }).filter(Boolean);
+  if (!bodies.length) return;
+
+  const ticker = document.querySelector('.ticker');
+  let needFloors = true;
+
+  // how far each body can drop before its base meets the top of the ticker
+  function measureFloors(){
+    bodies.forEach(b => { b.el.style.transform = ''; });
+    const ground = window.innerHeight - ticker.offsetHeight - GROUND_PAD;
+    bodies.forEach(b => {
+      b.floor = Math.max(0, ground - b.el.getBoundingClientRect().bottom);
+    });
+    needFloors = false;
+  }
+
+  function phase(){
+    const a = document.querySelector('.host-mark').getAnimations();
+    const t = (a.length && a[0].currentTime != null) ? a[0].currentTime
+                                                    : performance.now();
+    return t % CYCLE;
+  }
+
+  let mode = 'rest', last = null;
+
+  function step(now){
+    if (window.__aznnShowActive){ last = now; requestAnimationFrame(step); return; }
+    const dt = last == null ? 16 : Math.min(48, now - last);
+    last = now;
+
+    const p = phase();
+    const want = p < FALL_AT   ? 'rest'
+               : p < RETURN_AT  ? 'fall'
+               : p < REST_AFTER ? 'return'
+               : 'rest';
+    if (want !== mode){
+      if (want === 'fall'){
+        measureFloors();
+        for (const b of bodies){
+          b.vy = b.spec.vy; b.vx = b.spec.vx; b.vr = b.spec.vr;
+          b.landed = false;
+        }
+      }
+      mode = want;
+    }
+    if (needFloors && mode === 'rest') measureFloors();
+
+    for (const b of bodies){
+      if (mode === 'fall'){
+        if (!b.landed){
+          b.vy  += G * dt;
+          b.y   += b.vy * dt;
+          b.x   += b.vx * dt;
+          b.rot += b.vr * dt;
+          if (b.y >= b.floor){
+            b.y = b.floor;
+            if (b.vy > BOUNCE_MIN){
+              b.vy = -b.vy * RESTITUTION;
+              b.vr *= ANG_DAMP;
+              b.vx *= 0.70;               // scrub along the ground
+            } else {
+              b.vy = b.vx = b.vr = 0;
+              b.landed = true;
+            }
+          }
+        }
+        if (b.landed){                    // ease over into a fallen lean
+          b.rot += (b.spec.lean - b.rot) * Math.min(1, dt * (b.spec.leanRate || 0.006));
+        }
+        b.k += (DOWN_OPACITY - b.k) * Math.min(1, dt * FADE_RATE);
+      } else if (mode === 'return'){
+        b.vy += (-SPRING_K * b.y   - SPRING_C * b.vy) * dt; b.y   += b.vy * dt;
+        b.vx += (-SPRING_K * b.x   - SPRING_C * b.vx) * dt; b.x   += b.vx * dt;
+        b.vr += (-SPRING_K * b.rot - SPRING_C * b.vr) * dt; b.rot += b.vr * dt;
+        b.k += (1 - b.k) * Math.min(1, dt * FADE_RATE);
+      } else {
+        b.x = b.y = b.rot = b.vx = b.vy = b.vr = 0;
+        b.k = 1;
+      }
+      b.el.style.opacity = (b.base * b.k).toFixed(3);
+
+      if (mode === 'rest'){
+        b.el.style.transform = '';
+        b.el.style.opacity = '';
+      } else {
+        b.el.style.transform = 'translate(' + b.x.toFixed(2) + 'px,'
+          + b.y.toFixed(2) + 'px) rotate(' + b.rot.toFixed(2) + 'deg)';
+      }
+    }
+    requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+
+  addEventListener('resize', () => { needFloors = true; });
+})();
+</script>
+
+<script>
+/* ==================================================================
+   RANGE SEQUENCE — the cactus shoulders a suppressed rifle, shoots the
+   scene apart in arcade tracers, everything collapses, then rebuilds.
+
+   Runs inside the QUIET half of the 120s cycle (the mark's rest window),
+   so it can never collide with the logo takeover. Fires on every 5th
+   cycle: 5 x 120s = one show every 10 minutes exactly.
+
+   Debug: window.__rifle.force(ms) pins the show clock;
+          window.__rifle.step(dt) advances one deterministic frame;
+          window.__rifle.release() hands control back to the cycle.
+================================================================== */
+(function(){
+  if (matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+
+  const CYCLE=120000, SHOW_EVERY=5, SHOW_AT=70000, SHOW_LEN=25000;
+  const T_AIM=2500, T_FIRE=4200, T_BURST=12200, T_COLLAPSE=14000, T_REBUILD=19000;
+  const BURST_SHOTS=20;                    // ~90ms apart: the crescendo
+
+  const G=0.0026, SPRING_K=2.4e-5, SPRING_C=0.0068, SPEED=1.15;
+
+  const stage=document.querySelector('.stage');
+  const svg=document.querySelector('.mascot svg');
+  const h1=document.querySelector('.wordmark h1');
+  const mesaSvg=document.querySelector('.mesas svg');
+  const NS='http://www.w3.org/2000/svg';
+
+  /* ---- headline becomes per-letter targets ---- */
+  (function splitChars(root){
+    const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT), ns=[];
+    while(w.nextNode()) ns.push(w.currentNode);
+    for(const n of ns){
+      const f=document.createDocumentFragment();
+      for(const c of n.nodeValue){
+        if(c===' '){ f.appendChild(document.createTextNode(' ')); continue; }
+        const sp=document.createElement('span'); sp.className='ch'; sp.textContent=c;
+        f.appendChild(sp);
+      }
+      n.parentNode.replaceChild(f,n);
+    }
+  })(h1);
+
+  /* ---- near ridge re-built as a chunk grid clipped to its own silhouette,
+          so it can crumble. Identical to the solid polygon until hit. ---- */
+  const chunks=[];
+  (function fractureMesa(){
+    const polys=mesaSvg.querySelectorAll('polygon');
+    const near=polys[polys.length-1];
+    const cp=document.createElementNS(NS,'clipPath'); cp.id='mesaFrac';
+    const c=near.cloneNode(true); c.removeAttribute('fill'); c.removeAttribute('opacity');
+    cp.appendChild(c); mesaSvg.querySelector('defs').appendChild(cp);
+    const g=document.createElementNS(NS,'g');
+    g.setAttribute('clip-path','url(#mesaFrac)');
+    g.setAttribute('fill','var(--mesa-near)');
+    for(let x=0;x<1600;x+=80) for(let y=140;y<300;y+=42){
+      const r=document.createElementNS(NS,'rect');
+      r.setAttribute('x',x); r.setAttribute('y',y);
+      r.setAttribute('width',81.5); r.setAttribute('height',43.5);
+      r.setAttribute('class','chunk');
+      g.appendChild(r); chunks.push(r);
+    }
+    near.setAttribute('opacity','0');
+    near.parentNode.insertBefore(g, near.nextSibling);  // stay under the saguaros
+  })();
+
+  const gridLines=Array.from(document.querySelectorAll('.floor line'));
+
+  /* ---- fx canvas ---- */
+  const veil=document.createElement('div');
+  veil.className='dim range-veil'; veil.style.animation='none'; veil.style.zIndex='6';
+  stage.appendChild(veil);
+  let veilK=0;
+  function setVeil(st){
+    const target = (st<T_AIM) ? 0.18
+                 : (st<T_REBUILD+2200) ? 0.62
+                 : 0;
+    veilK += (target-veilK)*0.05;
+    veil.style.opacity=veilK.toFixed(3);
+  }
+
+  const cv=document.createElement('canvas'); cv.className='fx';
+  stage.appendChild(cv);
+  const ctx=cv.getContext('2d');
+  function sizeCanvas(){
+    const dpr=Math.min(2, window.devicePixelRatio||1);
+    cv.width=innerWidth*dpr; cv.height=innerHeight*dpr;
+    cv.style.width=innerWidth+'px'; cv.style.height=innerHeight+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  sizeCanvas(); addEventListener('resize',sizeCanvas);
+
+  /* ---- debris ---- */
+  const debris=new Map();
+  let seed=1;
+  function rnd(){ seed=(seed*1664525+1013904223)%4294967296; return seed/4294967296; }
+  function knock(el,ox,oy,power){
+    if(debris.has(el)) return;
+    const r=el.getBoundingClientRect();
+    let dx=(r.left+r.width/2)-ox, dy=(r.top+r.height/2)-oy;
+    const d=Math.hypot(dx,dy)||1; dx/=d; dy/=d;
+    const j=rnd();
+    debris.set(el,{el,x:0,y:0,rot:0,
+      vx:dx*power*(0.55+j*0.7), vy:dy*power*0.35-(0.20+j*0.36),
+      vr:(j-0.5)*1.2, mode:'fly'});
+  }
+  function integrate(dt){
+    for(const b of debris.values()){
+      if(b.mode==='fly'){
+        b.vy+=G*dt; b.x+=b.vx*dt; b.y+=b.vy*dt; b.rot+=b.vr*dt;
+      }else{
+        b.vx+=(-SPRING_K*b.x-SPRING_C*b.vx)*dt; b.x+=b.vx*dt;
+        b.vy+=(-SPRING_K*b.y-SPRING_C*b.vy)*dt; b.y+=b.vy*dt;
+        b.vr+=(-SPRING_K*b.rot-SPRING_C*b.vr)*dt; b.rot+=b.vr*dt;
+      }
+      b.el.style.transform='translate('+b.x.toFixed(1)+'px,'+b.y.toFixed(1)+'px) rotate('+b.rot.toFixed(1)+'deg)';
+    }
+  }
+
+  /* ---- bullets ---- */
+  const bullets=[], sparks=[];
+  let flash=0, shake=0;
+  const RIG=[140,152], AIM_LIMIT=46;
+  function centre(sel){
+    const b=svg.querySelector(sel).getBoundingClientRect();
+    return {x:b.left+b.width/2, y:b.top+b.height/2};
+  }
+  function muzzle(){ return centre('.rifle-muzzle'); }
+  /* Point the rig at the target BEFORE reading the muzzle, so the round always
+     leaves the front of the barrel instead of the gun's rest direction. */
+  function aimAt(tx,ty,free){
+    const p=centre('.rig-pivot');
+    let a=Math.atan2(ty-p.y, tx-p.x)*180/Math.PI;
+    let s=1;
+    if(free){ if(Math.abs(a)>90) s=-1; }   // mirror instead of hanging upside down
+    else a=Math.max(-AIM_LIMIT, Math.min(AIM_LIMIT, a));
+    svg.querySelector('.rig').setAttribute('transform',
+      'translate('+RIG[0]+','+RIG[1]+') rotate('+a.toFixed(1)+') scale(1,'+s+
+      ') translate('+(-RIG[0])+','+(-RIG[1])+')');
+    return a;
+  }
+  function inFront(el){
+    const p=centre('.rig-pivot');
+    const r=el.getBoundingClientRect();
+    const dx=(r.left+r.width/2)-p.x, dy=(r.top+r.height/2)-p.y;
+    if(dx<70) return false;                                  // behind or too close
+    return Math.abs(Math.atan2(dy,dx)*180/Math.PI)<=AIM_LIMIT;
+  }
+  function fireAt(el, pt, fast){
+    let tx,ty;
+    if(el){ const r=el.getBoundingClientRect(); tx=r.left+r.width/2; ty=r.top+r.height/2; }
+    else if(pt){ tx=pt.x; ty=pt.y; }
+    else return;
+    aimAt(tx,ty,!!fast);                        // burst swings the full circle
+    const m=muzzle();
+    const dx=tx-m.x, dy=ty-m.y, d=Math.hypot(dx,dy)||1;
+    const ttl=Math.min(fast?300:1500, d/(fast?3.4:SPEED));
+    bullets.push({el,x:m.x,y:m.y,vx:dx/ttl,vy:dy/ttl,tx,ty,t:0,ttl});
+    flash=fast?50:80; shake=fast?105:140;       // suppressed: modest flash
+  }
+  let areaTargets=[];
+  function impact(el,x,y){
+    if(el) knock(el,x,y,0.8);
+    const R=165;
+    for(const a of areaTargets){
+      if(debris.has(a.el)) continue;
+      const d=Math.hypot(a.cx-x, a.cy-y);
+      if(d<R) knock(a.el,x,y,0.5*(1-d/R)+0.14);
+    }
+    for(let i=0;i<16;i++) sparks.push({x,y,
+      vx:(rnd()-0.5)*1.0, vy:(rnd()-0.5)*1.0-0.16, t:0, ttl:240+rnd()*280});
+  }
+  function stepBullets(dt){
+    for(let i=bullets.length-1;i>=0;i--){
+      const b=bullets[i]; b.t+=dt; b.x+=b.vx*dt; b.y+=b.vy*dt;
+      if(b.t>=b.ttl){ impact(b.el,b.tx,b.ty); bullets.splice(i,1); }
+    }
+    for(let i=sparks.length-1;i>=0;i--){
+      const s=sparks[i]; s.t+=dt; s.vy+=0.0016*dt; s.x+=s.vx*dt; s.y+=s.vy*dt;
+      if(s.t>=s.ttl) sparks.splice(i,1);
+    }
+  }
+  /* Sized off the viewport so tracers read the same on a 1080p panel and a 4K
+     one. Snapped to a pixel grid for the deliberate 8-bit look. */
+  let PX=12;
+  function scaleFx(){ PX=Math.max(8, Math.round(innerWidth/104)); }
+  scaleFx(); addEventListener('resize',scaleFx);
+  const q=v=>Math.round(v/PX)*PX;
+  function drawFx(dt){
+    ctx.clearRect(0,0,innerWidth,innerHeight);
+    for(const b of bullets){
+      for(let k=6;k>=1;k--){                        // tapering tracer trail
+        ctx.globalAlpha=0.50-k*0.065;
+        ctx.fillStyle= k>3 ? '#e8593e' : '#f4c86a';
+        const w=PX*(1.1-k*0.09);
+        ctx.fillRect(q(b.x-b.vx*k*26), q(b.y-b.vy*k*26), w, w);
+      }
+      ctx.globalAlpha=1;
+      ctx.fillStyle='#f4c86a';
+      ctx.fillRect(q(b.x)-PX*0.25, q(b.y)-PX*0.25, PX*1.5, PX*1.5);
+      ctx.fillStyle='#fffdf4';                      // hot core
+      ctx.fillRect(q(b.x)+PX*0.2, q(b.y)+PX*0.2, PX*0.8, PX*0.8);
+    }
+    for(const s of sparks){
+      const a=1-s.t/s.ttl;
+      ctx.globalAlpha=Math.max(0,a);
+      ctx.fillStyle=a>0.55?'#fff3cf':'#e8593e';
+      ctx.fillRect(q(s.x), q(s.y), PX*0.7, PX*0.7);
+    }
+    ctx.globalAlpha=1;
+    if(flash>0){
+      const m=muzzle(), r=PX*1.4+flash*0.10;        // suppressed: modest bloom
+      ctx.globalAlpha=Math.min(1,flash/80)*0.8; ctx.fillStyle='#ffe8a8';
+      ctx.fillRect(m.x-r/2, m.y-r/2, r, r);
+      ctx.globalAlpha=Math.min(1,flash/80)*0.5; ctx.fillStyle='#fffaf0';
+      ctx.fillRect(m.x-r/4, m.y-r/4, r/2, r/2);
+      ctx.globalAlpha=1; flash-=dt;
+    }
+    if(shake>0){
+      shake-=dt; const a=Math.min(4, shake/32);
+      stage.style.transform='translate('+((rnd()-0.5)*a).toFixed(2)+'px,'+((rnd()-0.5)*a).toFixed(2)+'px)';
+    } else if(stage.style.transform){ stage.style.transform=''; }
+  }
+
+  /* ---- sequencing ---- */
+  let active=false, shots=[], shotIdx=0, gap=500, burstIdx=0, collapsed=false, rebuilding=false;
+  function buildShots(){
+    const list=[];
+    const push=s=>{const e=document.querySelector(s); if(e) list.push(e);};
+    push('.signal'); push('.tagline');
+    document.querySelectorAll('.rule i').forEach(e=>list.push(e));
+    const L=Array.from(h1.querySelectorAll('.ch'));
+    for(let i=0;i<L.length;i+=2) list.push(L[i]);
+    const cs=Math.max(1,Math.floor(chunks.length/6));
+    for(let i=Math.floor(cs/2);i<chunks.length;i+=cs) list.push(chunks[i]);
+    const gs=Math.max(1,Math.floor(gridLines.length/4));
+    for(let i=0;i<gridLines.length;i+=gs) list.push(gridLines[i]);
+    return list.filter(inFront);
+  }
+  function startShow(){
+    active=true; window.__aznnShowActive=true;
+    svg.classList.add('armed');
+    ['.mascot-body','.wordmark h1','.rule','.tagline','.signal'].forEach(sel=>{
+      const e=document.querySelector(sel);
+      if(e){ e.style.transform=''; e.style.opacity=''; }
+    });
+    debris.clear(); bullets.length=0; sparks.length=0;
+    shotIdx=0; collapsed=false; rebuilding=false; seed=1;
+    shots=buildShots();
+    gap=(T_BURST-T_FIRE)/Math.max(1,shots.length);
+    burstIdx=0;
+    areaTargets=chunks.concat(gridLines).map(el=>{
+      const r=el.getBoundingClientRect();
+      return {el, cx:r.left+r.width/2, cy:r.top+r.height/2};
+    });
+  }
+  /* Alternates a point on a full circle (guaranteed 360 spread) with a piece
+     still standing (guaranteed destruction), so the spray reads as chaotic
+     but still tears the scene down. */
+  function burstShot(i){
+    if(i%2===0){
+      const a=(i/BURST_SHOTS)*Math.PI*2 + 0.6;
+      fireAt(null,{x:innerWidth/2 + Math.cos(a)*innerWidth*0.46,
+                   y:innerHeight*0.44 + Math.sin(a)*innerHeight*0.40}, true);
+    } else {
+      const intact=areaTargets.filter(t=>!debris.has(t.el));
+      const letters=Array.from(h1.querySelectorAll('.ch')).filter(e=>!debris.has(e));
+      const pool=letters.concat(intact.map(t=>t.el));
+      if(pool.length) fireAt(pool[Math.floor(i*pool.length/BURST_SHOTS)%pool.length],null,true);
+      else fireAt(null,{x:rnd()*innerWidth, y:rnd()*innerHeight*0.8}, true);
+    }
+  }
+  function collapseAll(){
+    const cx=innerWidth/2, cy=innerHeight*0.45;
+    h1.querySelectorAll('.ch').forEach(e=>knock(e,cx,cy,0.55));
+    areaTargets.forEach(a=>knock(a.el,cx,cy,0.45));
+    ['.tagline','.signal','.mascot-body'].forEach(sel=>{
+      const e=document.querySelector(sel); if(e) knock(e,cx,cy,0.5);
+    });
+    document.querySelectorAll('.rule i').forEach(e=>knock(e,cx,cy,0.6));
+    shake=420;
+  }
+  function startRebuild(){
+    svg.classList.remove('armed');
+    for(const b of debris.values()) b.mode='rebuild';
+  }
+  function endShow(){
+    active=false; window.__aznnShowActive=false;
+    svg.classList.remove('armed');
+    for(const b of debris.values()){ b.el.style.transform=''; }
+    debris.clear(); bullets.length=0; sparks.length=0;
+    flash=0; shake=0; stage.style.transform='';
+    veilK=0; veil.style.opacity='0';
+    const rig=svg.querySelector('.rig'); if(rig) rig.removeAttribute('transform');
+    ctx.clearRect(0,0,innerWidth,innerHeight);
+  }
+  function beats(st){
+    if(st>=T_FIRE && st<T_BURST){
+      const want=Math.min(shots.length, Math.floor((st-T_FIRE)/gap)+1);
+      while(shotIdx<want){
+        let el=shots[shotIdx];
+        if(debris.has(el)){                     // cluster damage already took it
+          el = shots.slice(shotIdx+1).find(x=>!debris.has(x));
+          if(!el){ const a=areaTargets.find(a=>!debris.has(a.el)); el=a&&a.el; }
+        }
+        if(el) fireAt(el);
+        shotIdx++;
+      }
+    } else if(st>=T_BURST && st<T_COLLAPSE){
+      const bgap=(T_COLLAPSE-T_BURST)/BURST_SHOTS;
+      const want=Math.min(BURST_SHOTS, Math.floor((st-T_BURST)/bgap)+1);
+      while(burstIdx<want){ burstShot(burstIdx); burstIdx++; }
+    } else if(st>=T_COLLAPSE && st<T_REBUILD){
+      if(!collapsed){ collapseAll(); collapsed=true; }
+    } else if(st>=T_REBUILD){
+      if(!rebuilding){ startRebuild(); rebuilding=true; }
+    }
+  }
+
+  function markTotal(){
+    const a=document.querySelector('.host-mark').getAnimations();
+    return (a.length && a[0].currentTime!=null) ? a[0].currentTime : performance.now();
+  }
+  function showTime(total){
+    if(Math.floor(total/CYCLE)%SHOW_EVERY !== SHOW_EVERY-1) return -1;
+    const p=total%CYCLE;
+    if(p<SHOW_AT || p>SHOW_AT+SHOW_LEN) return -1;
+    return p-SHOW_AT;
+  }
+
+  const dbg={forced:null,
+    force(ms){ this.forced=ms; return ms; },
+    step(dt){ this.forced=(this.forced==null?0:this.forced)+dt; tick(0,dt); return this.forced; },
+    release(){ this.forced=null; endShow(); return 'released'; },
+    state(){ return {active, shotIdx, shots:shots.length, debris:debris.size,
+                     bullets:bullets.length, forced:this.forced}; }};
+  window.__rifle=dbg;
+
+  /* ---- operator triggers ---------------------------------------------
+     manual runs the range act on its own clock, independent of the cycle. */
+  let manual=null;
+
+  const toastEl=document.createElement('div');
+  toastEl.className='toast'; stage.appendChild(toastEl);
+  function toast(msg){
+    toastEl.textContent=msg;
+    toastEl.classList.remove('show');
+    void toastEl.offsetWidth;               // restart the animation
+    toastEl.classList.add('show');
+  }
+
+  const CSS_ACTS=/^(host-journey|host-text-yield|dim-cycle)$/;
+  function seekActs(phase){
+    document.getAnimations().forEach(a=>{
+      if(CSS_ACTS.test(a.animationName)){
+        const t=a.currentTime||0;
+        a.currentTime=Math.floor(t/CYCLE)*CYCLE + phase;
+      }
+    });
+  }
+  function triggerRange(){
+    if(active) endShow();
+    seekActs(SHOW_AT);        // park the logo act at rest, as in production
+    manual=0;
+    toast('Range sequence \u00b7 25s');
+  }
+  function triggerLogo(){
+    manual=null;
+    if(active) endShow();
+    seekActs(13000);          // just ahead of the breakout
+    toast('Logo takeover \u00b7 40s');
+  }
+  document.querySelector('.clock').addEventListener('click', triggerRange);
+  document.querySelector('.host').addEventListener('click', triggerLogo);
+  addEventListener('keydown', e=>{
+    const k=e.key.toLowerCase();
+    if(k==='r') triggerRange();
+    else if(k==='l') triggerLogo();
+    else if(k==='escape'){ manual=null; if(active) endShow(); toast('Reset'); }
+  });
+  dbg.range=triggerRange; dbg.logo=triggerLogo;
+  dbg.aimAt=aimAt; dbg.inFront=inFront; dbg.muzzle=muzzle;
+  dbg.pivot=()=>centre('.rig-pivot');
+  dbg.shotList=()=>shots.slice();
+
+  let last=null;
+  function tick(now, dtOverride){
+    const dt = dtOverride!=null ? dtOverride : (last==null?16:Math.min(48, now-last));
+    last=now;
+    let st;
+    if(dbg.forced!=null){ st=dbg.forced; }
+    else if(manual!=null){
+      st=manual; manual+=dt;
+      if(manual>SHOW_LEN+600) manual=null;   // hand back to the cycle
+    }
+    else { st=showTime(markTotal()); }
+    if(st<0){ if(active) endShow(); return; }
+    if(!active) startShow();
+    beats(st); setVeil(st); integrate(dt); stepBullets(dt); drawFx(dt);
+  }
+  function loop(now){ tick(now); requestAnimationFrame(loop); }
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
